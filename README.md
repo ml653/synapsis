@@ -54,8 +54,8 @@ In Neural Networks Made E-Z-P-Z :), a convoluted neural network will be trained 
 
 ## Logic
 #### Part B: Small lightweight architecture free neural network
-Capable of adding and removing nodes and layers
-Multiple types of activation functions (Sigmoid, ReLU, Linear)
+- Capable of adding and removing nodes and layers
+- Multiple types of activation functions (Sigmoid, ReLU, Linear)
 
 #### Utilize ConvNet to train on and learn MNIST dataset
 - Build Convolutional Neural Network
@@ -123,5 +123,5 @@ predicted results to phase A sidebar.
 
 ###### Day 6
 - **Jin** - Finish up styling and smooth out the user experience of the walkthrough
-- Ahmed  - saved for polish, critique, and last-minute changes.
+- **Ahmed** - saved for polish, critique, and last-minute changes.
 - **Steven** - Help w/ project polishing;
