@@ -99,29 +99,35 @@ In Neural Networks Made E-Z-P-Z :), a convoluted neural network will be trained 
 - **Ahmed** - Make D3 components basic layout w/i the app. Component spacing and layout
 setup.
 - **Steven** - Build architecture free ANN, capable of arbitrary number of nodes and layers. Part I
+- **Trevor** - Set up simple version of the ConvNet architecture.
 
 ###### Day 2
 - **Jin** - Add basic visual representation of the ANN (inputs, hidden layers, neurons, outputs, synapses)
 - **Ahmed** - Render Input field box in D3. Ensure Input component is bound to data (aka store) as the single-source-of-truth.
 - **Steven** - Build architecture free ANN, capable of arbitrary number of nodes and layers. Part II
+- **Trevor** - Set up handling of MNIST data (pre-training).
 
 ###### Day 3
 - **Jin** - Connect visual representations of the ANN to the actual ANN logic
 - **Ahmed** - Render Convolution field box in D3. Ensure convolution boxes are bound to data (aka store) as the single-source-of-truth.
 - **Steven** - Add in neural network visualization data sets.
+- **Trevor** - Configure network to specifically learn on MNIST data. Part I
 
 ###### Day 4
 - **Jin** - Continue connecting visual representations of the ANN to the actual ANN logic. Add
 predicted results to phase A sidebar.
 - **Ahmed** - Render pooling field boxes. Ensure Pooling boxes are bound to data (aka store) as the single-source-of-truth.
 - **Steven** - Work with Jin to connect the ANN w/ the frontend rendering; start adding in breakpoint capabilities in neural network training.
+- **Trevor** - Configure network to specifically learn on MNIST data. Part II
 
 ###### Day 5
 - **Jin** - Add visual tooltips for each step of the ANN, make breakpoints for each step of the walkthrough
 - **Ahmed** - Connection diagrams, mouse-over neuron connections, and color gradients.
-- **Steven** - Work w/ more frontend integration and work on project polishing;
+- **Steven** - Work w/ more frontend integration and work on project polishing.
+- **Trevor** - Set up periodic calls to send network snapshot to the frontend.
 
 ###### Day 6
 - **Jin** - Finish up styling and smooth out the user experience of the walkthrough
 - **Ahmed** - saved for polish, critique, and last-minute changes.
-- **Steven** - Help w/ project polishing;
+- **Steven** - Help w/ project polishing.
+- **Trevor** - Troubleshoot issues with connecting with the frontend.
