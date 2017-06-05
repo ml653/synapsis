@@ -34,16 +34,16 @@ In Neural Networks Made E-Z-P-Z :), a convoluted neural network will be trained 
 
 #### Primary technical challenges:
 
-Setting up the CNN using ConvNetJS and extracting useful data for visualization
-Parsing data coming in from the CNN and visualizing all of the connections using D3.js
-Building the ANN from scratch
+- Setting up the CNN using ConvNetJS and extracting useful data for visualization
+- Parsing data coming in from the CNN and visualizing all of the connections using D3.js
+- Building the ANN from scratch
 
 ## Things Accomplished Over the Weekend
 
-Learned how neural networks work, specifically convoluted neural networks
-Researched libraries for machine learning/learn basics of ConvNetJS
-Learned basic Vue.js and D3.js
-Understood how to pull neural net information from ConvNetJS
+- Learned how neural networks work, specifically convoluted neural networks
+- Researched libraries for machine learning/learn basics of ConvNetJS
+- Learned basic Vue.js and D3.js
+- Understood how to pull neural net information from ConvNetJS
 
 ## Group Members and Work Breakdown
 
@@ -95,33 +95,33 @@ Multiple types of activation functions (Sigmoid, ReLU, Linear)
 ### Timeline
 
 ###### Day 1
-Jin - Make the basic user interface / layout of the app
-Ahmed - Make D3 components basic layout w/i the app. Component spacing and layout
+- **Jin** - Make the basic user interface / layout of the app
+- **Ahmed** - Make D3 components basic layout w/i the app. Component spacing and layout
 setup.
-Steven - Build architecture free ANN, capable of arbitrary number of nodes and layers. Part I
+- **Steven** - Build architecture free ANN, capable of arbitrary number of nodes and layers. Part I
 
 ###### Day 2
-- Jin - Add basic visual representation of the ANN (inputs, hidden layers, neurons, outputs, synapses)
-- Ahmed - Render Input field box in D3. Ensure Input component is bound to data (aka store) as the single-source-of-truth.
-- Steven - Build architecture free ANN, capable of arbitrary number of nodes and layers. Part II
+- **Jin** - Add basic visual representation of the ANN (inputs, hidden layers, neurons, outputs, synapses)
+- **Ahmed** - Render Input field box in D3. Ensure Input component is bound to data (aka store) as the single-source-of-truth.
+- **Steven** - Build architecture free ANN, capable of arbitrary number of nodes and layers. Part II
 
 ###### Day 3
-- Jin - Connect visual representations of the ANN to the actual ANN logic
-- Ahmed - Render Convolution field box in D3. Ensure convolution boxes are bound to data (aka store) as the single-source-of-truth.
-- Steven - Add in neural network visualization data sets.
+- **Jin** - Connect visual representations of the ANN to the actual ANN logic
+- **Ahmed** - Render Convolution field box in D3. Ensure convolution boxes are bound to data (aka store) as the single-source-of-truth.
+- **Steven** - Add in neural network visualization data sets.
 
 ###### Day 4
-- Jin - Continue connecting visual representations of the ANN to the actual ANN logic. Add
+- **Jin** - Continue connecting visual representations of the ANN to the actual ANN logic. Add
 predicted results to phase A sidebar.
-- Ahmed - Render pooling field boxes. Ensure Pooling boxes are bound to data (aka store) as the single-source-of-truth.
-- Steven - Work with Jin to connect the ANN w/ the frontend rendering; start adding in breakpoint capabilities in neural network training.
+- **Ahmed** - Render pooling field boxes. Ensure Pooling boxes are bound to data (aka store) as the single-source-of-truth.
+- **Steven** - Work with Jin to connect the ANN w/ the frontend rendering; start adding in breakpoint capabilities in neural network training.
 
 ###### Day 5
-- Jin - Add visual tooltips for each step of the ANN, make breakpoints for each step of the walkthrough
-- Ahmed - Connection diagrams, mouse-over neuron connections, and color gradients.
-- Steven - Work w/ more frontend integration and work on project polishing;
+- **Jin** - Add visual tooltips for each step of the ANN, make breakpoints for each step of the walkthrough
+- **Ahmed** - Connection diagrams, mouse-over neuron connections, and color gradients.
+- **Steven** - Work w/ more frontend integration and work on project polishing;
 
 ###### Day 6
-- Jin - Finish up styling and smooth out the user experience of the walkthrough
+- **Jin** - Finish up styling and smooth out the user experience of the walkthrough
 - Ahmed  - saved for polish, critique, and last-minute changes.
-- Steven - Help w/ project polishing;
+- **Steven** - Help w/ project polishing;
