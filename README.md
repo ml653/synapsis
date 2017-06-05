@@ -89,35 +89,35 @@ ANN = Artificial Neural Network
 - **Jin** - Make the basic user interface / layout of the app.
 - **Ahmed** - Make D3 components basic layout w/i the app. Component spacing and layout
 setup.
-- **Steven** - Build architecture free ANN, capable of arbitrary number of nodes and layers. Part I
+- **Steven** - Work on building simple version of a convoluted neural network; help w/ handling MNIST data inputs;
 - **Trevor** - Set up simple version of the ConvNet architecture.
 
 ###### Day 2
 - **Jin** - Work on architecting the data store and hierarchy of Vue components.
 - **Ahmed** - Render Input field box in D3. Ensure Input component is bound to data (aka store) as the single-source-of-truth.
-- **Steven** - Build architecture free ANN, capable of arbitrary number of nodes and layers. Part II
+- **Steven** -  Start training neural network; look into data structure and how it can fit into frontend.
 - **Trevor** - Set up handling of MNIST data (pre-training).
 
 ###### Day 3
 - **Jin** - Style the sticky sidebar and make basic visual representations of training stats and results.
 - **Ahmed** - Render Convolution field box in D3. Ensure convolution boxes are bound to data (aka store) as the single-source-of-truth.
-- **Steven** - Add in neural network visualization data sets.
+- **Steven** - From data structures of neural network, help w/ front end integration.
 - **Trevor** - Configure network to specifically learn on MNIST data. Part I
 
 ###### Day 4
 - **Jin** - Connect the sticky sidebar to use the stats data and results data coming in from the 'backend' logic.
 - **Ahmed** - Render pooling field boxes. Ensure Pooling boxes are bound to data (aka store) as the single-source-of-truth.
-- **Steven** - Work with Jin to connect the ANN w/ the frontend rendering; start adding in breakpoint capabilities in neural network training.
+- **Steven** - Assist w/ frontend integration.
 - **Trevor** - Configure network to specifically learn on MNIST data. Part II
 
 ###### Day 5
-- **Jin** - Style up the sidebar and help out with D3 visualization if applicable.
+- **Jin** - Style up the sidebar and step of the ANN, make breakpoints for each step of the walkthrough
 - **Ahmed** - Connection diagrams, mouse-over neuron connections, and color gradients.
-- **Steven** - Work w/ more frontend integration and work on project polishing.
+- **Steven** - Look into feasibility of part II. 
 - **Trevor** - Set up periodic calls to send network snapshot to the frontend.
 
 ###### Day 6
-- **Jin** - Finish up styling and smooth out the user experience.
+- **Jin** - Finish up styling and smooth out the user experience of the walkthrough
 - **Ahmed** - saved for polish, critique, and last-minute changes.
 - **Steven** - Help w/ project polishing.
 - **Trevor** - Troubleshoot issues with connecting with the frontend.
