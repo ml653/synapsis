@@ -1,8 +1,44 @@
 .sidebar {
   width: $sidebar-width;
-  border: 1px solid red;
+  box-shadow: 0 0 20px rgba(0,0,0,0.19), 0 0 6px rgba(0,0,0,0.23);
   position: fixed;
   top: 0;
   height: 100vh;
-  background-color: lightblue;
+  background-color: $sidebar-background;
+
+  .brand {
+    display: flex;
+    align-items: center;
+    padding: 10% 0;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    h1 {
+      letter-spacing: 1.5px;
+      display: inline-block;
+    }
+    img {
+      height: 75px;
+    }
+  }
+
+  .info {
+    height: 10%;
+    border: 1px solid blue;
+  }
+
+  .stats {
+    margin: 10% 0;
+    width: 100%;
+    h4 {
+      margin-bottom: 5%;
+    }
+    div {
+      padding: 2px 0 2px 10px;
+      text-align: left;
+    }
+  }
+
+  .results {
+    margin: 10% 0;
+    width: 100%;
+  }
 }
