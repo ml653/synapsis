@@ -20,22 +20,26 @@ export default {
     const vizDom = document.getElementById("cnn-viz");
     const viz = d3.select("#cnn-viz");
     const bbox = vizDom.getBoundingClientRect();
+    let dr = 50;
     for(let r=0;r<this.convnet.length;r++) {
-      const g = viz.append("g");
+      console.log(layer);
+      const g = viz.append("g")
+        .attr("transform", `translate(0, ${dr})`);
       const layer = this.convnet[r];
       // a is the width of the layer
-      const a =  layer.out_depth || layer.in_depth;
+      const a =  layer.num_inputs || layer.out_depth || layer.in_depth;
       // width is the width of each box
-      const width = Math.min(250, bbox.width / (a + 1));
+      const width = layer.out_sx * 5;
       const dx = this.getPositions(bbox.width, width, a);
       for(let c=0;c<a;c++) {
         const mg = g.append("g")
-          .attr("transform", `translate(${dx(c)}, ${300*r})`);
+          .attr("transform", `translate(${dx(c)},0)`);
         mg.append("rect")
             .attr("width", width)
             .attr("height", width)
-            .attr("style", "fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)");
+            .attr("style", "fill:rgb(0,255,0);");
       }
+      dr += width + 100;
     }
   },
   methods: {
