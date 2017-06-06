@@ -1,6 +1,19 @@
 <template>
   <div class="visualization">
     <svg id="cnn-viz" width="100%" height="100%">
+      <defs xmlns="http://www.w3.org/2000/svg">
+        <filter id="dropshadow" height="130%">
+          <feGaussianBlur in="SourceAlpha" stdDeviation="3"/> 
+          <feOffset dx="2" dy="2" result="offsetblur"/>
+          <feComponentTransfer>
+            <feFuncA type="linear" slope="0.2"/>
+          </feComponentTransfer>
+          <feMerge> 
+            <feMergeNode/>
+            <feMergeNode in="SourceGraphic"/> 
+          </feMerge>
+        </filter>
+      </defs>
     </svg>
   </div>
 </template>
@@ -33,11 +46,12 @@ export default {
       const dx = this.getPositions(bbox.width, width, a);
       for(let c=0;c<a;c++) {
         const mg = g.append("g")
+          .attr("filter", "url(#dropshadow)")
           .attr("transform", `translate(${dx(c)},0)`);
         mg.append("rect")
             .attr("width", width)
             .attr("height", width)
-            .attr("style", "fill:rgb(0,255,0);");
+            .attr("style", "fill:#a3e09a");
       }
       dr += width + 100;
     }
