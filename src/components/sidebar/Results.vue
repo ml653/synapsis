@@ -9,7 +9,9 @@ export default {
   name: 'results',
   data() {
     return {
+      images: [
 
+      ]
     };
   }
 };
