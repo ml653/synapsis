@@ -12,14 +12,17 @@ export default {
   name: 'visualization',
   data() {
     return {
-      convnet: pojo
+      convnet: pojo[0]
     };
   },
   mounted: function() {
   },
+  methods: {
+    getWidths: function() {
+      return this.convnet.layers.filter(el => el.layer_type !== "relu").map(el => el.out_depth || el.in_depth);
+    }
+  },
   components: {
-
   }
-
 };
 </script>
