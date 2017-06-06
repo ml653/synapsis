@@ -1,14 +1,15 @@
 <template>
-  <div class="sidebar">
-    <h1>Synapsis</h1>
+  <div class="info">
   </div>
 </template>
 
 <script>
 export default {
-  name: 'sidebar',
+  name: 'info',
   data() {
-    return {};
+    return {
+
+    };
   }
 };
 </script>
