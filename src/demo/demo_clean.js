@@ -4,7 +4,7 @@ const convnetjs = require('convnetjs')
 const labels = require('./mnist/mnist_labels')
 const cnnutil = require('./cnnutil')
 const num_batches = 21 // 20 training batches, 1 test
-const test_batch = 20
+const test_batch = 19
 const num_samples_per_batch = 3000
 const image_dimension = 28
 const image_channels = 1
@@ -16,13 +16,12 @@ let step_num = 0;
 // const maxmin = cnnutil.maxmin;
 // const f2t = util.f2t;
 
-// const lossGraph = new cnnvis.Graph();
 const xLossWindow = new cnnutil.Window(100);
 const wLossWindow = new cnnutil.Window(100);
 const trainAccWindow = new cnnutil.Window(100);
 const valAccWindow = new cnnutil.Window(100);
+// const lossGraph = new cnnvis.Graph();
 // const testAccWindow = new cnnutil.Window(50, 1);
-// trainAccWindow.add(train_acc)
 
 // Set up layers and trainer
 const layer_defs = []
@@ -59,29 +58,24 @@ const importUtil = new ImportUtil(
     data_img_elts)
 
 // Set up
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', initialize)
+
+function initialize() {
   importUtil.load_data_batch(0); // async load train set batch 0
   importUtil.load_data_batch(test_batch); // async load test set
-  start_fun();
-})
+  run()
+}
 
-function start_fun() {
+function run() {
   if (loaded[0] && loaded[test_batch]) {
-    setInterval(load_and_step, 0); // lets go!
+    setInterval(step, 0); // lets go!
   } else {
-    setTimeout(start_fun, 200);
+    setTimeout(run, 200);
   }
 }
 
-// loads a training image and trains on it with the network
-const paused = false;
-const load_and_step = function() {
-  if (paused) return;
+function step() {
   const sample = importUtil.sample_training_instance();
-  step(sample); // process this image
-}
-
-function step(sample) {
   console.log('training accuracy', trainAccWindow.get_average())
   var x = sample.x;
   var y = sample.label;
@@ -110,20 +104,17 @@ function step(sample) {
   // visualize activations
   if (step_num % 100 === 0) {
     console.log(net)
-    // TODO: Pull data from here.
-    // const vis_elt = document.getElementById("visnet");
-    // visualize_activations(net, vis_elt); // TODO: Important
   }
 
-  // log progress to graph, (full loss)
-  if (step_num % 200 === 0) {
-    const xa = xLossWindow.get_average();
-    const xw = wLossWindow.get_average();
-    if (xa >= 0 && xw >= 0) { // if they are -1 it means not enough data was accumulated yet for estimates
-      // lossGraph.add(step_num, xa + xw);
-      // lossGraph.drawSelf(document.getElementById("lossgraph"));
-    }
-  }
+  // // log progress to graph, (full loss)
+  // if (step_num % 200 === 0) {
+  //   const xa = xLossWindow.get_average();
+  //   const xw = wLossWindow.get_average();
+  //   if (xa >= 0 && xw >= 0) { // if they are -1 it means not enough data was accumulated yet for estimates
+  //     // lossGraph.add(step_num, xa + xw);
+  //     // lossGraph.drawSelf(document.getElementById("lossgraph"));
+  // }
+  // }
 
   // run prediction on test set
   if ((step_num % 100 === 0 && step_num > 0) || step_num === 100) {
