@@ -8,12 +8,25 @@
       <i class="fa fa-times" v-on:click="handleInfoClick" />
       <div v-html="messages[currentMsg]"></div>
       <div class="tooltip-arrow"></div>
-      <div class="tooltip-next-button" v-on:click="nextMsg">
-        <h4 v-if="currentMsg !== messages.length - 1">Next >></h4>
-        <h4 v-else>
-          << Prev</h4>
+
+      <div v-if="currentMsg === messages.length - 1" class="tooltip-button prev full" v-on:click="prevMsg">
+        <h4><< Prev</h4>
       </div>
+
+      <div v-else class="tooltip-button prev half" v-on:click="prevMsg">
+        <h4><< Prev</h4>
+      </div>
+
+      <div v-if="currentMsg === 0" class="tooltip-button next full" v-on:click="nextMsg">
+        <h4>Next >></h4>
+      </div>
+
+      <div v-else-if="currentMsg !== messages.length - 1" class="tooltip-button next half" v-on:click="nextMsg">
+        <h4>Next >></h4>
+      </div>
+
     </div>
+  </div>
   </div>
 </template>
 
@@ -25,9 +38,10 @@ export default {
       this.showTooltip = !this.showTooltip;
     },
     nextMsg() {
-      if (this.currentMsg !== this.messages.length - 1) {
-        this.currentMsg += 1;
-      }
+      this.currentMsg += 1;
+    },
+    prevMsg() {
+      this.currentMsg -= 1;
     },
     stopPropagation(e) {
       e.stopPropagation();
