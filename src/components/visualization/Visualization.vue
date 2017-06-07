@@ -15,8 +15,8 @@
         </filter>
       </defs>
       <g v-for="(layer, row) in convnet">
-        <g v-for="(n, col) in layer.width" filter="url(#dropshadow)" :data-row="row" :data-col="col" >
-          <rect width="120" height="120" style="fill:#a3e09a"></rect>
+        <g v-for="(n, col) in layer.width" class="activationContainer" filter="url(#dropshadow)" :data-row="row" :data-col="col">
+          <conv-block :layer="layer"></conv-block>
         </g>
       </g>
     </svg>
@@ -26,6 +26,7 @@
 <script>
 import pojo from '../../../data_structure.js';
 import * as d3 from 'd3';
+import ConvBlock from './ConvBlock';
 export default {
   name: 'visualization',
   data() {
@@ -33,45 +34,49 @@ export default {
       convnet: pojo[0].layers.filter(el => el.layer_type !== "relu").map(this.formatLayer)
     };
   },
-  // mounted: function() {
-  //   let rowPadding = 20;
-  //   const vizDom = document.getElementById("cnn-viz");
-  //   const viz = d3.select("#cnn-viz");
-  //   const bbox = vizDom.getBoundingClientRect();
-  //   let dr = 50;
-  //   for(let r=0;r<this.convnet.length;r++) {
-  //     console.log(layer);
-  //     const g = viz.append("g")
-  //       .attr("transform", `translate(0, ${dr})`);
-  //     const layer = this.convnet[r];
-  //     // a is the width of the layer
-  //     const a = layer.width;
-  //     // width is the width of each box
-  //     const width = layer.out_sx * 5;
-  //     const dx = this.getPositions(bbox.width, width, a);
-  //     for(let c=0;c<a;c++) {
-  //       const mg = g.append("g")
-  //         .attr("filter", "url(#dropshadow)")
-  //         .attr("transform", `translate(${dx(c)},0)`);
-  //       mg.append("rect")
-  //           .attr("width", width)
-  //           .attr("height", width)
-  //           .attr("style", "fill:#a3e09a");
-  //     }
-  //     dr += width + 100;
-  //   }
-  // },
+  mounted: function() {
+    window.addEventListener("resize", this.layoutContainers);
+    this.layoutContainers();
+  },
+  destroyed: function() {
+    window.removeEventListener("resize", this.layoutContainers);
+  },
   methods: {
     formatLayer: function(layer) {
       layer.width = layer.num_inputs || layer.out_depth || layer.in_depth;
       return layer;
     },
-    getPositions: function(totalW, w, a) {
+    layoutContainers: function(e) {
+      const bbox = document.getElementById("cnn-viz").getBoundingClientRect();
+      const activations = document.querySelectorAll(".activationContainer");
+      for(let i=0;i<activations.length;i++) {
+        const activation = activations[i];
+        const row = parseInt(activation.getAttribute("data-row"));
+        const col = parseInt(activation.getAttribute("data-col"));
+        const layer = this.convnet[row];
+        // a is the width of the layer
+        const a = layer.width;
+        // width is the width of each box
+        const width = layer.out_sx * 5;
+        const dx = this.getDeltaX(bbox.width, width, a, col);
+        activation.setAttribute("transform", `translate(${dx},${this.getDeltaY(row)})`);
+      }
+    },
+    getDeltaX: function(totalW, w, a, c) {
       let s = totalW / a - w;
-      return (i) => (i*w + i*s + s/2);
+      return (c * w + c * s + s / 2);
+    },
+    getDeltaY: function(row) {
+      let dr = 50;
+      for(let i=0;i<row;i++) {
+        dr += this.convnet[i].out_sy + 150;
+      }
+      return dr;
     }
   },
   components: {
+    ConvBlock
   }
 };
 </script>
+
