@@ -1,7 +1,8 @@
-console.log('loading demo.js')
+console.log('loading demo.js :)')
 // Parameters
 const convnetjs = require('convnetjs')
 const labels = require('./mnist/mnist_labels')
+const cnnutil = require('./cnnutil')
 const num_batches = 21 // 20 training batches, 1 test
 const test_batch = 20
 const num_samples_per_batch = 3000
@@ -10,11 +11,20 @@ const image_channels = 1
 const use_validation_data = true
 const random_flip = false
 const random_position = false
-let global_total_correct = 0
-let global_total_count = 0
 let step_num = 0;
+// const util = require('./util')
+// const maxmin = cnnutil.maxmin;
+// const f2t = util.f2t;
 
+// const lossGraph = new cnnvis.Graph();
+const xLossWindow = new cnnutil.Window(100);
+const wLossWindow = new cnnutil.Window(100);
+const trainAccWindow = new cnnutil.Window(100);
+const valAccWindow = new cnnutil.Window(100);
+// const testAccWindow = new cnnutil.Window(50, 1);
+// trainAccWindow.add(train_acc)
 // Set up layers and trainer
+
 const layer_defs = []
 layer_defs.push({type: 'input', out_sx: 24, out_sy: 24, out_depth: 1})
 layer_defs.push({type: 'conv', sx: 5, filters: 8, stride: 1, pad: 2, activation: 'relu'})
@@ -73,136 +83,6 @@ function load_data_batch(batch_num) {
   data_img_elt.src = `mnist/mnist_batch_${batch_num}.png`;
 }
 
-// Util
-
-// contains various utility functions 
-const util = (function(exports){
-
-  // a window stores _size_ number of values
-  // and returns averages. Useful for keeping running
-  // track of validation or training accuracy during SGD
-  var Window = function(size, minsize) {
-    this.v = [];
-    this.size = typeof(size)==='undefined' ? 100 : size;
-    this.minsize = typeof(minsize)==='undefined' ? 20 : minsize;
-    this.sum = 0;
-  }
-  Window.prototype = {
-    add: function(x) {
-      this.v.push(x);
-      this.sum += x;
-      if(this.v.length>this.size) {
-        var xold = this.v.shift();
-        this.sum -= xold;
-      }
-    },
-    get_average: function() {
-      if(this.v.length < this.minsize) return -1;
-      else return this.sum/this.v.length;
-    },
-    reset: function(x) {
-      this.v = [];
-      this.sum = 0;
-    }
-  }
-
-  // returns min, max and indeces of an array
-  var maxmin = function(w) {
-    if(w.length === 0) { return {}; } // ... ;s
-
-    var maxv = w[0];
-    var minv = w[0];
-    var maxi = 0;
-    var mini = 0;
-    for(var i=1;i<w.length;i++) {
-      if(w[i] > maxv) { maxv = w[i]; maxi = i; } 
-      if(w[i] < minv) { minv = w[i]; mini = i; } 
-    }
-    return {maxi: maxi, maxv: maxv, mini: mini, minv: minv, dv:maxv-minv};
-  }
-
-  // returns string representation of float
-  // but truncated to length of d digits
-  var f2t = function(x, d) {
-    if(typeof(d)==='undefined') { var d = 5; }
-    var dd = 1.0 * Math.pow(10, d);
-    return '' + Math.floor(x*dd)/ddf2t;
-  }
-
-  exports = exports || {};
-  exports.Window = Window;
-  exports.maxmin = maxmin;
-  exports.f2t = f2t;
-  return exports;
-
-})(typeof module != 'undefined' && module.exports);  // add exports to module.exports if in node.js
-
-
-
-
-// contains various utility functions
-const cnnutil = (function(exports) {
-  // a window stores _size_ number of values
-  // and returns averages. Useful for keeping running
-  // track of validation or training accuracy during SGD
-  const Window = function(size, minsize) {
-    this.v = [];
-    this.size = typeof(size) === 'undefined' ? 100 : size;
-    this.minsize = typeof(minsize) === 'undefined' ? 20 : minsize;
-    this.sum = 0;
-  }
-  Window.prototype = {
-    add: function(x) {
-      this.v.push(x);
-      this.sum += x;
-      if (this.v.length > this.size) {
-        const xold = this.v.shift();
-        this.sum -= xold;
-      }
-    },
-    get_average: function() {
-      if (this.v.length < this.minsize) return -1;
-      else return this.sum / this.v.length;
-    },
-    reset: function(x) {
-      this.v = [];
-      this.sum = 0;
-    }
-  }
-
-  // returns min, max and indeces of an array
-  const maxmin = function(w) {
-    if (w.length === 0) { return {}; } // ... ;s
-
-    let maxv = w[0];
-    let minv = w[0];
-    let maxi = 0;
-    let mini = 0;
-    for (let i = 1; i < w.length; i++) {
-      if (w[i] > maxv) { maxv = w[i]; maxi = i; } 
-      if (w[i] < minv) { minv = w[i]; mini = i; } 
-    }
-    return {maxi: maxi, maxv: maxv, mini: mini, minv: minv, dv: maxv - minv};
-  }
-
-  // returns string representation of float
-  // but truncated to length of d digits
-  const f2t = function(x, d) {
-    if (typeof(d) === 'undefined') { const d = 5; }
-    const dd = 1.0 * Math.pow(10, d);
-    return '' + Math.floor(x * dd) / dd;
-  }
-
-  exports = exports || {};
-  exports.Window = Window;
-  exports.maxmin = maxmin;
-  exports.f2t = f2t;
-  return exports;
-})(typeof module != 'undefined' && module.exports);  // add exports to module.exports if in node.js
-
-// const maxmin = cnnutil.maxmin;
-const f2t = util.f2t;
-
 // NOTES: keep looking to run start_fun until two batches are loaded.
 function start_fun() {
   if (loaded[0] && loaded[test_batch]) {
@@ -225,19 +105,6 @@ const load_and_step = function() {
   // setTimeout(load_and_step, 0); // schedule the next iteration
 }
 
-// const lossGraph = new cnnvis.Graph();
-const xLossWindow = new cnnutil.Window(100);
-const wLossWindow = new cnnutil.Window(100);
-const trainAccWindow = new cnnutil.Window(100);
-
-// let yhat = net.getPrediction();
-
-const valAccWindow = new cnnutil.Window(100);
-// const testAccWindow = new cnnutil.Window(50, 1);
-
-// var train_acc = yhat === y ? 1.0 : 0.0;
-// trainAccWindow.add(train_acc)
-
 function step(sample) {
   console.log('training accuracy', trainAccWindow.get_average())
   var x = sample.x;
@@ -246,7 +113,7 @@ function step(sample) {
   if (sample.isval) {
     // use x to build our estimate of validation error
     net.forward(x);
-    var yhat = net.getPrediction();
+    let yhat = net.getPrediction();
     var val_acc = yhat === y ? 1.0 : 0.0;
     valAccWindow.add(val_acc);
     return; // get out
@@ -258,7 +125,7 @@ function step(sample) {
   var lossw = stats.l2_decay_loss;
 
   // keep track of stats such as the average training error and loss
-  var yhat = net.getPrediction();
+  let yhat = net.getPrediction();
   var train_acc = yhat === y ? 1.0 : 0.0;
   xLossWindow.add(lossx);
   wLossWindow.add(lossw);
@@ -335,7 +202,7 @@ function sample_training_instance() {
     x = convnetjs.augment(x, image_dimension, 0, 0, Math.random() < 0.5); // maybe flip horizontally
   }
 
-  const isval = use_validation_data && n % 10 === 0 ? true : false;
+  const isval = use_validation_data && n % 10 === 0;
   return {x: x, label: labels[n], isval: isval};
 }
 
@@ -343,10 +210,6 @@ function sample_training_instance() {
 function test_predict() {
   console.log('images-demo.js => test_predict()')
   const num_classes = net.layers[net.layers.length - 1].out_depth;
-
-  // document.getElementById('testset_acc').innerHTML = '';
-  let num_total = 0;
-  let num_correct = 0;
 
   // grab a random test image
   for (let num = 0; num < 4; num++) {
@@ -370,11 +233,9 @@ function test_predict() {
     // TODO: Important predictions
     // console.log(preds)
     if (correct) {
-      num_correct++;
-      global_total_correct++;
+      // global_total_correct++;
     }
-    num_total++;
-    global_total_count++;
+    // global_total_count++;
     // console.log('percent correct: ', global_total_correct, global_total_count, global_total_correct / global_total_count)
   }
 }

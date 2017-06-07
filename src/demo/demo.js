@@ -2,9 +2,6 @@ console.log('loading demo.js')
 // Demo training for ConvNetJS
 const convnetjs = require('convnetjs')
 const labels = require('./mnist/mnist_labels')
-console.log(labels)
-const classes_txt = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-// const dataset_name = 'mnist'
 const num_batches = 21 // 20 training batches, 1 test
 const test_batch = 20
 const num_samples_per_batch = 3000
@@ -13,6 +10,7 @@ const image_channels = 1
 const use_validation_data = true
 const random_flip = false
 const random_position = false
+let step_num = 0;
 
 const layer_defs = []
 layer_defs.push({type: 'input', out_sx: 24, out_sy: 24, out_depth: 1})
@@ -25,7 +23,6 @@ layer_defs.push({type: 'softmax', num_classes: 10})
 const net = new convnetjs.Net()
 net.makeLayers(layer_defs)
 const trainer = new convnetjs.SGDTrainer(net, {method: 'adadelta', batch_size: 20, l2_decay: 0.001})
-console.log(trainer)
 
 const data_img_elts = new Array(num_batches);
 const img_data = new Array(num_batches);
@@ -72,10 +69,10 @@ function load_data_batch(batch_num) {
   data_img_elt.src = `mnist/mnist_batch_${batch_num}.png`;
 }
 
-// Util
+// const cnnutil = require('./cnnutil')
 
-// contains various utility functions 
-const cnnutil = (function(exports){
+// contains various utility functions
+const cnnutil = (function(exports) {
 
   // a window stores _size_ number of values
   // and returns averages. Useful for keeping running
@@ -105,35 +102,35 @@ const cnnutil = (function(exports){
     }
   }
 
-  // returns min, max and indeces of an array
-  const maxmin = function(w) {
-    if (w.length === 0) { return {}; } // ... ;s
+//   // returns min, max and indeces of an array
+//   const maxmin = function(w) {
+//     if (w.length === 0) { return {}; } // ... ;s
 
-    const maxv = w[0];
-    const minv = w[0];
-    const maxi = 0;
-    const mini = 0;
-    for (const i = 1; i < w.length; i++) {
-      if (w[i] > maxv) { maxv = w[i]; maxi = i; } 
-      if (w[i] < minv) { minv = w[i]; mini = i; } 
-    }
-    return {maxi: maxi, maxv: maxv, mini: mini, minv: minv, dv:maxv-minv};
-  }
+//     const maxv = w[0];
+//     const minv = w[0];
+//     const maxi = 0;
+//     const mini = 0;
+//     for (const i = 1; i < w.length; i++) {
+//       if (w[i] > maxv) { maxv = w[i]; maxi = i; } 
+//       if (w[i] < minv) { minv = w[i]; mini = i; } 
+//     }
+//     return {maxi: maxi, maxv: maxv, mini: mini, minv: minv, dv:maxv-minv};
+//   }
 
-  // returns string representation of float
-  // but truncated to length of d digits
-  const f2t = function(x, d) {
-    if(typeof(d)==='undefined') { const d = 5; }
-    const dd = 1.0 * Math.pow(10, d);
-    return '' + Math.floor(x*dd)/dd;
-  }
+//   // returns string representation of float
+//   // but truncated to length of d digits
+//   const f2t = function(x, d) {
+//     if(typeof(d)==='undefined') { const d = 5; }
+//     const dd = 1.0 * Math.pow(10, d);
+//     return '' + Math.floor(x*dd)/dd;
+//   }
 
-  exports = exports || {};
-  exports.Window = Window;
-  exports.maxmin = maxmin;
-  exports.f2t = f2t;
-  return exports;
-})(typeof module != 'undefined' && module.exports);  // add exports to module.exports if in node.js
+//   exports = exports || {};
+//   exports.Window = Window;
+//   exports.maxmin = maxmin;
+//   exports.f2t = f2t;
+//   return exports;
+// })(typeof module != 'undefined' && module.exports);  // add exports to module.exports if in node.js
 
 // const maxmin = cnnutil.maxmin;
 // const f2t = cnnutil.f2t;
@@ -166,7 +163,6 @@ const wLossWindow = new cnnutil.Window(100);
 const trainAccWindow = new cnnutil.Window(100);
 // const valAccWindow = new cnnutil.Window(100);
 // const testAccWindow = new cnnutil.Window(50, 1);
-let step_num = 0;
 
 function step(sample) {
   // console.log(sample)
