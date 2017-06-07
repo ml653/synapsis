@@ -145,7 +145,16 @@
       width: 80%;
       display: flex;
       justify-content: center;
-      border: 1px solid red;
+    }
+    .result-stat {
+      display: flex;
+      align-items: center;
+      margin-left: 10px;
+
+      .result-stat-bar {
+        margin-left: 10px;
+        height: 10px;
+      }
     }
   }
 }
