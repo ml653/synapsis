@@ -91,6 +91,9 @@ function filterPojo(mPojo) {
       blocks: generateBlocks(x,y,z)
     });
   }
+  for(let i=1;i<filtered.length;i++) {
+    connect(filtered[i], filtered[i-1], i-1);
+  }
   return answer;
 }
 
@@ -114,6 +117,24 @@ function generateNeurons(x,y) {
     };
   }
   return neurons;
+}
+
+function connect(layerA, layerB, layerBIdx) {
+  let nueron;
+  for(let i=0;i<layerA.blocks.length;i++) {
+    for(let j=0;j<layerA.blocks[i].neurons.length;j++) {
+      neuron = layerA.blocks[i].neurons[j];
+      neuron.inputNeurons = new Array(Math.floor(Math.random()*5 + 3));
+      for(let k=0;k<neuron.inputNeurons.length) {
+        let blockNo = Math.floor(Math.random() * Math.layerB.blocks.length);
+        neuron.inputNeurons[k] = {
+          layer: layerBIdx,
+          block: blockNo,
+          neuron: math.floor(layerB.blocks[blockNo].neurons.length * Math.random())
+        };
+      }
+    }
+  }
 }
 </script>
 
