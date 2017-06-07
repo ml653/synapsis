@@ -28,7 +28,7 @@
 import pojo from '../../../data_structure.js';
 import * as d3 from 'd3';
 import ConvBlock from './ConvBlock';
-const SCALE = 5;
+const SCALE = 8;
 export default {
   name: 'visualization',
   data() {

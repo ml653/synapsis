@@ -1,11 +1,11 @@
 <template>
   <g>
-  <rect v-for="n in (width * height)" :x="getCol(n)" :y="getRow(n)" width="5" height="5" fill="green"></rect> 
+  <rect v-for="n in (width * height)" :x="getCol(n)" :y="getRow(n)" :width="scale()" :height="scale()" fill="green"></rect> 
   </g>
 </template>
 
 <script>
-  const SCALE = 5;
+  const SCALE = 8;
   export default {
     name: "conv-block",
     props: ['block', 'width', 'height'],
