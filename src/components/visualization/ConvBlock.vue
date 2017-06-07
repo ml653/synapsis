@@ -12,6 +12,9 @@
       this.layer.y = this.layer.out_sy;
       this.layer.z = this.layer.width;
       this.layer.blocks = new Array(this.layer.x * this.layer.y);
+      for(let i=0;i<this.layer.blocks;i++) {
+        this.layer
+      }
     },
     methods: {
       mult: function() {
