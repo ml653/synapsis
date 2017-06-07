@@ -80,22 +80,22 @@
 //   return {x: xs, label: labels[n]};
 // }
 
+const convnetjs = require('convnetjs')
+const labels = require('./mnist/mnist_labels')
+
 class ImportUtil {
-  constructor(convnetjs,
-              num_batches,
+  constructor(num_batches,
               test_batch,
               num_samples_per_batch,
               use_validation_data,
               img_data,
               image_channels,
               image_dimension,
-              labels,
               random_flip,
               random_position,
               loaded,
               loaded_train_batches,
               data_img_elts) {
-    this.convnetjs = convnetjs
     this.num_batches = num_batches
     this.test_batch = test_batch
     this.num_samples_per_batch = num_samples_per_batch
@@ -103,7 +103,6 @@ class ImportUtil {
     this.img_data = img_data
     this.image_channels = image_channels
     this.image_dimension = image_dimension
-    this.labels = labels
     this.random_flip = random_flip
     this.random_position = random_position
     this.loaded = loaded
@@ -118,7 +117,7 @@ class ImportUtil {
     const n = b * this.num_samples_per_batch + k;
 
     const p = this.img_data[b].data;
-    const x = new this.convnetjs.Vol(this.image_dimension, this.image_dimension, this.image_channels, 0.0);
+    const x = new convnetjs.Vol(this.image_dimension, this.image_dimension, this.image_channels, 0.0);
     const W = this.image_dimension * this.image_dimension;
     // const j = 0;
     for (let dc = 0; dc < this.image_channels; dc++) {
@@ -141,11 +140,11 @@ class ImportUtil {
         if (this.random_position) {
           const dx = Math.floor(Math.random() * 5 - 2);
           const dy = Math.floor(Math.random() * 5 - 2);
-          test_variation = this.convnetjs.augment(test_variation, this.image_dimension, dx, dy, false);
+          test_variation = convnetjs.augment(test_variation, this.image_dimension, dx, dy, false);
         }
 
         if (this.random_flip) {
-          test_variation = this.convnetjs.augment(test_variation, this.image_dimension, 0, 0, Math.random() < 0.5);
+          test_variation = convnetjs.augment(test_variation, this.image_dimension, 0, 0, Math.random() < 0.5);
         }
 
         xs.push(test_variation);
@@ -156,7 +155,7 @@ class ImportUtil {
 
     // return multiple augmentations, and we will average the network over them
     // to increase performance
-    return {x: xs, label: this.labels[n]};
+    return {x: xs, label: labels[n]};
   }
 
     // NOTES: Returns random unseen training instance.
@@ -180,7 +179,7 @@ class ImportUtil {
 
     // fetch the appropriate row of the training image and reshape into a Vol
     const p = this.img_data[b].data;
-    let x = new this.convnetjs.Vol(this.image_dimension, this.image_dimension, this.image_channels, 0.0);
+    let x = new convnetjs.Vol(this.image_dimension, this.image_dimension, this.image_channels, 0.0);
     const W = this.image_dimension * this.image_dimension;
     // const j = 0;
     for (let dc = 0; dc < this.image_channels; dc++) {
@@ -197,15 +196,15 @@ class ImportUtil {
     if (this.random_position) {
       const dx = Math.floor(Math.random() * 5 - 2);
       const dy = Math.floor(Math.random() * 5 - 2);
-      x = this.convnetjs.augment(x, this.image_dimension, dx, dy, false); // maybe change position
+      x = convnetjs.augment(x, this.image_dimension, dx, dy, false); // maybe change position
     }
 
     if (this.random_flip) {
-      x = this.convnetjs.augment(x, this.image_dimension, 0, 0, Math.random() < 0.5); // maybe flip horizontally
+      x = convnetjs.augment(x, this.image_dimension, 0, 0, Math.random() < 0.5); // maybe flip horizontally
     }
 
     const isval = this.use_validation_data && n % 10 === 0;
-    return {x: x, label: this.labels[n], isval: isval};
+    return {x: x, label: labels[n], isval: isval};
   }
 
   load_data_batch(batch_num) {
