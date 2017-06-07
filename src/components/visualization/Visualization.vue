@@ -15,8 +15,9 @@
         </filter>
       </defs>
       <g v-for="(layer, row) in convnet">
-        <g v-for="(n, col) in layer.width" class="activationContainer" filter="url(#dropshadow)" :data-row="row" :data-col="col">
-          <conv-block :layer="layer"></conv-block>
+        <g v-for="(n, col) in layer.z" class="activationContainer" filter="url(#dropshadow)" :data-row="row" :data-col="col">
+          <conv-block :width="layer.x" :height="layer.y" :block="layer.blocks[col]">
+          </conv-block>
         </g>
       </g>
     </svg>
@@ -27,11 +28,12 @@
 import pojo from '../../../data_structure.js';
 import * as d3 from 'd3';
 import ConvBlock from './ConvBlock';
+const SCALE = 8;
 export default {
   name: 'visualization',
   data() {
     return {
-      convnet: pojo[0].layers.filter(el => el.layer_type !== "relu").map(this.formatLayer)
+      convnet: pojo[0]
     };
   },
   mounted: function() {
@@ -43,7 +45,6 @@ export default {
   },
   methods: {
     formatLayer: function(layer) {
-      layer.width = layer.num_inputs || layer.out_depth || layer.in_depth;
       return layer;
     },
     layoutContainers: function(e) {
@@ -55,9 +56,9 @@ export default {
         const col = parseInt(activation.getAttribute("data-col"));
         const layer = this.convnet[row];
         // a is the width of the layer
-        const a = layer.width;
+        const a = layer.z;
         // width is the width of each box
-        const width = layer.out_sx * 5;
+        const width = layer.x * SCALE;
         const dx = this.getDeltaX(bbox.width, width, a, col);
         activation.setAttribute("transform", `translate(${dx},${this.getDeltaY(row)})`);
       }
@@ -69,7 +70,7 @@ export default {
     getDeltaY: function(row) {
       let dr = 50;
       for(let i=0;i<row;i++) {
-        dr += this.convnet[i].out_sy + 150;
+        dr += this.convnet[i].y * SCALE + 150;
       }
       return dr;
     }

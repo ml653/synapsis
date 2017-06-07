@@ -2,11 +2,11 @@ module.exports = {
   //  Array of blocks
   layers: [
     { //  Layer
-      layer: type,
+      layer: 'type',
       x: 24,
       y: 24,
-      z: 8 // Block number
-      blocks: [ 
+      z: 8,// Block number
+      blocks: [
         { // Block
           min: 'total possible',
           max: 'total possible',
@@ -17,7 +17,7 @@ module.exports = {
                 { // Adress
                   layer: 0,
                   block: 1,
-                  neuron: 2,
+                  neuron: 2
                 }
               ]
             }
@@ -26,4 +26,4 @@ module.exports = {
       ]
     }
   ]
-}
+};
