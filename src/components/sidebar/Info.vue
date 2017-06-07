@@ -8,8 +8,7 @@
     <div v-if="showTooltip" class="info-tooltip" v-on:click="stopPropagation">
       <i class="fa fa-times" v-on:click="handleInfoClick" />
 
-
-      <slider></slider>
+      <slider :currentMsg="currentMsg" :messages="messages"></slider>
 
       <div v-html="messages[currentMsg]"></div>
       <div class="tooltip-arrow"></div>
@@ -19,9 +18,7 @@
         :length="messages.length"
         :nextMsg="nextMsg"
         :prevMsg="prevMsg">
-
       </tooltip-buttons>
-
     </div>
 
   </div>

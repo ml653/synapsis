@@ -1,14 +1,15 @@
 <template>
-  <div class="step-slider">
-    <div data-id="step1" class="step-slider-item"></div>
-    <div data-id="step2" class="step-slider-item"></div>
-    <div data-id="step3" class="step-slider-item"></div>
-    <div data-id="step4" class="step-slider-item"></div>
-  </div>
+  <ul class="progress-bar">
+    <li
+      v-for="(_, idx) in messages"
+      v-bind:class="currentMsg >= idx && 'active'">
+    </li>
+  </ul>
 </template>
 
 <script>
 export default {
-  name: 'slider'
+  name: 'slider',
+  props: ["messages", "currentMsg"]
 };
 </script>
