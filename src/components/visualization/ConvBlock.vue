@@ -3,14 +3,15 @@
 </template>
 
 <script>
+  const SCALE = 5;
   export default {
     name: "conv-block",
-    props: ['block'],
+    props: ['block', 'width', 'height'],
     mounted() {
     },
     methods: {
       mult: function() {
-        return this.layer.y * 5;
+        return this.width * SCALE;
       }
     }
   }

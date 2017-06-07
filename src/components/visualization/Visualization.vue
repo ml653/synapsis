@@ -16,7 +16,7 @@
       </defs>
       <g v-for="(layer, row) in convnet">
         <g v-for="(n, col) in layer.z" class="activationContainer" filter="url(#dropshadow)" :data-row="row" :data-col="col">
-          <conv-block :block="layer.blocks[col]">
+          <conv-block :width="layer.x" :height="layer.y" :block="layer.blocks[col]">
           </conv-block>
         </g>
       </g>
@@ -28,6 +28,7 @@
 import pojo from '../../../data_structure.js';
 import * as d3 from 'd3';
 import ConvBlock from './ConvBlock';
+const SCALE = 5;
 export default {
   name: 'visualization',
   data() {
@@ -57,7 +58,7 @@ export default {
         // a is the width of the layer
         const a = layer.z;
         // width is the width of each box
-        const width = layer.x * 5;
+        const width = layer.x * SCALE;
         const dx = this.getDeltaX(bbox.width, width, a, col);
         activation.setAttribute("transform", `translate(${dx},${this.getDeltaY(row)})`);
       }
@@ -69,7 +70,7 @@ export default {
     getDeltaY: function(row) {
       let dr = 50;
       for(let i=0;i<row;i++) {
-        dr += this.convnet[i].y + 150;
+        dr += this.convnet[i].y * SCALE + 150;
       }
       return dr;
     }
