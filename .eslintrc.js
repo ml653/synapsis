@@ -27,6 +27,7 @@ module.exports = {
     "no-extra-semi": 0,
     "quotes": 0,
     "space-before-function-paren": 0,
-    "no-unused-vars": 1
+    "no-unused-vars": 0,
+    "comma-spacing": 0
   }
 }

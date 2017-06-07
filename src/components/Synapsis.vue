@@ -7,18 +7,13 @@
 
 <script>
 import Sidebar from './sidebar/Sidebar';
-import Visualization from './Visualization'
+import Visualization from './visualization/Visualization.vue';
 
 export default {
   name: 'hello',
   components: {
     Sidebar,
     Visualization
-  },
-  data() {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    };
   }
 };
 </script>

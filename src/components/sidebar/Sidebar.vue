@@ -1,9 +1,11 @@
 <template>
   <div class="sidebar">
-  <brand></brand>
-  <info></info>
-  <stats></stats>
-  <results></results>
+    <div class="top-sidebar">
+      <brand></brand>
+      <info></info>
+    </div>
+    <stats></stats>
+    <results></results>
   </div>
 </template>
 
