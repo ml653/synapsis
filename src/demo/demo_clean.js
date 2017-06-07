@@ -15,6 +15,7 @@ let step_num = 0;
 // const util = require('./util')
 // const maxmin = cnnutil.maxmin;
 // const f2t = util.f2t;
+import ImportUtil from './import_util'
 
 // const lossGraph = new cnnvis.Graph();
 const xLossWindow = new cnnutil.Window(100);
@@ -43,45 +44,53 @@ const img_data = new Array(num_batches);
 const loaded = new Array(num_batches);
 const loaded_train_batches = [];
 
+const importUtil = new ImportUtil(
+    convnetjs,
+    num_batches,
+    test_batch,
+    num_samples_per_batch,
+    img_data,
+    image_channels,
+    image_dimension,
+    labels,
+    random_flip,
+    random_position,
+    loaded,
+    loaded_train_batches,
+    data_img_elts)
+
 // Set up
 window.addEventListener('DOMContentLoaded', () => {
-  update_net_param_display();
-
   for (let k = 0; k < loaded.length; k++) {
     loaded[k] = false;
   }
 
-  load_data_batch(0); // async load train set batch 0
-  load_data_batch(test_batch); // async load test set
+  importUtil.load_data_batch(0); // async load train set batch 0
+  importUtil.load_data_batch(test_batch); // async load test set
   start_fun();
 })
 
-// Function definitions; only function definitions are hoisted
-function update_net_param_display() {
-  console.log('a', trainer.learning_rate);
-}
-
-function load_data_batch(batch_num) {
-  // Load the dataset with JS in background
-  data_img_elts[batch_num] = new Image();
-  console.log('load_data_batch', data_img_elts)
-  const data_img_elt = data_img_elts[batch_num];
-  data_img_elt.onload = function() {
-    const data_canvas = document.createElement('canvas');
-    data_canvas.width = data_img_elt.width;
-    data_canvas.height = data_img_elt.height;
-    const data_ctx = data_canvas.getContext('2d');
-    data_ctx.drawImage(data_img_elt, 0, 0); // copy it over... bit wasteful :(
-    img_data[batch_num] = data_ctx.getImageData(0, 0, data_canvas.width, data_canvas.height);
-    loaded[batch_num] = true;
-    if (batch_num < test_batch) { loaded_train_batches.push(batch_num); }
-    console.log(
-      'finished loading data batch => batch_num(): ' + batch_num,
-      'loaded_train_batches(): ', loaded_train_batches,
-      'loaded: ', loaded);
-  };
-  data_img_elt.src = `mnist/mnist_batch_${batch_num}.png`;
-}
+// function load_data_batch(batch_num) {
+//   // Load the dataset with JS in background
+//   data_img_elts[batch_num] = new Image();
+//   console.log('load_data_batch', data_img_elts)
+//   const data_img_elt = data_img_elts[batch_num];
+//   data_img_elt.onload = function() {
+//     const data_canvas = document.createElement('canvas');
+//     data_canvas.width = data_img_elt.width;
+//     data_canvas.height = data_img_elt.height;
+//     const data_ctx = data_canvas.getContext('2d');
+//     data_ctx.drawImage(data_img_elt, 0, 0); // copy it over... bit wasteful :(
+//     img_data[batch_num] = data_ctx.getImageData(0, 0, data_canvas.width, data_canvas.height);
+//     loaded[batch_num] = true;
+//     if (batch_num < test_batch) { loaded_train_batches.push(batch_num); }
+//     console.log(
+//       'finished loading data batch => batch_num(): ' + batch_num,
+//       'loaded_train_batches(): ', loaded_train_batches,
+//       'loaded: ', loaded);
+//   };
+//   data_img_elt.src = `mnist/mnist_batch_${batch_num}.png`;
+// }
 
 // NOTES: keep looking to run start_fun until two batches are loaded.
 function start_fun() {
@@ -170,7 +179,7 @@ function sample_training_instance() {
     for (let i = 0; i < num_batches; i++) {
       if (!loaded[i]) {
         // load it
-        load_data_batch(i);
+        importUtil.load_data_batch(i);
         break; // okay for now
       }
     }
