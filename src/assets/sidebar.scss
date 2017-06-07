@@ -71,7 +71,7 @@
         .tooltip-button {
           position: absolute;
           bottom: 0;
-          height: 20%;
+          height: 17.5%;
           color: #f3f3f3;
           display: flex;
           justify-content: center;
@@ -106,7 +106,7 @@
           transform: rotate(90deg);
           overflow: hidden;
 
-          &::after {
+          &:after {
           content: "";
           position: absolute;
           width: 20px;

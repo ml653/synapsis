@@ -4,35 +4,40 @@
       <i class="fa fa-github" />
     </a>
     <i class="fa fa-question-circle-o" v-on:click="handleInfoClick" />
+
     <div v-if="showTooltip" class="info-tooltip" v-on:click="stopPropagation">
       <i class="fa fa-times" v-on:click="handleInfoClick" />
+
+
+      <slider></slider>
+
       <div v-html="messages[currentMsg]"></div>
       <div class="tooltip-arrow"></div>
 
-      <div v-if="currentMsg === messages.length - 1" class="tooltip-button prev full" v-on:click="prevMsg">
-        <h4><< Prev</h4>
-      </div>
+      <tooltip-buttons
+        :currentMsg="currentMsg"
+        :length="messages.length"
+        :nextMsg="nextMsg"
+        :prevMsg="prevMsg">
 
-      <div v-else class="tooltip-button prev half" v-on:click="prevMsg">
-        <h4><< Prev</h4>
-      </div>
-
-      <div v-if="currentMsg === 0" class="tooltip-button next full" v-on:click="nextMsg">
-        <h4>Next >></h4>
-      </div>
-
-      <div v-else-if="currentMsg !== messages.length - 1" class="tooltip-button next half" v-on:click="nextMsg">
-        <h4>Next >></h4>
-      </div>
+      </tooltip-buttons>
 
     </div>
+
   </div>
   </div>
 </template>
 
 <script>
+import Slider from './Slider';
+import TooltipButtons from './TooltipButtons';
+
 export default {
   name: 'info',
+  components: {
+    Slider,
+    TooltipButtons
+  },
   methods: {
     handleInfoClick() {
       this.showTooltip = !this.showTooltip;
@@ -76,7 +81,9 @@ export default {
   },
   mounted() {
     document.addEventListener('click', e => {
-      if (e.target.className.includes("fa-question-circle-o")) {
+      // Check for string prevents weird interactions with SVG elements
+      if (typeof e.target.className === "string"
+        && e.target.className.includes("fa-question-circle-o")) {
         e.stopPropagation();
       } else if (this.showTooltip) {
         this.handleInfoClick();
