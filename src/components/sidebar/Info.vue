@@ -21,15 +21,15 @@
 export default {
   name: 'info',
   methods: {
-    handleInfoClick: function () {
+    handleInfoClick() {
       this.showTooltip = !this.showTooltip;
     },
-    nextMsg: function () {
+    nextMsg() {
       if (this.currentMsg !== this.messages.length - 1) {
         this.currentMsg += 1;
       }
     },
-    stopPropagation: function (e) {
+    stopPropagation(e) {
       e.stopPropagation();
     }
   },

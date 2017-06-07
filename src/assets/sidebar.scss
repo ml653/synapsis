@@ -131,5 +131,30 @@
   .results {
     margin: 10% 0;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h4 {
+      padding-bottom: 5%;
+    }
+
+    .prediction-result {
+      margin: 2px 0;
+      padding: 5px 0;
+      width: 80%;
+      display: flex;
+      justify-content: center;
+    }
+    .result-stat {
+      display: flex;
+      align-items: center;
+      margin-left: 10px;
+
+      .result-stat-bar {
+        margin-left: 10px;
+        height: 10px;
+      }
+    }
   }
 }

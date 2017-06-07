@@ -82,6 +82,11 @@
     "node": ">= 4.0.0",
     "npm": ">= 3.0.0"
   },
+  "eslintConfig": {
+    "globals": {
+      "d3": true
+    }
+  },
   "browserslist": [
     "> 1%",
     "last 2 versions",
