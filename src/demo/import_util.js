@@ -85,6 +85,7 @@ class ImportUtil {
               num_batches,
               test_batch,
               num_samples_per_batch,
+              use_validation_data,
               img_data,
               image_channels,
               image_dimension,
@@ -98,6 +99,7 @@ class ImportUtil {
     this.num_batches = num_batches
     this.test_batch = test_batch
     this.num_samples_per_batch = num_samples_per_batch
+    this.use_validation_data = use_validation_data
     this.img_data = img_data
     this.image_channels = image_channels
     this.image_dimension = image_dimension
