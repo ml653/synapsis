@@ -34,10 +34,17 @@ export default {
     });
 
     // const nn = new MNISTNeuralNetwork(this.updateStats);
+    console.log("INIT WORKER");
+    var worker = new SharedWorker('/static/synapsis/bundle_neural_network.js');
 
-    var myWorker = new Worker('/static/synapsis/bundle_neural_network.js');
-    myWorker.postMessage("");
+    worker.port.addEventListener("message", function(e) {
+      console.log(e.data);
+    }, false);
 
+    worker.port.start();
+
+    // post a message to the shared web worker
+    worker.port.postMessage("Alyssa");
   },
   data() {
     return {

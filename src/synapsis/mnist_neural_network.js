@@ -14,9 +14,83 @@ const defaultOptions = {
   random_position: false
 };
 
+self.addEventListener("connect", function (e) {
+  const port = e.ports[0];
+
+  // create function callback for when steps occur
+  const onUpdateStats = (stats) => {
+    port.postMessage(stats);
+  };
+
+  port.postMessage("LOVE LIKE YOU");
+
+
+  try {
+    let network = new MNISTNeuralNetwork(onUpdateStats);
+  }
+  catch (err) {
+    port.postMessage("ERR");
+    port.postMessage(err.stack);
+  }
+
+  // init network
+  port.addEventListener("message", function (e) {
+    port.postMessage("Hello " + e.data);
+  }, false);
+
+  port.start();
+}, false);
+
+// // Triggerred when another worker attempts to connect
+// self.addEventListener("connect", function (e) {
+//   // get port from connection
+//   var port = e.ports[0];
+
+//   // create function callback for when steps occur
+//   const onUpdateStats = (stats) => {
+//     port.postMessage(stats);
+//   };
+
+//   port.postMessage("LOVE LIKE YOU");
+
+//   // init network
+//   let network = new MNISTNeuralNetwork(onUpdateStats);
+
+//   // listen in on the other thread for when messages are sent
+//   // port.addEventListener("message", function (e) {
+//   //   port.postMessage("MESSAGE RECEIVED");
+//   //   // Start Network
+//   //   if (e.data === "START") {
+//   //     network.isRunning = true;
+//   //     port.postMessage("WORKING");
+//   //   }
+//   //   // Pause network
+//   //   else if (e.data === "PAUSE") {
+//   //     network.isRunning = false;
+//   //   }
+//   //   // Reset & Start the network
+//   //   else if (e.data === "RESET") {
+//   //     network = new MNISTNeuralNetwork(onUpdateStats);
+//   //     network.isRunning = true;
+//   //   }
+//   // }, false);
+
+//   port.addEventListener("message", function (e) {
+//     port.postMessage("RECEIVED" + e.data);
+//   }, false);
+
+//   // signal to the other thread that the connection has been made
+//   port.start();
+
+//   // Run the network's listeners in the background.
+//   // network.run();
+// }, false);
+
+
 class MNISTNeuralNetwork {
   constructor(updateStats, options = defaultOptions) {
     this.updateStats = updateStats.bind(this);
+    this.isRunning = false;
 
     this.num_batches = options.num_batches;
     this.test_batch = options.test_batch;
@@ -99,22 +173,12 @@ class MNISTNeuralNetwork {
   }
 
   run() {
-    if (this.loaded[0] && this.loaded[this.test_batch]) {
-      // setInterval(this.step, 25);
-      const promisedLoop = () => this.promisedStep().then((data) => promisedLoop());
-      promisedLoop();
+    if (this.loaded[0] && this.loaded[this.test_batch] && this.isRunning) {
+      setInterval(this.step, 25);
     } else {
       setTimeout(this.run, 200);
     }
   }
-
-  promisedStep() {
-    return new Promise((resolve) => {
-      console.log("ANOTHA ONE");
-      resolve(this.step());
-    });
-  }
-
 
   emit() {
     this.updateStats({
