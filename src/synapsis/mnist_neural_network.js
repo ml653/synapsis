@@ -1,4 +1,3 @@
-import ImportUtil from "./import_util";
 import extractLayers from "./extract_layers";
 const cnnutil = require("./cnnutil");
 const convnetjs = require("convnetjs");

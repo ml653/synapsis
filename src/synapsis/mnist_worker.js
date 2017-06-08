@@ -13,38 +13,42 @@ self.addEventListener("connect", function (e) {
     port.postMessage(stats);
   };
 
-  // init network
-  let network = {};
-  // TEMPORARY: initialize network in a try-catch block so
-  // error messages don't die silently
-  try {
-    network = new MNISTNeuralNetwork(onUpdateStats);
-  } catch (e) {
-    port.postMessage(e.stack);
-  }
+  // // init network
+  // let network = {};
+  // // TEMPORARY: initialize network in a try-catch block so
+  // // error messages don't die silently
 
   // listen in on the other thread for when messages are sent
   port.addEventListener("message", function (e) {
-    port.postMessage("MESSAGE RECEIVED");
-    // Start Network
-    if (e.data === "START") {
-      network.isRunning = true;
-      port.postMessage("WORKING");
+    let network;
+
+    try {
+      network = new MNISTNeuralNetwork(onUpdateStats, e.data);
+    } catch (e) {
+      port.postMessage(e.stack);
     }
-    // Pause Network
-    else if (e.data === "PAUSE") {
-      network.isRunning = false;
-    }
-    // Reset & Start the network
-    else if (e.data === "RESET") {
-      network = new MNISTNeuralNetwork(onUpdateStats);
-      network.isRunning = true;
-    }
+    network.run();
+
+    // port.postMessage("MESSAGE RECEIVED");
+    // // Start Network
+    // if (e.data === "START") {
+    //   network.isRunning = true;
+    //   port.postMessage("WORKING");
+    // }
+    // // Pause Network
+    // else if (e.data === "PAUSE") {
+    //   network.isRunning = false;
+    // }
+    // // Reset & Start the network
+    // else if (e.data === "RESET") {
+    //   network = new MNISTNeuralNetwork(onUpdateStats);
+    //   network.isRunning = true;
+    // }
   }, false);
 
   // signal to the other thread that the connection has been made
   port.start();
 
   // Run the network's listeners in the background.
-  network.run();
+  // network.run();
 }, false);
