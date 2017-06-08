@@ -34,8 +34,8 @@ export default {
       }
     })
 
-    const nn = new MNISTNeuralNetwork(this.updateStats);
-    nn.run();
+    // const nn = new MNISTNeuralNetwork(this.updateStats);
+    // nn.run();
   },
   data() {
     return {
