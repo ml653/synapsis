@@ -1,17 +1,25 @@
 <template>
   <g>
-  <rect v-for="n in (width * height)" :x="getCol(n)" :y="getRow(n)" :width="scale()" :height="scale()" fill="green"></rect> 
+  <rect v-for="n in (width * height)" :x="getCol(n)" :y="getRow(n)" :width="scale()" :height="scale()"></rect> 
   </g>
 </template>
 
 <script>
+  import * as d3 from 'd3';
   const SCALE = 8;
   export default {
     name: "conv-block",
     props: ['block', 'width', 'height'],
+    mounted: function() {
+      this.dThree(this.block);
+
+      const me = d3.select(this.$el);
+      this.rekts = me.selectAll("rect").attr("fill", "green");
+    },
     watch: {
       block: function(newValue) {
         console.log("CHANGE DETECTED");
+        dThree(newValue);
       }
     },
     methods: {
@@ -19,13 +27,16 @@
         return this.width * SCALE;
       },
       getRow: function(n) {
-        return (n - 1) % this.width * SCALE;
+        return Math.floor((n - 1) / this.width) * SCALE;
       },
       getCol: function(n) {
-        return Math.floor((n - 1) / this.width) * SCALE;
+        return (n - 1) % this.width * SCALE;
       },
       scale: function() {
         return SCALE;
+      },
+      dThree: function(blk) {
+        // console.log(me.select("rect").length);
       }
     }
   }
