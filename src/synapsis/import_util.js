@@ -30,6 +30,19 @@ class ImportUtil {
     this.loaded_train_batches = []; // Import Util only
   }
 
+  getParams(){
+    return {
+      num_batches: this.num_batches,
+      test_batch: this.test_batch,
+      num_samples_per_batch: this.num_samples_per_batch,
+      image_dimension: this.image_dimension,
+      image_channels: this.image_channels,
+      use_validation_data: this.use_validation_data,
+      random_flip: this.random_flip,
+      random_position: this.random_flip
+    }
+  }
+
   loadAll() {
     return new Promise((res, _) => {
       for(let i = 0; i < this.num_batches; i++){
