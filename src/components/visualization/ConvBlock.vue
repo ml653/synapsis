@@ -1,6 +1,6 @@
 <template>
   <g>
-  <rect v-for="n in (width * height)" :x="getCol(n)" :y="getRow(n)" :width="scale()" :height="scale()"></rect> 
+  <rect v-for="n in (width * height)" :x="getCol(n)" :y="getRow(n)" :width="scale()" :height="scale()" fill="limegreen"></rect> 
   </g>
 </template>
 
@@ -11,10 +11,9 @@
     name: "conv-block",
     props: ['block', 'width', 'height'],
     mounted: function() {
-      this.dThree(this.block);
-
       const me = d3.select(this.$el);
-      this.rekts = me.selectAll("rect").attr("fill", "green");
+      this.rekts = me.selectAll("rect");
+      this.dThree(this.block);
     },
     watch: {
       block: function(newValue) {
@@ -36,7 +35,18 @@
         return SCALE;
       },
       dThree: function(blk) {
-        // console.log(me.select("rect").length);
+        this.rekts.data(blk.neurons);
+        var t = d3.transition()
+          .duration(2000)
+          .ease(d3.easeLinear);
+        
+        var cLerp = d3.scaleLinear()
+          .domain([this.block.min, this.block.max])
+          .range(['limegreen', 'darkgreen']);
+
+        this.rekts
+          .transition(t)
+          .attr("fill", d => cLerp(d.activation));
       }
     }
   }
