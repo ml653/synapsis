@@ -48,8 +48,7 @@
       },
       updateThree: function(blk) {
         return new Promise((resolve) => {
-          this.dThree(blk);
-          resolve("done");
+          resolve(this.dThree(blk));
         });
       }
     }

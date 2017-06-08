@@ -36,8 +36,7 @@ export default {
 
     const updatePromise = (stats) => {
       return new Promise((resolve) => {
-        this.updateStats(stats);
-        resolve("done");
+        resolve(this.updateStats(stats));
       });
     };
 
