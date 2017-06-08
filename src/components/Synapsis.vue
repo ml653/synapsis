@@ -48,10 +48,14 @@ export default {
         console.log(e.data);
       }, false);
 
+
+      console.log(importUtil.getParams());
+
       worker.port.start();
 
       // post a message to the shared web worker
-      worker.port.postMessage(importUtil.img_data);
+      
+      worker.port.postMessage(importUtil.getParams());
     }
     startWebworker()
   },

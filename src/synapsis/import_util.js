@@ -41,7 +41,7 @@ class ImportUtil {
       random_flip: this.random_flip,
       random_position: this.random_flip,
 
-      data_img_elts: this.data_img_elts,
+      // data_img_elts: this.data_img_elts,
       img_data: this.img_data,
       loaded: this.loaded,
       loaded_training_batches: this.loaded_train_batches

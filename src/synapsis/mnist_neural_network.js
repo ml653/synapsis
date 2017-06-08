@@ -55,17 +55,13 @@ class MNISTNeuralNetwork {
   }
 
   load() {
-    this.importUtil.load_data_batch(0); // async load train set batch 0
-    this.importUtil.load_data_batch(this.test_batch); // async load test set
+    // this.importUtil.load_data_batch(0); // async load train set batch 0
+    // this.importUtil.load_data_batch(this.test_batch); // async load test set
   }
 
   run() {
-    this.isRunning = true
-    if (this.loaded[0] && this.loaded[this.test_batch]) {
-      setInterval(this.step, 25);
-    } else {
-      setTimeout(this.run, 200);
-    }
+    this.isRunning = true;
+    setInterval(this.step, 25);
   }
 
   emit() {

@@ -1,4 +1,5 @@
 import MNISTNeuralNetwork from './mnist_neural_network';
+import ImportUtil from './import_util';
 
 // BUNDLER:
 // webpack src/synapsis/mnist_worker.js static/synapsis/bundle_neural_network.js -w
@@ -10,7 +11,7 @@ self.addEventListener("connect", function (e) {
 
   // create function callback for when steps occur
   const onUpdateStats = (stats) => {
-    port.postMessage(stats);
+    port.postMessage('test');
   };
 
   // // init network
@@ -20,14 +21,14 @@ self.addEventListener("connect", function (e) {
 
   // listen in on the other thread for when messages are sent
   port.addEventListener("message", function (e) {
-    let network;
-
     try {
-      network = new MNISTNeuralNetwork(onUpdateStats, e.data);
+      const importUtil = new ImportUtil(e.data);
+      const network = new MNISTNeuralNetwork(onUpdateStats, importUtil);
+      network.run();
+      
     } catch (e) {
       port.postMessage(e.stack);
     }
-    network.run();
 
     // port.postMessage("MESSAGE RECEIVED");
     // // Start Network
