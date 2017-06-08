@@ -24,10 +24,10 @@ class ImportUtil {
     this.random_flip = options.random_flip;  // Import Util only
     this.random_position = options.random_flip;  // Import Util only
 
-    this.data_img_elts = new Array(this.num_batches); // Import Util only
-    this.img_data = new Array(this.num_batches);  // Import Util Only
-    this.loaded = new Array(this.num_batches).map(_ => false);  // Also mainly import util
-    this.loaded_train_batches = []; // Import Util only
+    this.data_img_elts = options.data_img_elts || new Array(this.num_batches)
+    this.img_data = options.img_data || new Array(this.num_batches);  // Import Util Only
+    this.loaded = options.loaded || new Array(this.num_batches).map(_ => false);  // Also mainly import util
+    this.loaded_train_batches = options.loaded_training_batches || []; // Import Util only
   }
 
   getParams(){
@@ -39,7 +39,12 @@ class ImportUtil {
       image_channels: this.image_channels,
       use_validation_data: this.use_validation_data,
       random_flip: this.random_flip,
-      random_position: this.random_flip
+      random_position: this.random_flip,
+
+      data_img_elts: this.data_img_elts,
+      img_data: this.img_data,
+      loaded: this.loaded,
+      loaded_training_batches: this.loaded_train_batches
     }
   }
 
