@@ -34,8 +34,9 @@ export default {
       }
     })
 
-    // const nn = new MNISTNeuralNetwork(this.updateStats);
-    // nn.run();
+    console.log('Synapsis.vue => mounted :)')
+    const nn = new MNISTNeuralNetwork(this.updateStats);
+    nn.run()
   },
   data() {
     return {

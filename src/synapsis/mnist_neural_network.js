@@ -84,6 +84,8 @@ class MNISTNeuralNetwork {
       this.data_img_elts
     );
 
+    window.importUtil = this.importUtil
+
     this.run = this.run.bind(this);
     this.load = this.load.bind(this);
     this.emit = this.emit.bind(this);
@@ -120,8 +122,6 @@ class MNISTNeuralNetwork {
   }
 
   updateView(net) {
-    console.log(extractLayers(net));
-    // extractLayers(net);
   }
 
   step() {
@@ -152,7 +152,6 @@ class MNISTNeuralNetwork {
 
     // visualize activations
     if (this.step_num % 100 === 0) {
-      // console.log(this.net);
       this.updateView(this.net);
     }
 
@@ -205,5 +204,4 @@ class MNISTNeuralNetwork {
 
 // const nn = new MNISTNeuralNetwork();
 // nn.run();
-
 export default MNISTNeuralNetwork;
