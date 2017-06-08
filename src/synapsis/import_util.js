@@ -15,19 +15,6 @@ const defaultOptions = {
 
 class ImportUtil {
   constructor(options=defaultOptions) {
-    // this.num_batches = num_batches
-    // this.test_batch = test_batch
-    // this.num_samples_per_batch = num_samples_per_batch
-    // this.use_validation_data = use_validation_data
-    // this.img_data = img_data
-    // this.image_channels = image_channels
-    // this.image_dimension = image_dimension
-    // this.random_flip = random_flip
-    // this.random_position = random_position
-    // this.loaded = loaded
-    // this.loaded_train_batches = loaded_train_batches
-    // this.data_img_elts = data_img_elts
-
     this.num_batches = options.num_batches;  // Import Util only
     this.test_batch = options.test_batch;   // Import Util only
     this.num_samples_per_batch = options.num_samples_per_batch;  // Import Util only

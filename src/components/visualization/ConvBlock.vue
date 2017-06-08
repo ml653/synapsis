@@ -16,11 +16,11 @@
       this.cLerp = d3.scaleLinear()
         .domain([this.block.min, this.block.max])
         .range(['limegreen', 'darkgreen']);
-      this.dThree(this.block);
+      this.updateThree(this.block);
     },
     watch: {
       block: function(newValue) {
-        this.dThree(newValue);
+        this.updateThree(newValue);
       }
     },
     methods: {
@@ -38,9 +38,17 @@
       },
       dThree: function(blk) {
         this.rekts.data(blk.neurons);
+        // var t = d3.transition()
+        //   .duration(500)
+          // .ease(d3.easeLinear);
 
         this.rekts
           .attr("fill", d => this.cLerp(d.activation));
+      },
+      updateThree: function(blk) {
+        return new Promise((resolve) => {
+          resolve(this.dThree(blk));
+        });
       }
     }
   }

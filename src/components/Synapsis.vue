@@ -12,8 +12,11 @@
 import Sidebar from './sidebar/Sidebar';
 import Visualization from './visualization/Visualization.vue';
 import NeuralNet from './neural-net/NeuralNet';
+<<<<<<< HEAD
 import MNISTNeuralNetwork from '../synapsis/mnist_neural_network';
 import ImportUtil from '../synapsis/import_util';
+=======
+>>>>>>> origin/add-parallelism
 
 export default {
   name: 'hello',
@@ -23,6 +26,7 @@ export default {
     NeuralNet
   },
   mounted() {
+<<<<<<< HEAD
     // document.addEventListener('scroll', () => {
     //   if (window.scrollY > window.innerHeight) {
     //     if (this.fixedSidebar) {
@@ -41,6 +45,19 @@ export default {
       const importUtil = new ImportUtil()
       await importUtil.loadAll()
       console.log(importUtil.img_data)
+
+      // const nn = new MNISTNeuralNetwork(this.updateStats);
+      console.log("INIT WORKER");
+      var worker = new SharedWorker('/static/synapsis/bundle_neural_network.js');
+
+      worker.port.addEventListener("message", function(e) {
+        console.log(e.data);
+      }, false);
+
+      worker.port.start();
+
+      // post a message to the shared web worker
+      worker.port.postMessage("START");
     }
     startWebworker()
   },
