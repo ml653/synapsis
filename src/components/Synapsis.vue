@@ -12,7 +12,6 @@
 import Sidebar from './sidebar/Sidebar';
 import Visualization from './visualization/Visualization.vue';
 import NeuralNet from './neural-net/NeuralNet';
-import MNISTNeuralNetwork from '../synapsis/mnist_neural_network';
 
 export default {
   name: 'hello',
@@ -34,15 +33,11 @@ export default {
       }
     });
 
-    const updatePromise = (stats) => {
-      return new Promise((resolve) => {
-        resolve(this.updateStats(stats));
-      });
-    };
-
     // const nn = new MNISTNeuralNetwork(this.updateStats);
-    const nn = new MNISTNeuralNetwork(updatePromise);
-    nn.run();
+
+    var myWorker = new Worker('/static/synapsis/bundle_neural_network.js');
+    myWorker.postMessage("");
+
   },
   data() {
     return {
