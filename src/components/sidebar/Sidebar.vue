@@ -5,7 +5,7 @@
       <info></info>
     </div>
     <current-layer></current-layer>
-    <stats></stats>
+    <stats :stats="stats"></stats>
     <results></results>
   </div>
 </template>
@@ -19,7 +19,7 @@ import Results from './Results';
 
 export default {
   name: 'sidebar',
-  props: ["fixed"],
+  props: ["fixed", "stats"],
   components: {
     Brand,
     Info,

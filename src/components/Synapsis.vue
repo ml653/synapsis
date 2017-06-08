@@ -1,7 +1,7 @@
 <template>
   <div class="app-wrapper">
     <div class="visualization-wrapper">
-      <sidebar :fixed="fixedSidebar"></sidebar>
+      <sidebar :stats="stats" :fixed="fixedSidebar"></sidebar>
       <visualization></visualization>
     </div>
     <neural-net></neural-net>
@@ -12,6 +12,7 @@
 import Sidebar from './sidebar/Sidebar';
 import Visualization from './visualization/Visualization.vue';
 import NeuralNet from './neural-net/NeuralNet';
+import MNISTNeuralNetwork from '../synapsis/mnist_neural_network';
 
 export default {
   name: 'hello',
@@ -32,10 +33,23 @@ export default {
         }
       }
     })
+
+    const nn = new MNISTNeuralNetwork(this.updateStats);
+    nn.run();
   },
   data() {
     return {
-      fixedSidebar: true
+      fixedSidebar: true,
+      stats: {
+        trainAcc: 0,
+        valAcc: 0,
+        examples: 0
+      }
+    }
+  },
+  methods: {
+    updateStats(stats) {
+      this.stats = stats;
     }
   }
 };
