@@ -39,6 +39,12 @@ export default {
   mounted: function() {
     window.addEventListener("resize", this.layoutContainers);
     this.layoutContainers();
+    this.idx = 0;
+    window.setInterval(el => {
+      this.convnet = pojo[this.idx];
+      this.idx = (this.idx + 1) % pojo.length;
+      console.log("switched");
+    }, 5000);
   },
   destroyed: function() {
     window.removeEventListener("resize", this.layoutContainers);

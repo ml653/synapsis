@@ -13,12 +13,14 @@
     mounted: function() {
       const me = d3.select(this.$el);
       this.rekts = me.selectAll("rect");
+      this.cLerp = d3.scaleLinear()
+        .domain([this.block.min, this.block.max])
+        .range(['limegreen', 'darkgreen']);
       this.dThree(this.block);
     },
     watch: {
       block: function(newValue) {
-        console.log("CHANGE DETECTED");
-        dThree(newValue);
+        this.dThree(newValue);
       }
     },
     methods: {
@@ -39,14 +41,10 @@
         var t = d3.transition()
           .duration(2000)
           .ease(d3.easeLinear);
-        
-        var cLerp = d3.scaleLinear()
-          .domain([this.block.min, this.block.max])
-          .range(['limegreen', 'darkgreen']);
 
         this.rekts
           .transition(t)
-          .attr("fill", d => cLerp(d.activation));
+          .attr("fill", d => this.cLerp(d.activation));
       }
     }
   }
