@@ -82,7 +82,7 @@
 
 const path = require("path")
 const convnetjs = require('convnetjs')
-const labels = require('./mnist/mnist_labels')
+const labels = require('../../static/mnist/mnist_labels')
 
 class ImportUtil {
   constructor(num_batches,
