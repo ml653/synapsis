@@ -14,7 +14,7 @@ const defaultOptions = {
   random_position: false
 }
 
-class Synapsis {
+class MNISTNeuralNetwork {
   constructor(options = defaultOptions) {
     this.num_batches = options.num_batches
     this.test_batch = options.test_batch
@@ -85,13 +85,21 @@ class Synapsis {
     }
   }
 
-  emit() {
+  emit(net) {
+    console.log('validation accuracy: ', this.valAccWindow.get_average(),
+      'training accuracy: ', this.trainAccWindow.get_average(),
+      'examples seen: ', this.step_num)
+    // Percent accuracy
+    // Validation accuracy
+    // Total examples seen
+  }
 
+  updateView(net) {
+    console.log(net)
   }
 
   step() {
     const sample = this.importUtil.sample_training_instance();
-    console.log('training accuracy', this.trainAccWindow.get_average())
     var x = sample.x;
     var y = sample.label;
 
@@ -126,11 +134,11 @@ class Synapsis {
       this.test_predict();
     }
     this.step_num++;
+    this.emit()
   }
 
     // evaluate current network on test set
   test_predict() {
-    console.log('images-demo.js => test_predict()')
     const num_classes = this.net.layers[this.net.layers.length - 1].out_depth;
 
     // grab a random test image
@@ -161,5 +169,5 @@ class Synapsis {
   }
 }
 
-const synapsis = new Synapsis()
-synapsis.run()
+const nn = new MNISTNeuralNetwork()
+nn.run()
