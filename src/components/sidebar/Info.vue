@@ -4,30 +4,46 @@
       <i class="fa fa-github" />
     </a>
     <i class="fa fa-question-circle-o" v-on:click="handleInfoClick" />
+
     <div v-if="showTooltip" class="info-tooltip" v-on:click="stopPropagation">
       <i class="fa fa-times" v-on:click="handleInfoClick" />
+
+      <progress-bar :currentMsg="currentMsg" :messages="messages"></progress-bar>
+
       <div v-html="messages[currentMsg]"></div>
       <div class="tooltip-arrow"></div>
-      <div class="tooltip-next-button" v-on:click="nextMsg">
-        <h4 v-if="currentMsg !== messages.length - 1">Next >></h4>
-        <h4 v-else>
-          << Prev</h4>
-      </div>
+
+      <tooltip-buttons
+        :currentMsg="currentMsg"
+        :length="messages.length"
+        :nextMsg="nextMsg"
+        :prevMsg="prevMsg">
+      </tooltip-buttons>
     </div>
+
+  </div>
   </div>
 </template>
 
 <script>
+import ProgressBar from './ProgressBar';
+import TooltipButtons from './TooltipButtons';
+
 export default {
   name: 'info',
+  components: {
+    ProgressBar,
+    TooltipButtons
+  },
   methods: {
     handleInfoClick() {
       this.showTooltip = !this.showTooltip;
     },
     nextMsg() {
-      if (this.currentMsg !== this.messages.length - 1) {
-        this.currentMsg += 1;
-      }
+      this.currentMsg += 1;
+    },
+    prevMsg() {
+      this.currentMsg -= 1;
     },
     stopPropagation(e) {
       e.stopPropagation();
@@ -62,7 +78,9 @@ export default {
   },
   mounted() {
     document.addEventListener('click', e => {
-      if (e.target.className.includes("fa-question-circle-o")) {
+      // Check for string prevents weird interactions with SVG elements
+      if (typeof e.target.className === "string"
+        && e.target.className.includes("fa-question-circle-o")) {
         e.stopPropagation();
       } else if (this.showTooltip) {
         this.handleInfoClick();

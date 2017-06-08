@@ -1,4 +1,4 @@
-export default [
+const ds = [
   {
     "layers": [
       {
@@ -31724,4 +31724,69 @@ export default [
       }
     ]
   }
-]
+];
+
+
+// Temporary function
+
+function filterPojo(mPojo) {
+  const filtered = mPojo.layers.filter(el => el.layer_type !== "relu");
+  const answer = new Array(filtered.length);
+  for (let i = 0; i < filtered.length; i++) {
+    const layer = filtered[i];
+    const f = {
+      z: layer.num_inputs || layer.out_depth || layer.in_depth,
+      x: layer.out_sx,
+      y: layer.out_sy,
+      type: layer.layer_type
+    };
+    f.blocks = generateBlocks(f.x, f.y, f.z);
+    answer[i] = f;
+  }
+  for (let i = 1; i < answer.length; i++) {
+    connect(answer[i], answer[i - 1], i - 1);
+  }
+  return answer;
+}
+
+function generateBlocks(x, y, z) {
+  let blocks = [];
+  for (let i = 0; i < z; i++) {
+    blocks.push({
+      min: 0,
+      max: 100,
+      neurons: generateNeurons(x,y)
+    });
+  }
+  return blocks;
+}
+
+function generateNeurons(x, y) {
+  const neurons = new Array(x * y);
+  for (let i = 0; i < neurons.length; i++) {
+    neurons[i] = {
+      activation: Math.random() * 100
+    };
+  }
+  return neurons;
+}
+
+function connect(layerA, layerB, layerBIdx) {
+  for (let i = 0; i < layerA.blocks.length; i++) {
+    for (let j = 0;j < layerA.blocks[i].neurons.length; j++) {
+      let thing = layerA.blocks[i];
+      let neuron = thing.neurons[j];
+      neuron.inputNeurons = new Array(8);
+      for(let k = 0; k < neuron.inputNeurons.length; k++) {
+        let blockNo = Math.floor(Math.random() * layerB.blocks.length);
+        neuron.inputNeurons[k] = {
+          layer: layerBIdx,
+          block: blockNo,
+          neuron: Math.floor(layerB.blocks[blockNo].neurons.length * Math.random())
+        };
+      }
+    }
+  }
+}
+
+export default ds.map(el => filterPojo(el));
