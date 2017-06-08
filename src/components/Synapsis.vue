@@ -32,9 +32,16 @@ export default {
           this.fixedSidebar = true;
         }
       }
-    })
+    });
 
-    const nn = new MNISTNeuralNetwork(this.updateStats);
+    const updatePromise = (stats) => {
+      return new Promise((resolve) => {
+        this.updateStats(stats);
+        resolve("done");
+      });
+    };
+
+    const nn = new MNISTNeuralNetwork(updatePromise);
     nn.run();
   },
   data() {

@@ -43,7 +43,7 @@
           .ease(d3.easeLinear);
 
         this.rekts
-          .transition(t)
+          // .transition(t)
           .attr("fill", d => this.cLerp(d.activation));
       }
     }
