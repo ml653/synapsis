@@ -16,11 +16,11 @@
       this.cLerp = d3.scaleLinear()
         .domain([this.block.min, this.block.max])
         .range(['limegreen', 'darkgreen']);
-      this.dThree(this.block);
+      this.updateThree(this.block);
     },
     watch: {
       block: function(newValue) {
-        this.dThree(newValue);
+        this.updateThree(newValue);
       }
     },
     methods: {
@@ -45,6 +45,12 @@
         this.rekts
           // .transition(t)
           .attr("fill", d => this.cLerp(d.activation));
+      },
+      updateThree: function(blk) {
+        return new Promise((resolve) => {
+          this.dThree(blk);
+          resolve("done");
+        });
       }
     }
   }

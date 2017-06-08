@@ -41,6 +41,7 @@ export default {
       });
     };
 
+    // const nn = new MNISTNeuralNetwork(this.updateStats);
     const nn = new MNISTNeuralNetwork(updatePromise);
     nn.run();
   },

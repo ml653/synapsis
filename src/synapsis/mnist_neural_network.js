@@ -120,7 +120,7 @@ class MNISTNeuralNetwork {
   }
 
   updateView(net) {
-    console.log(extractLayers(net));
+    // console.log(extractLayers(net));
     // extractLayers(net);
   }
 
