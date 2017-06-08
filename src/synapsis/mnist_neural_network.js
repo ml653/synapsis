@@ -3,35 +3,25 @@ import extractLayers from "./extract_layers";
 const cnnutil = require("./cnnutil");
 const convnetjs = require("convnetjs");
 
-const defaultOptions = {
-  num_batches: 21,
-  test_batch: 19,
-  num_samples_per_batch: 3000,
-  image_dimension: 28,
-  image_channels: 1,
-  use_validation_data: 1,
-  random_flip: false,
-  random_position: false
-};
-
 class MNISTNeuralNetwork {
-  constructor(updateStats, options = defaultOptions) {
+  constructor(updateStats, importUtil) {
     this.updateStats = updateStats.bind(this);
+    this.importUtil = importUtil
 
-    this.num_batches = options.num_batches;
-    this.test_batch = options.test_batch;
-    this.num_samples_per_batch = options.num_samples_per_batch;
-    this.image_dimension = options.image_dimension;
-    this.image_channels = options.image_channels;
-    this.use_validation_data = options.use_validation_data;
-    this.random_flip = options.random_flip;
-    this.random_position = options.random_flip;
-    this.step_num = 0;
+    // this.num_batches = options.num_batches;  // Import Util only
+    // this.test_batch = options.test_batch;   // Import Util only
+    // this.num_samples_per_batch = options.num_samples_per_batch;  // Import Util only
+    // this.image_dimension = options.image_dimension;  // Import Util only
+    // this.image_channels = options.image_channels;  // Import Util only
+    // this.use_validation_data = options.use_validation_data;  // Import Util only
+    // this.random_flip = options.random_flip;  // Import Util only
+    // this.random_position = options.random_flip;  // Import Util only
+    // this.step_num = 0;
 
-    this.data_img_elts = new Array(this.num_batches);
-    this.img_data = new Array(this.num_batches);
-    this.loaded = new Array(this.num_batches).map(_ => false);
-    this.loaded_train_batches = [];
+    // this.data_img_elts = new Array(this.num_batches); // Import Util only
+    // this.img_data = new Array(this.num_batches);  // Import Util Only
+    // this.loaded = new Array(this.num_batches).map(_ => false);  // Also mainly import util
+    // this.loaded_train_batches = []; // Import Util only
 
     this.xLossWindow = new cnnutil.Window(100);
     this.wLossWindow = new cnnutil.Window(100);
@@ -68,23 +58,6 @@ class MNISTNeuralNetwork {
       batch_size: 20,
       l2_decay: 0.001
     });
-
-    this.importUtil = new ImportUtil(
-      this.num_batches,
-      this.test_batch,
-      this.num_samples_per_batch,
-      this.use_validation_data,
-      this.img_data,
-      this.image_channels,
-      this.image_dimension,
-      this.random_flip,
-      this.random_position,
-      this.loaded,
-      this.loaded_train_batches,
-      this.data_img_elts
-    );
-
-    window.importUtil = this.importUtil
 
     this.run = this.run.bind(this);
     this.load = this.load.bind(this);

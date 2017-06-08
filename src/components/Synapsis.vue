@@ -13,6 +13,7 @@ import Sidebar from './sidebar/Sidebar';
 import Visualization from './visualization/Visualization.vue';
 import NeuralNet from './neural-net/NeuralNet';
 import MNISTNeuralNetwork from '../synapsis/mnist_neural_network';
+import ImportUtil from '../synapsis/import_util';
 
 export default {
   name: 'hello',
@@ -22,21 +23,26 @@ export default {
     NeuralNet
   },
   mounted() {
-    document.addEventListener('scroll', () => {
-      if (window.scrollY > window.innerHeight) {
-        if (this.fixedSidebar) {
-          this.fixedSidebar = false;
-        }
-      } else {
-        if (!this.fixedSidebar) {
-          this.fixedSidebar = true;
-        }
-      }
-    })
+    // document.addEventListener('scroll', () => {
+    //   if (window.scrollY > window.innerHeight) {
+    //     if (this.fixedSidebar) {
+    //       this.fixedSidebar = false;
+    //     }
+    //   } else {
+    //     if (!this.fixedSidebar) {
+    //       this.fixedSidebar = true;
+    //     }
+    //   }
+    // })
 
     console.log('Synapsis.vue => mounted :)')
-    const nn = new MNISTNeuralNetwork(this.updateStats);
-    nn.run()
+
+    async function startWebworker(){
+      const importUtil = new ImportUtil()
+      await importUtil.loadAll()
+      console.log(importUtil.img_data)
+    }
+    startWebworker()
   },
   data() {
     return {
@@ -48,6 +54,7 @@ export default {
       }
     }
   },
+
   methods: {
     updateStats(stats) {
       this.stats = stats;
