@@ -44,7 +44,7 @@ export default {
     worker.port.start();
 
     // post a message to the shared web worker
-    worker.port.postMessage("Alyssa");
+    worker.port.postMessage("START");
   },
   data() {
     return {
