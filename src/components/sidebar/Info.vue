@@ -8,7 +8,7 @@
     <div v-if="showTooltip" class="info-tooltip" v-on:click="stopPropagation">
       <i class="fa fa-times" v-on:click="handleInfoClick" />
 
-      <slider :currentMsg="currentMsg" :messages="messages"></slider>
+      <progress-bar :currentMsg="currentMsg" :messages="messages"></progress-bar>
 
       <div v-html="messages[currentMsg]"></div>
       <div class="tooltip-arrow"></div>
@@ -26,13 +26,13 @@
 </template>
 
 <script>
-import Slider from './Slider';
+import ProgressBar from './ProgressBar';
 import TooltipButtons from './TooltipButtons';
 
 export default {
   name: 'info',
   components: {
-    Slider,
+    ProgressBar,
     TooltipButtons
   },
   methods: {
