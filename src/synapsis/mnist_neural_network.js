@@ -1,4 +1,5 @@
 import ImportUtil from "./import_util";
+import extractLayers from "./extract_layers";
 const cnnutil = require("./cnnutil");
 const convnetjs = require("convnetjs");
 
@@ -10,7 +11,7 @@ const defaultOptions = {
   image_channels: 1,
   use_validation_data: 1,
   random_flip: false,
-  random_position: false,
+  random_position: false
 };
 
 class MNISTNeuralNetwork {
@@ -46,7 +47,7 @@ class MNISTNeuralNetwork {
       filters: 8,
       stride: 1,
       pad: 2,
-      activation: "relu",
+      activation: "relu"
     });
     layer_defs.push({ type: "pool", sx: 2, stride: 2 });
     layer_defs.push({
@@ -55,7 +56,7 @@ class MNISTNeuralNetwork {
       filters: 16,
       stride: 1,
       pad: 2,
-      activation: "relu",
+      activation: "relu"
     });
     layer_defs.push({ type: "pool", sx: 3, stride: 3 });
     layer_defs.push({ type: "softmax", num_classes: 10 });
@@ -65,7 +66,7 @@ class MNISTNeuralNetwork {
     this.trainer = new convnetjs.SGDTrainer(this.net, {
       method: "adadelta",
       batch_size: 20,
-      l2_decay: 0.001,
+      l2_decay: 0.001
     });
 
     this.importUtil = new ImportUtil(
@@ -119,7 +120,8 @@ class MNISTNeuralNetwork {
   }
 
   updateView(net) {
-
+    console.log(extractLayers(net));
+    // extractLayers(net);
   }
 
   step() {
@@ -150,7 +152,8 @@ class MNISTNeuralNetwork {
 
     // visualize activations
     if (this.step_num % 100 === 0) {
-      console.log(this.net);
+      // console.log(this.net);
+      this.updateView(this.net);
     }
 
     // run prediction on test set
