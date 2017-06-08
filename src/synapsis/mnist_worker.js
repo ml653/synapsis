@@ -11,7 +11,7 @@ self.addEventListener("connect", function (e) {
 
   // create function callback for when steps occur
   const onUpdateStats = (stats) => {
-    port.postMessage('test');
+    port.postMessage(stats);
   };
 
   // // init network
@@ -25,7 +25,6 @@ self.addEventListener("connect", function (e) {
       const importUtil = new ImportUtil(e.data);
       const network = new MNISTNeuralNetwork(onUpdateStats, importUtil);
       network.run();
-      
     } catch (e) {
       port.postMessage(e.stack);
     }

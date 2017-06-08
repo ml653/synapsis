@@ -3199,7 +3199,7 @@ self.addEventListener("connect", function (e) {
 
   // create function callback for when steps occur
   const onUpdateStats = (stats) => {
-    port.postMessage('test');
+    port.postMessage(stats);
   };
 
   // // init network
@@ -3213,7 +3213,6 @@ self.addEventListener("connect", function (e) {
       const importUtil = new __WEBPACK_IMPORTED_MODULE_1__import_util__["a" /* default */](e.data);
       const network = new __WEBPACK_IMPORTED_MODULE_0__mnist_neural_network__["a" /* default */](onUpdateStats, importUtil);
       network.run();
-      
     } catch (e) {
       port.postMessage(e.stack);
     }

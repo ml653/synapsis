@@ -44,7 +44,8 @@ export default {
       console.log("INIT WORKER");
       var worker = new SharedWorker('/static/synapsis/bundle_neural_network.js');
 
-      worker.port.addEventListener("message", function(e) {
+      worker.port.addEventListener("message", (e) => {
+        this.updateStats(e.data);
         console.log(e.data);
       }, false);
 
@@ -57,7 +58,9 @@ export default {
       
       worker.port.postMessage(importUtil.getParams());
     }
-    startWebworker()
+    startWebworker = startWebworker.bind(this);
+    startWebworker();
+
   },
   data() {
     return {
