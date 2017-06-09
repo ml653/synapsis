@@ -43,6 +43,9 @@ export default {
           console.log('somethingsomething')
           console.log(e.data.message);
         }
+        if(e.data.error) {
+          console.error(e.data);
+        }
         console.log(e.data);
       }, false);
 

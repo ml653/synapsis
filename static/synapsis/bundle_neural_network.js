@@ -2470,11 +2470,12 @@ const cnnutil = __webpack_require__(5);
 const convnetjs = __webpack_require__(0);
 
 class MNISTNeuralNetwork {
-  constructor(post, importUtil) {
+  constructor(post, importUtil, failCallback) {
     this.post = post.bind(this);
     this.importUtil = importUtil
     this.step_num = 0;
     this.isRunning = false;
+    this.failCallback = failCallback.bind(this);
 
     this.xLossWindow = new cnnutil.Window(100);
     this.wLossWindow = new cnnutil.Window(100);
@@ -2528,7 +2529,19 @@ class MNISTNeuralNetwork {
 
   run() {
     this.isRunning = true;
-    setInterval(this.step, 25);
+    let intervalCB;
+    if (this.failCallback) {
+      intervalCB = () => {
+        try {
+          this.step();
+        } catch (e) {
+          this.failCallback(e);
+        }
+      };
+    } else {
+      intervalCB = this.step;
+    }
+    setInterval(intervalCB, 25);
   }
 
   emit() {
@@ -3211,6 +3224,10 @@ self.addEventListener("connect", function (e) {
     port.postMessage(stats);
   };
 
+  const failCB = (e) => {
+    port.postMessage({error: e.stack});
+  };
+
   // // init network
   // let network = {};
   // // TEMPORARY: initialize network in a try-catch block so
@@ -3220,10 +3237,10 @@ self.addEventListener("connect", function (e) {
   port.addEventListener("message", function (e) {
     try {
       const importUtil = new __WEBPACK_IMPORTED_MODULE_1__import_util__["a" /* default */](e.data);
-      const network = new __WEBPACK_IMPORTED_MODULE_0__mnist_neural_network__["a" /* default */](post, importUtil);
+      const network = new __WEBPACK_IMPORTED_MODULE_0__mnist_neural_network__["a" /* default */](post, importUtil, failCB);
       network.run();
     } catch (e) {
-      port.postMessage(e.stack);
+      port.postMessage({error: e.stack});
     }
 
     // port.postMessage("MESSAGE RECEIVED");

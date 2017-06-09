@@ -14,6 +14,10 @@ self.addEventListener("connect", function (e) {
     port.postMessage(stats);
   };
 
+  const failCB = (e) => {
+    port.postMessage({error: e.stack});
+  };
+
   // // init network
   // let network = {};
   // // TEMPORARY: initialize network in a try-catch block so
@@ -23,10 +27,10 @@ self.addEventListener("connect", function (e) {
   port.addEventListener("message", function (e) {
     try {
       const importUtil = new ImportUtil(e.data);
-      const network = new MNISTNeuralNetwork(post, importUtil);
+      const network = new MNISTNeuralNetwork(post, importUtil, failCB);
       network.run();
     } catch (e) {
-      port.postMessage(e.stack);
+      port.postMessage({error: e.stack});
     }
 
     // port.postMessage("MESSAGE RECEIVED");
