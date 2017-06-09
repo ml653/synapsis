@@ -3,8 +3,8 @@ const cnnutil = require("./cnnutil");
 const convnetjs = require("convnetjs");
 
 class MNISTNeuralNetwork {
-  constructor(updateStats, importUtil) {
-    this.updateStats = updateStats.bind(this);
+  constructor(post, importUtil) {
+    this.post = post.bind(this);
     this.importUtil = importUtil
 
     this.isRunning = false;
@@ -65,14 +65,21 @@ class MNISTNeuralNetwork {
   }
 
   emit() {
-    this.updateStats({
-      valAcc: this.valAccWindow.get_average(),
-      trainAcc: this.trainAccWindow.get_average(),
-      examples: this.step_num
+    this.post({
+      type: 'STATS',
+      message: {
+       valAcc: this.valAccWindow.get_average(),
+        trainAcc: this.trainAccWindow.get_average(),
+        examples: this.step_num
+      }
     });
   }
 
   updateView(net) {
+    this.post({
+      type: 'NET',
+      message: extractLayers(net)
+    });
   }
 
   step() {

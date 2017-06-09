@@ -2470,8 +2470,8 @@ const cnnutil = __webpack_require__(5);
 const convnetjs = __webpack_require__(0);
 
 class MNISTNeuralNetwork {
-  constructor(updateStats, importUtil) {
-    this.updateStats = updateStats.bind(this);
+  constructor(post, importUtil) {
+    this.post = post.bind(this);
     this.importUtil = importUtil
 
     this.isRunning = false;
@@ -2532,14 +2532,21 @@ class MNISTNeuralNetwork {
   }
 
   emit() {
-    this.updateStats({
-      valAcc: this.valAccWindow.get_average(),
-      trainAcc: this.trainAccWindow.get_average(),
-      examples: this.step_num
+    this.post({
+      type: 'STATS',
+      message: {
+       valAcc: this.valAccWindow.get_average(),
+        trainAcc: this.trainAccWindow.get_average(),
+        examples: this.step_num
+      }
     });
   }
 
   updateView(net) {
+    this.post({
+      type: 'NET',
+      message: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__extract_layers__["a" /* default */])(net)
+    });
   }
 
   step() {
@@ -3175,7 +3182,7 @@ const extractFilterInfo = layer => {
   return blocks;
 };
 
-/* unused harmony default export */ var _unused_webpack_default_export = (extractLayers);
+/* harmony default export */ __webpack_exports__["a"] = (extractLayers);
 
 
 /***/ }),
@@ -3198,7 +3205,7 @@ self.addEventListener("connect", function (e) {
   var port = e.ports[0];
 
   // create function callback for when steps occur
-  const onUpdateStats = (stats) => {
+  const post = (stats) => {
     port.postMessage(stats);
   };
 
@@ -3211,7 +3218,7 @@ self.addEventListener("connect", function (e) {
   port.addEventListener("message", function (e) {
     try {
       const importUtil = new __WEBPACK_IMPORTED_MODULE_1__import_util__["a" /* default */](e.data);
-      const network = new __WEBPACK_IMPORTED_MODULE_0__mnist_neural_network__["a" /* default */](onUpdateStats, importUtil);
+      const network = new __WEBPACK_IMPORTED_MODULE_0__mnist_neural_network__["a" /* default */](post, importUtil);
       network.run();
     } catch (e) {
       port.postMessage(e.stack);

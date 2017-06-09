@@ -40,12 +40,15 @@ export default {
       const importUtil = new ImportUtil();
       await importUtil.loadAll();
 
-      // const nn = new MNISTNeuralNetwork(this.updateStats);
       console.log("INIT WORKER");
       var worker = new SharedWorker('/static/synapsis/bundle_neural_network.js');
 
       worker.port.addEventListener("message", (e) => {
-        this.updateStats(e.data);
+        if(e.data.type === 'STATS'){
+          this.updateStats(e.data.message);
+        } else {
+          console.log(e.data.message);
+        }
         console.log(e.data);
       }, false);
 
@@ -55,7 +58,7 @@ export default {
       worker.port.start();
 
       // post a message to the shared web worker
-      
+
       worker.port.postMessage(importUtil.getParams());
     }
     startWebworker = startWebworker.bind(this);
