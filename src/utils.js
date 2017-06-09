@@ -7,3 +7,14 @@ export const make2DArr = (arr, dim) => {
 
   return newArr;
 }
+
+export const grabActivations = block => {
+  let arr = [];
+
+  block.neurons.forEach(neuron => {
+    arr.push(neuron.activation);
+  })
+
+  console.log(arr);
+  return arr;
+}

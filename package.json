@@ -12,7 +12,8 @@
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
-    "webpack-demo": "webpack --watch src/demo/demo.js src/demo/bundle.js"
+    "webpack-demo": "webpack --watch src/demo/demo.js src/demo/bundle.js",
+    "webworker": "webpack src/synapsis/mnist_worker.js static/synapsis/bundle_neural_network.js -w"
   },
   "dependencies": {
     "convnetjs": "^0.3.0",

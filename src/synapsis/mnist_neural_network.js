@@ -3,12 +3,11 @@ const cnnutil = require("./cnnutil");
 const convnetjs = require("convnetjs");
 
 class MNISTNeuralNetwork {
-  constructor(post, importUtil) {
+  constructor(post, importUtil, printCallback, failCallback) {
     this.post = post.bind(this);
     this.importUtil = importUtil
-
+    this.step_num = 0;
     this.isRunning = false;
-
     this.xLossWindow = new cnnutil.Window(100);
     this.wLossWindow = new cnnutil.Window(100);
     this.trainAccWindow = new cnnutil.Window(100);
@@ -51,6 +50,11 @@ class MNISTNeuralNetwork {
     this.step = this.step.bind(this);
     this.test_predict = this.test_predict.bind(this);
 
+    if (printCallback)
+      this.printCallback = printCallback.bind(this);
+    if (failCallback)
+      this.failCallback = failCallback.bind(this);
+
     this.load();
   }
 
@@ -61,14 +65,26 @@ class MNISTNeuralNetwork {
 
   run() {
     this.isRunning = true;
-    setInterval(this.step, 25);
+    let intervalCB;
+    if (this.failCallback) {
+      intervalCB = () => {
+        try {
+          this.step();
+        } catch (e) {
+          this.failCallback(e);
+        }
+      };
+    } else {
+      intervalCB = this.step;
+    }
+    setInterval(intervalCB, 25);
   }
 
   emit() {
     this.post({
       type: 'STATS',
       message: {
-       valAcc: this.valAccWindow.get_average(),
+        valAcc: this.valAccWindow.get_average(),
         trainAcc: this.trainAccWindow.get_average(),
         examples: this.step_num
       }
@@ -110,6 +126,7 @@ class MNISTNeuralNetwork {
 
     // visualize activations
     if (this.step_num % 100 === 0) {
+      console.log('this is infinite')
       this.updateView(this.net);
     }
 

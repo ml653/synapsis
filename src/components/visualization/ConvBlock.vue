@@ -39,10 +39,11 @@
       dThree: function(blk) {
         this.rekts.data(blk.neurons);
         // var t = d3.transition()
-        //   .duration(500)
-          // .ease(d3.easeLinear);
+        //   .duration(2000)
+        //   .ease(d3.easeLinear);
 
         this.rekts
+          // .transition(t)
           .attr("fill", d => this.cLerp(d.activation));
       },
       updateThree: function(blk) {

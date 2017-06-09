@@ -1,4 +1,3 @@
-const path = require("path")
 const convnetjs = require('convnetjs')
 const labels = require('../../static/mnist/mnist_labels')
 
@@ -14,7 +13,7 @@ const defaultOptions = {
 };
 
 class ImportUtil {
-  constructor(options=defaultOptions) {
+  constructor(options = defaultOptions) {
     this.num_batches = options.num_batches;  // Import Util only
     this.test_batch = options.test_batch;   // Import Util only
     this.num_samples_per_batch = options.num_samples_per_batch;  // Import Util only
@@ -30,7 +29,7 @@ class ImportUtil {
     this.loaded_train_batches = options.loaded_training_batches || []; // Import Util only
   }
 
-  getParams(){
+  getParams() {
     return {
       num_batches: this.num_batches,
       test_batch: this.test_batch,
@@ -49,17 +48,16 @@ class ImportUtil {
   }
 
   loadAll() {
-    return new Promise((res, _) => {
-      for(let i = 0; i < this.num_batches; i++){
-        this.load_data_batch(i, res)
+    return new Promise(resolve => {
+      for (let i = 0; i < this.num_batches; i++) {
+        this.load_data_batch(i, resolve)
       }
     })
   }
 
   finishedLoading() {
-    for(let i = 0; i < this.num_batches; i++){
-      console.log(this.img_data[i])
-      if(!this.img_data[i]) return false
+    for (let i = 0; i < this.num_batches; i++) {
+      if (!this.img_data[i]) return false
     } return true
   }
 
@@ -173,7 +171,10 @@ class ImportUtil {
       this.img_data[batch_num] = data_ctx.getImageData(0, 0, data_canvas.width, data_canvas.height);
       this.loaded[batch_num] = true;
       if (batch_num < this.test_batch) this.loaded_train_batches.push(batch_num);
-      if (this.finishedLoading) resolve('finished');
+      if (this.finishedLoading()) {
+        console.log('finished loading img data', this.img_data);
+        resolve('finished');
+      }
     }.bind(this);
     data_img_elt.src = `/static/mnist/mnist_batch_${batch_num}.png`;
   }
