@@ -1,6 +1,6 @@
 <template>
   <g>
-  <rect v-for="n in (width * height)" :x="getCol(n)" :y="getRow(n)" :width="scale()" :height="scale()" fill="limegreen"></rect> 
+  <rect v-for="n in (width * height)" :x="getCol(n)" :y="getRow(n)" :width="scale()" :height="scale()" fill="limegreen"></rect>
   </g>
 </template>
 
@@ -38,12 +38,12 @@
       },
       dThree: function(blk) {
         this.rekts.data(blk.neurons);
-        var t = d3.transition()
-          .duration(2000)
-          .ease(d3.easeLinear);
+        // var t = d3.transition()
+        //   .duration(2000)
+        //   .ease(d3.easeLinear);
 
         this.rekts
-          .transition(t)
+          // .transition(t)
           .attr("fill", d => this.cLerp(d.activation));
       }
     }

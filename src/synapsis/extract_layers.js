@@ -10,8 +10,8 @@ const extractLayers = net => {
 const extractLayer = layer => {
   const layerInfo = {
     layer: layer.layer_type,
-    x: layer.out_sx,
-    y: layer.out_sy,
+    x: layer.out_act.sx,
+    y: layer.out_act.sy,
     z: layer.out_depth
   };
 
@@ -21,7 +21,7 @@ const extractLayer = layer => {
 
 const extractFilterInfo = layer => {
   const blocks = [];
-  const blockSize = layer.out_sx * layer.out_sy;
+  const blockSize = layer.out_act.sx * layer.out_act.sy;
 
   let block;
   let activationOffset = 0; // Keep track of where we are in the activation array
@@ -38,7 +38,7 @@ const extractFilterInfo = layer => {
     // disrupting the offset for the whole layer
     for (let neuronIndex = 0; neuronIndex < blockSize; neuronIndex++) {
       // console.log(layer);
-      activation = layer.out_act.w[activationOffset];
+      activation = layer.in_act.w[activationOffset];
 
       block.neurons.push({
         activation,

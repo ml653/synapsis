@@ -15,8 +15,9 @@ const defaultOptions = {
 };
 
 class MNISTNeuralNetwork {
-  constructor(updateStats, options = defaultOptions) {
+  constructor(updateStats, updateLayers, options = defaultOptions) {
     this.updateStats = updateStats.bind(this);
+    this.updateLayers = updateLayers.bind(this);
 
     this.num_batches = options.num_batches;
     this.test_batch = options.test_batch;
@@ -100,7 +101,7 @@ class MNISTNeuralNetwork {
 
   run() {
     if (this.loaded[0] && this.loaded[this.test_batch]) {
-      setInterval(this.step, 0); // lets go!
+      setInterval(this.step, 100); // lets go!
     } else {
       setTimeout(this.run, 200);
     }
@@ -120,6 +121,7 @@ class MNISTNeuralNetwork {
   }
 
   updateView(net) {
+    this.updateLayers(extractLayers(net))
     console.log(extractLayers(net));
     // extractLayers(net);
   }

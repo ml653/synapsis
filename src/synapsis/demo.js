@@ -111,8 +111,8 @@ const cnnutil = (function(exports) {
 //     const maxi = 0;
 //     const mini = 0;
 //     for (const i = 1; i < w.length; i++) {
-//       if (w[i] > maxv) { maxv = w[i]; maxi = i; } 
-//       if (w[i] < minv) { minv = w[i]; mini = i; } 
+//       if (w[i] > maxv) { maxv = w[i]; maxi = i; }
+//       if (w[i] < minv) { minv = w[i]; mini = i; }
 //     }
 //     return {maxi: maxi, maxv: maxv, mini: mini, minv: minv, dv:maxv-minv};
 //   }
@@ -139,7 +139,7 @@ const cnnutil = (function(exports) {
 function start_fun() {
   if (loaded[0] && loaded[test_batch]) {
     console.log('starting!');
-    setInterval(load_and_step, 0); // lets go!
+    setInterval(load_and_step, 100); // lets go!
   } else {
     setTimeout(start_fun, 200);
   } // keep checking
