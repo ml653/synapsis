@@ -42,6 +42,9 @@ export default {
         } else if (e.data.type === "NET") {
           console.log('somethingsomething')
           console.log(e.data.message);
+        } else if(e.data.type === "MESSAGE") {
+          console.log("MESSAGE");
+          console.log(e.data.type);
         }
         if(e.data.error) {
           console.error(e.data);

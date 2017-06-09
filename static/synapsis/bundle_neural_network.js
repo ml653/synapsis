@@ -2470,13 +2470,11 @@ const cnnutil = __webpack_require__(5);
 const convnetjs = __webpack_require__(0);
 
 class MNISTNeuralNetwork {
-  constructor(post, importUtil, failCallback) {
+  constructor(post, importUtil, printCallback, failCallback) {
     this.post = post.bind(this);
     this.importUtil = importUtil
     this.step_num = 0;
     this.isRunning = false;
-    this.failCallback = failCallback.bind(this);
-
     this.xLossWindow = new cnnutil.Window(100);
     this.wLossWindow = new cnnutil.Window(100);
     this.trainAccWindow = new cnnutil.Window(100);
@@ -2518,6 +2516,11 @@ class MNISTNeuralNetwork {
     this.emit = this.emit.bind(this);
     this.step = this.step.bind(this);
     this.test_predict = this.test_predict.bind(this);
+
+    if (printCallback)
+      this.printCallback = printCallback.bind(this);
+    if (failCallback)
+      this.failCallback = failCallback.bind(this);
 
     this.load();
   }
@@ -3215,6 +3218,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 // webpack src/synapsis/mnist_worker.js static/synapsis/bundle_neural_network.js -w
 
 // Triggerred when another worker attempts to connect
+const GLOBAL_SCOPE = this;
+
 self.addEventListener("connect", function (e) {
   // get port from connection
   var port = e.ports[0];
@@ -3228,6 +3233,12 @@ self.addEventListener("connect", function (e) {
     port.postMessage({error: e.stack});
   };
 
+  const printCB = (e) => {
+    port.portMessage({type: "MESSAGE", e});
+  }
+
+  self.logCB = printCB;
+  self.errorCB = failCB;
   // // init network
   // let network = {};
   // // TEMPORARY: initialize network in a try-catch block so
@@ -3237,7 +3248,7 @@ self.addEventListener("connect", function (e) {
   port.addEventListener("message", function (e) {
     try {
       const importUtil = new __WEBPACK_IMPORTED_MODULE_1__import_util__["a" /* default */](e.data);
-      const network = new __WEBPACK_IMPORTED_MODULE_0__mnist_neural_network__["a" /* default */](post, importUtil, failCB);
+      const network = new __WEBPACK_IMPORTED_MODULE_0__mnist_neural_network__["a" /* default */](post, importUtil, printCB, failCB);
       network.run();
     } catch (e) {
       port.postMessage({error: e.stack});

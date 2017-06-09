@@ -5,6 +5,8 @@ import ImportUtil from './import_util';
 // webpack src/synapsis/mnist_worker.js static/synapsis/bundle_neural_network.js -w
 
 // Triggerred when another worker attempts to connect
+const GLOBAL_SCOPE = this;
+
 self.addEventListener("connect", function (e) {
   // get port from connection
   var port = e.ports[0];
@@ -18,6 +20,12 @@ self.addEventListener("connect", function (e) {
     port.postMessage({error: e.stack});
   };
 
+  const printCB = (e) => {
+    port.portMessage({type: "MESSAGE", e});
+  }
+
+  self.logCB = printCB;
+  self.errorCB = failCB;
   // // init network
   // let network = {};
   // // TEMPORARY: initialize network in a try-catch block so
@@ -27,7 +35,7 @@ self.addEventListener("connect", function (e) {
   port.addEventListener("message", function (e) {
     try {
       const importUtil = new ImportUtil(e.data);
-      const network = new MNISTNeuralNetwork(post, importUtil, failCB);
+      const network = new MNISTNeuralNetwork(post, importUtil, printCB, failCB);
       network.run();
     } catch (e) {
       port.postMessage({error: e.stack});

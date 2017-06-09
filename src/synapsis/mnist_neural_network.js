@@ -3,13 +3,11 @@ const cnnutil = require("./cnnutil");
 const convnetjs = require("convnetjs");
 
 class MNISTNeuralNetwork {
-  constructor(post, importUtil, failCallback) {
+  constructor(post, importUtil, printCallback, failCallback) {
     this.post = post.bind(this);
     this.importUtil = importUtil
     this.step_num = 0;
     this.isRunning = false;
-    this.failCallback = failCallback.bind(this);
-
     this.xLossWindow = new cnnutil.Window(100);
     this.wLossWindow = new cnnutil.Window(100);
     this.trainAccWindow = new cnnutil.Window(100);
@@ -51,6 +49,11 @@ class MNISTNeuralNetwork {
     this.emit = this.emit.bind(this);
     this.step = this.step.bind(this);
     this.test_predict = this.test_predict.bind(this);
+
+    if (printCallback)
+      this.printCallback = printCallback.bind(this);
+    if (failCallback)
+      this.failCallback = failCallback.bind(this);
 
     this.load();
   }
