@@ -2473,7 +2473,7 @@ class MNISTNeuralNetwork {
   constructor(post, importUtil) {
     this.post = post.bind(this);
     this.importUtil = importUtil
-
+    this.step_num = 0;
     this.isRunning = false;
 
     this.xLossWindow = new cnnutil.Window(100);
@@ -2535,7 +2535,7 @@ class MNISTNeuralNetwork {
     this.post({
       type: 'STATS',
       message: {
-       valAcc: this.valAccWindow.get_average(),
+        valAcc: this.valAccWindow.get_average(),
         trainAcc: this.trainAccWindow.get_average(),
         examples: this.step_num
       }
@@ -2543,6 +2543,7 @@ class MNISTNeuralNetwork {
   }
 
   updateView(net) {
+    console.log('============infinite =================!')
     this.post({
       type: 'NET',
       message: __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__extract_layers__["a" /* default */])(net)
@@ -2577,6 +2578,7 @@ class MNISTNeuralNetwork {
 
     // visualize activations
     if (this.step_num % 100 === 0) {
+      console.log('this is infinite')
       this.updateView(this.net);
     }
 
@@ -3134,8 +3136,8 @@ const extractLayers = net => {
 const extractLayer = layer => {
   const layerInfo = {
     layer: layer.layer_type,
-    x: layer.out_sx,
-    y: layer.out_sy,
+    x: layer.out_act.sx,
+    y: layer.out_act.sy,
     z: layer.out_depth
   };
 
@@ -3145,7 +3147,7 @@ const extractLayer = layer => {
 
 const extractFilterInfo = layer => {
   const blocks = [];
-  const blockSize = layer.out_sx * layer.out_sy;
+  const blockSize = layer.out_act.sx * layer.out_act.sy;
 
   let block;
   let activationOffset = 0; // Keep track of where we are in the activation array
@@ -3162,7 +3164,7 @@ const extractFilterInfo = layer => {
     // disrupting the offset for the whole layer
     for (let neuronIndex = 0; neuronIndex < blockSize; neuronIndex++) {
       // console.log(layer);
-      activation = layer.out_act.w[activationOffset];
+      activation = layer.in_act.w[activationOffset];
 
       block.neurons.push({
         activation,

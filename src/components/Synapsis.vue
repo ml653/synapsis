@@ -39,7 +39,8 @@ export default {
       worker.port.addEventListener("message", (e) => {
         if(e.data.type === 'STATS'){
           this.updateStats(e.data.message);
-        } else {
+        } else if (e.data.type === "NET") {
+          console.log('somethingsomething')
           console.log(e.data.message);
         }
         console.log(e.data);

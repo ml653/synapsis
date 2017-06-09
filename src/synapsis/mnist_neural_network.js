@@ -6,7 +6,7 @@ class MNISTNeuralNetwork {
   constructor(post, importUtil) {
     this.post = post.bind(this);
     this.importUtil = importUtil
-
+    this.step_num = 0;
     this.isRunning = false;
 
     this.xLossWindow = new cnnutil.Window(100);
@@ -76,6 +76,7 @@ class MNISTNeuralNetwork {
   }
 
   updateView(net) {
+    console.log('============infinite =================!')
     this.post({
       type: 'NET',
       message: extractLayers(net)
@@ -110,6 +111,7 @@ class MNISTNeuralNetwork {
 
     // visualize activations
     if (this.step_num % 100 === 0) {
+      console.log('this is infinite')
       this.updateView(this.net);
     }
 
