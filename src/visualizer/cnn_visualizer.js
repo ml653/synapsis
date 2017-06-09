@@ -39,10 +39,12 @@ class CnnVisualizer {
         this.blocks.push(new SoftBlock(layer));
       else if (layer.type === 'fc')
         this.blocks.push(new ConnBlock(layer));
-      for(let x = 0; x < layer.blocks.length; x++) {
-        let blkInfo = layer.blocks[x];
-        this.blocks.push(this._generateBlock(layer.type, blkInfo));
-      } 
+      else {
+        for (let x = 0; x < layer.blocks.length; x++) {
+          let blkInfo = layer.blocks[x];
+          this.blocks.push(this._generateBlock(layer.type, blkInfo));
+        }
+      }
     }
   }
 

@@ -1,23 +1,12 @@
 import Vector from './vector';
 
+/// ABSTRACT CLASS
 class CanvBlock {
-  constructor(block, pos) {
-    
+  setPosition(pos) {
+
   }
 
   update(block) {
-
-  }
-
-  onHover(mousePt) {
-
-  }
-
-  onClick(mousePt) {
-
-  }
-
-  draw(ctx) {
 
   }
 }
