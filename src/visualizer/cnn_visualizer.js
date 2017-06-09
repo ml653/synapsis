@@ -1,7 +1,7 @@
 import InputBlock from './input_block';
 import ConvBlock from './conv_block';
 import PoolBlock from './pool_block';
-import ConnBlock from './conn_block';
+import FConnBlock from './fconn_block';
 import SoftBlock from './soft_block';
 
 class CnnVisualizer {
@@ -38,7 +38,7 @@ class CnnVisualizer {
       if (layer.type === 'softmax')
         this.blocks.push(new SoftBlock(layer));
       else if (layer.type === 'fc')
-        this.blocks.push(new ConnBlock(layer));
+        this.blocks.push(new FConnBlock(layer));
       else {
         for (let x = 0; x < layer.blocks.length; x++) {
           let blkInfo = layer.blocks[x];

@@ -6,3 +6,5 @@ class InputBlock extends GridBlock {
     super(info);
   }
 }
+
+export default InputBlock;

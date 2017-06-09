@@ -1,11 +1,11 @@
 import Vector from './vector';
 import CanvBlock from './canv_block';
 
-class SoftBlock extends CanvBlock {
+class FConnBlock extends CanvBlock {
   constructor(layer) {
     super();
     this.layer = layer;
   }
 }
 
-export default SoftBlock;
+export default FConnBlock;

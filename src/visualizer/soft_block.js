@@ -8,4 +8,4 @@ class SoftBlock extends CanvBlock {
   }
 }
 
-export default GridBlock;
+export default SoftBlock;

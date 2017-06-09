@@ -6,3 +6,5 @@ class PoolBlock extends GridBlock {
     super(info);
   }
 }
+
+export default PoolBlock;

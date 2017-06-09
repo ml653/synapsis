@@ -6,3 +6,5 @@ class ConvBlock extends GridBlock {
     super(info);
   }
 }
+
+export default ConvBlock;
