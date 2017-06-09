@@ -19,6 +19,7 @@ import Sidebar from './sidebar/Sidebar';
 import Visualization from './visualization/Visualization.vue';
 import NeuralNet from './neural-net/NeuralNet';
 import ImportUtil from '../synapsis/import_util';
+import extractLayers from "../synapsis/extract_layers";
 
 export default {
   name: 'hello',
@@ -40,7 +41,7 @@ export default {
         if (e.data.type === 'STATS'){
           this.updateStats(e.data.message);
         } else if (e.data.type === "NET") {
-          this.updateLayers(e.data.message);
+          console.log(extractLayers(e.data.message.net))
         } else if(e.data.type === "MESSAGE") {
           console.log(e.data.e);
         }
@@ -96,7 +97,6 @@ export default {
     },
     toggleTraining() {
       // Passed down to > sidebar > current-status
-      console.log('training status = ', this.isTraining)
       this.isTraining = !this.isTraining;
     }
   }
