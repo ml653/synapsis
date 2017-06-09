@@ -1,13 +1,37 @@
+import ImportUtil from "./import_util";
 import extractLayers from "./extract_layers";
 const cnnutil = require("./cnnutil");
 const convnetjs = require("convnetjs");
 
-class MNISTNeuralNetwork {
-  constructor(post, importUtil) {
-    this.post = post.bind(this);
-    this.importUtil = importUtil
+const defaultOptions = {
+  num_batches: 21,
+  test_batch: 19,
+  num_samples_per_batch: 3000,
+  image_dimension: 28,
+  image_channels: 1,
+  use_validation_data: 1,
+  random_flip: false,
+  random_position: false
+};
 
-    this.isRunning = false;
+class MNISTNeuralNetwork {
+  constructor(updateStats, options = defaultOptions) {
+    this.updateStats = updateStats.bind(this);
+
+    this.num_batches = options.num_batches;
+    this.test_batch = options.test_batch;
+    this.num_samples_per_batch = options.num_samples_per_batch;
+    this.image_dimension = options.image_dimension;
+    this.image_channels = options.image_channels;
+    this.use_validation_data = options.use_validation_data;
+    this.random_flip = options.random_flip;
+    this.random_position = options.random_flip;
+    this.step_num = 0;
+
+    this.data_img_elts = new Array(this.num_batches);
+    this.img_data = new Array(this.num_batches);
+    this.loaded = new Array(this.num_batches).map(_ => false);
+    this.loaded_train_batches = [];
 
     this.xLossWindow = new cnnutil.Window(100);
     this.wLossWindow = new cnnutil.Window(100);
@@ -45,6 +69,21 @@ class MNISTNeuralNetwork {
       l2_decay: 0.001
     });
 
+    this.importUtil = new ImportUtil(
+      this.num_batches,
+      this.test_batch,
+      this.num_samples_per_batch,
+      this.use_validation_data,
+      this.img_data,
+      this.image_channels,
+      this.image_dimension,
+      this.random_flip,
+      this.random_position,
+      this.loaded,
+      this.loaded_train_batches,
+      this.data_img_elts
+    );
+
     this.run = this.run.bind(this);
     this.load = this.load.bind(this);
     this.emit = this.emit.bind(this);
@@ -55,31 +94,44 @@ class MNISTNeuralNetwork {
   }
 
   load() {
-    // this.importUtil.load_data_batch(0); // async load train set batch 0
-    // this.importUtil.load_data_batch(this.test_batch); // async load test set
+    this.importUtil.load_data_batch(0); // async load train set batch 0
+    this.importUtil.load_data_batch(this.test_batch); // async load test set
   }
 
   run() {
-    this.isRunning = true;
-    setInterval(this.step, 25);
+    if (this.loaded[0] && this.loaded[this.test_batch]) {
+      // setInterval(this.step, 25);
+      const promisedLoop = () => this.promisedStep().then((data) => promisedLoop());
+      promisedLoop();
+    } else {
+      setTimeout(this.run, 200);
+    }
   }
 
-  emit() {
-    this.post({
-      type: 'STATS',
-      message: {
-        valAcc: this.valAccWindow.get_average(),
-        trainAcc: this.trainAccWindow.get_average(),
-        examples: this.step_num
-      }
+  promisedStep() {
+    return new Promise((resolve) => {
+      console.log("ANOTHA ONE");
+      resolve(this.step());
     });
+  }
+
+
+  emit() {
+    this.updateStats({
+      valAcc: this.valAccWindow.get_average(),
+      trainAcc: this.trainAccWindow.get_average(),
+      examples: this.step_num
+    });
+    // this.renderStats({
+    //   valAcc: this.valAccWindow.get_average(),
+    //   trainAcc: this.trainAccWindow.get_average(),
+    //   examples: this.step_num,
+    // });
   }
 
   updateView(net) {
-    this.post({
-      type: 'NET',
-      message: extractLayers(net)
-    });
+    // console.log(extractLayers(net));
+    // extractLayers(net);
   }
 
   step() {
@@ -110,6 +162,7 @@ class MNISTNeuralNetwork {
 
     // visualize activations
     if (this.step_num % 100 === 0) {
+      // console.log(this.net);
       this.updateView(this.net);
     }
 
@@ -162,4 +215,5 @@ class MNISTNeuralNetwork {
 
 // const nn = new MNISTNeuralNetwork();
 // nn.run();
+
 export default MNISTNeuralNetwork;
