@@ -40,14 +40,12 @@ export default {
         if(e.data.type === 'STATS'){
           this.updateStats(e.data.message);
         } else if (e.data.type === "NET") {
-          console.log(e.data.message);
         } else if(e.data.type === "MESSAGE") {
           console.log(e.data.e);
         }
         if(e.data.error) {
           console.error(e.data);
         }
-        console.log(e.data);
       }, false);
 
 
@@ -59,7 +57,7 @@ export default {
       worker.port.postMessage(importUtil.getParams());
     }
     startWebworker = startWebworker.bind(this);
-    startWebworker();
+    // startWebworker();
   },
   data() {
     return {
