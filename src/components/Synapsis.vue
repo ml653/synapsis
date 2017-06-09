@@ -40,11 +40,9 @@ export default {
         if(e.data.type === 'STATS'){
           this.updateStats(e.data.message);
         } else if (e.data.type === "NET") {
-          console.log('somethingsomething')
           console.log(e.data.message);
         } else if(e.data.type === "MESSAGE") {
-          console.log("MESSAGE");
-          console.log(e.data.type);
+          console.log(e.data.e);
         }
         if(e.data.error) {
           console.error(e.data);
@@ -58,7 +56,6 @@ export default {
       worker.port.start();
 
       // post a message to the shared web worker
-
       worker.port.postMessage(importUtil.getParams());
     }
     startWebworker = startWebworker.bind(this);

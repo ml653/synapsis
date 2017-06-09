@@ -21,7 +21,7 @@ self.addEventListener("connect", function (e) {
   };
 
   const printCB = (e) => {
-    port.portMessage({type: "MESSAGE", e});
+    port.postMessage({type: "MESSAGE", e});
   }
 
   self.logCB = printCB;

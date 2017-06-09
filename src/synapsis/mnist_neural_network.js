@@ -92,7 +92,6 @@ class MNISTNeuralNetwork {
   }
 
   updateView(net) {
-    console.log('============infinite =================!')
     this.post({
       type: 'NET',
       message: extractLayers(net)
