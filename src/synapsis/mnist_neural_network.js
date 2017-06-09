@@ -77,7 +77,7 @@ class MNISTNeuralNetwork {
     } else {
       intervalCB = this.step;
     }
-    setInterval(intervalCB, 25);
+    setInterval(intervalCB, 100);
   }
 
   emit() {
@@ -126,7 +126,6 @@ class MNISTNeuralNetwork {
 
     // visualize activations
     if (this.step_num % 100 === 0) {
-      console.log('this is infinite')
       this.updateView(this.net);
     }
 

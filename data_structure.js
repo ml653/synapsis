@@ -31724,9 +31724,7 @@ const ds = [
       }
     ]
   }
-];
-
-
+]
 // Temporary function
 
 function filterPojo(mPojo) {
@@ -31755,7 +31753,7 @@ function generateBlocks(x, y, z) {
     blocks.push({
       min: 0,
       max: 100,
-      neurons: generateNeurons(x,y)
+      neurons: generateNeurons(x, y)
     });
   }
   return blocks;
@@ -31773,11 +31771,11 @@ function generateNeurons(x, y) {
 
 function connect(layerA, layerB, layerBIdx) {
   for (let i = 0; i < layerA.blocks.length; i++) {
-    for (let j = 0;j < layerA.blocks[i].neurons.length; j++) {
+    for (let j = 0; j < layerA.blocks[i].neurons.length; j++) {
       let thing = layerA.blocks[i];
       let neuron = thing.neurons[j];
       neuron.inputNeurons = new Array(8);
-      for(let k = 0; k < neuron.inputNeurons.length; k++) {
+      for (let k = 0; k < neuron.inputNeurons.length; k++) {
         let blockNo = Math.floor(Math.random() * layerB.blocks.length);
         neuron.inputNeurons[k] = {
           layer: layerBIdx,

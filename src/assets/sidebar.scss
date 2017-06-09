@@ -218,14 +218,21 @@
       display: flex;
       justify-content: center;
     }
-    .result-stat {
-      display: flex;
-      align-items: center;
-      margin-left: 10px;
 
-      .result-stat-bar {
-        margin-left: 10px;
-        height: 10px;
+    .result-stat-wrapper {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      width: 50%;
+
+      .result-stat {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .result-stat-bar {
+          width: 4px;
+        }
       }
     }
   }

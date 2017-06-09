@@ -37,17 +37,16 @@ export default {
       var worker = new SharedWorker('/static/synapsis/bundle_neural_network.js');
 
       worker.port.addEventListener("message", (e) => {
-        if(e.data.type === 'STATS'){
+        if (e.data.type === 'STATS'){
           this.updateStats(e.data.message);
         } else if (e.data.type === "NET") {
-          console.log(e.data.message);
+          this.updateLayers(e.data.message);
         } else if(e.data.type === "MESSAGE") {
           console.log(e.data.e);
         }
-        if(e.data.error) {
+        if (e.data.error) {
           console.error(e.data);
         }
-        console.log(e.data);
       }, false);
 
 
@@ -73,7 +72,6 @@ export default {
       isTraining: true
     }
   },
-
   methods: {
     // These methods are used by the neural network to feed data back up
     updateStats(stats) {

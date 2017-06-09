@@ -1,6 +1,7 @@
 <template>
   <div class="results">
     <h4>Predicted Results:</h4>
+    <svg id="chart"></svg>
     <div class="prediction-result" v-for="(dataVals, idx) in dataset" :key="'result'+idx">
       <result-image :dataVals="dataVals"></result-image>
       <result-stats :dataVals="dataVals"></result-stats>
@@ -17,6 +18,7 @@
 </template>
 
 <script>
+import d3 from "d3";
 import dataset from '../../../inputDataset';
 import ResultImage from './ResultImage';
 import ResultStats from './ResultStats';
@@ -34,6 +36,16 @@ export default {
     return {
       dataset
     };
+  },
+  mounted() {
+    d3.select('#chart')
+    .selectAll("span")
+    .data([4, 8, 15, 16, 23, 42])
+    .enter()
+    .append("span")
+    .style("height", (d)=> d + "px")
+    .style("width", "20px")
+    .style("background", "blue")
   }
 };
 </script>

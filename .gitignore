@@ -9,4 +9,4 @@ test/e2e/reports
 selenium-debug.log
 bundle.js
 *.worker.js
-*bundle*
+bundle_neural_network.js
