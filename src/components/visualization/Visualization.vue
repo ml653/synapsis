@@ -15,9 +15,9 @@ export default {
     };
   },
   mounted: function() {
-    window.addEventListener("resize", this.layoutContainers);
     this.canvasEl = document.getElementById("cnn-viz");
-    this.visualizer = new CnnVisualizer(canvasEl);
+    this.visualizer = new CnnVisualizer(this.canvasEl);
+    window.addEventListener("resize", this.layoutContainers);
     this.layoutContainers();
     let idx = 1;
     window.setInterval(el => {
