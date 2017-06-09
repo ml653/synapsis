@@ -117,17 +117,6 @@ class ImportUtil {
     const k = Math.floor(Math.random() * this.num_samples_per_batch); // sample within the batch
     const n = b * this.num_samples_per_batch + k;
 
-    // // load more batches over time
-    // if (step_num % (2 * this.num_samples_per_batch) === 0 && step_num > 0) {
-    //   for (let i = 0; i < this.num_batches; i++) {
-    //     if (!this.loaded[i]) {
-    //       // load it
-    //       this.load_data_batch(i);
-    //       break; // okay for now
-    //     }
-    //   }
-    // }
-
     // fetch the appropriate row of the training image and reshape into a Vol
     const p = this.img_data[b].data;
     let x = new convnetjs.Vol(this.image_dimension, this.image_dimension, this.image_channels, 0.0);
@@ -143,16 +132,6 @@ class ImportUtil {
         }
       }
     }
-
-    // if (this.random_position) {
-    //   const dx = Math.floor(Math.random() * 5 - 2);
-    //   const dy = Math.floor(Math.random() * 5 - 2);
-    //   x = convnetjs.augment(x, this.image_dimension, dx, dy, false); // maybe change position
-    // }
-
-    // if (this.random_flip) {
-    //   x = convnetjs.augment(x, this.image_dimension, 0, 0, Math.random() < 0.5); // maybe flip horizontally
-    // }
 
     const isval = this.use_validation_data && n % 10 === 0;
     return {x: x, label: labels[n], isval: isval};
