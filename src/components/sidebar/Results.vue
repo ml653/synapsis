@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="results-wrapper">
     <h4>Predictions:</h4>
     <transition-group name="fade" class="results">
       <predicted-result
