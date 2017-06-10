@@ -68,7 +68,6 @@ class CnnVisualizer {
       const dim = new Vector(scale * layer.x, scale * layer.y);
       for (let j = 0; j < layer.z; j++, b++) {
         const block = this.blocks[b];
-        // console.log(this.width / (layer.z + 1) * j);
         const pos = new Vector(this.width / (layer.z + 1) * (j + 1) - dim.x / 2, sy);
         block.setBounds(pos, dim);
       }

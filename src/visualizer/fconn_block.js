@@ -6,6 +6,14 @@ class FConnBlock extends CanvBlock {
     super();
     this.layer = layer;
   }
+
+  setBounds(pos, dim) {
+    const sx = 50;
+    const centerX = pos.x + dim.x;
+    dim.x = (centerX - sx) * 2;
+
+    super.setBounds(new Vector(sx, pos.y), dim);
+  }
 }
 
 export default FConnBlock;
