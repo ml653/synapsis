@@ -1,0 +1,19 @@
+@keyframes blinker {
+ 0% { opacity: 1.0; }
+ 30% { opacity: 0.0; }
+ 60% { opacity: 1.0; }
+}
+
+.fade-enter-active {
+  opacity: 1;
+}
+
+.fade-enter {
+  opacity: 0;
+  top: -100px;
+  transform: translateY(-100px);
+}
+
+.fade-leave-to {
+  opacity: 0;
+}
