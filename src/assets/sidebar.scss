@@ -6,8 +6,9 @@
   background-color: $sidebar-background;
 
   .top-sidebar {
-    padding-bottom: 2.5%;
-    box-shadow: 0 0 4px rgba(0,0,0,0.25);
+    padding-bottom: 5%;
+    border-bottom: 1px solid #e7e7e7;
+    // box-shadow: 0 0 4px rgba(0,0,0,0.25);
 
     .brand {
       display: flex;
@@ -174,104 +175,124 @@
 
   .current-status {
     margin: 5% 0 2.5% 0;
+  }
 
-    .training-status {
-      font-size: 1.2em;
-      position: relative;
+  .stats-wrapper {
+    padding: 7.5% 0;
+    border-bottom: 1px solid #e7e7e7;
+
+    .training-header {
       display: flex;
       justify-content: center;
       align-items: center;
+      margin-bottom: 5%;
 
-      i {
-        padding: 0;
-        margin-left: 10px;
+      .live-blinker {
+        width: 15px;
         font-size: 0.5em;
+        margin-right: 5px;
         color: $red;
         animation: blinker 5s linear infinite;
       }
-    }
 
-    i {
-      padding-top: 5%;
-      font-size: 1.6em;
-      &:hover {
-        cursor: pointer;
+      h4 {
+        display: inline;
       }
     }
-  }
 
-  .stats {
-    margin: 5% 0;
-    width: 100%;
-    h4 {
-      margin-bottom: 5%;
-    }
-    div {
-      font-size: 0.9em;
-      padding: 2px 0 2px 20px;
-      text-align: left;
-    }
-  }
-
-  .results {
-    position: relative;
-    margin: 5% 0;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    h4 {
-      padding-bottom: 2.5%;
-    }
-
-    .predicted-result {
-      transition: all 0.5s, opacity 1s;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-      margin: 4px 0px;
-      padding: 5px;
-      width: 90%;
+    .stats {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
       align-items: center;
-      font-size: 0.8em;
+      width: 100%;
 
-      .predicted-result-num {
+      .training-status {
+        font-size: 1.2em;
+        width: 75px;
+        position: relative;
         display: flex;
-        justify-content: space-between;
-        margin-bottom: 5px;
-        text-align: left;
-        width: 100%;
-      }
-      i {
-        font-size: 1.6em;
-      }
-
-      .fa-check {
-        color: $base-background;
-      }
-
-      .fa-times {
-        color: $red;
-      }
-    }
-
-    .result-stat-wrapper {
-      display: flex;
-      justify-content: space-around;
-      align-items: flex-end;
-      width: 50%;
-
-      .result-stat {
-        display: flex;
-        flex-direction: column;
+        justify-content: center;
         align-items: center;
 
-        .result-stat-bar {
-          width: 4px;
-          margin-bottom: 2px;
-          background-color: #ccc;
+        i {
+          padding-top: 5%;
+          font-size: 1.6em;
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+
+      div {
+        font-size: 0.9em;
+        text-align: left;
+      }
+    }
+  }
+
+  .results-wrapper {
+    padding-top: 7.5%;
+
+    .results {
+      position: relative;
+      margin: 7.5% 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      h4 {
+        padding-bottom: 2.5%;
+      }
+
+      .predicted-result {
+        transition: all 0.5s, opacity 1s;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        // box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        margin: 4px 0px;
+        padding: 5px;
+        width: 90%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+        font-size: 0.8em;
+
+        .predicted-result-num {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 5px;
+          text-align: left;
+          width: 100%;
+        }
+        i {
+          font-size: 1.6em;
+        }
+
+        .fa-check {
+          color: $base-background;
+        }
+
+        .fa-times {
+          color: $red;
+        }
+      }
+
+      .result-stat-wrapper {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-end;
+        width: 50%;
+
+        .result-stat {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          .result-stat-bar {
+            width: 4px;
+            margin-bottom: 2px;
+            background-color: #ccc;
+          }
         }
       }
     }
