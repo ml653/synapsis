@@ -68,7 +68,11 @@ class MNISTNeuralNetwork {
     } else {
       intervalCB = this.step;
     }
-    setInterval(intervalCB, 100);
+    this.interval = setInterval(intervalCB, 50);
+  }
+
+  pause() {
+    clearInterval(this.interval);
   }
 
   emit() {
@@ -82,12 +86,13 @@ class MNISTNeuralNetwork {
     });
   }
 
-  updateView(net, predictions) {
+  updateView(net, predictions, label) {
     this.post({
       type: 'NET',
       message: {
         net: net,
-        predictions: predictions
+        predictions: predictions,
+        label
       }
     });
   }
@@ -119,7 +124,7 @@ class MNISTNeuralNetwork {
     this.trainAccWindow.add(train_acc);
 
     // run prediction on test set
-    if (this.step_num % 100 === 0 && this.step_num > 0) {
+    if (this.step_num % 100 === 0) {
       this.test_predict();
     }
     this.step_num++;
@@ -130,6 +135,7 @@ class MNISTNeuralNetwork {
   test_predict() {
     const num_classes = this.net.layers[this.net.layers.length - 1].out_depth;
     const sample = this.importUtil.sample_training_instance();
+    const label = sample.label
 
     // // forward prop it through the network
     let predictions = new convnetjs.Vol(1, 1, num_classes, 0.0);
@@ -146,11 +152,11 @@ class MNISTNeuralNetwork {
     for (let k = 0; k < predictions.w.length; k++) {
       preds.push({ k: k, p: predictions.w[k] });
     }
-    preds.sort(function(a, b) {
-      return a.p < b.p ? 1 : -1;
-    });
+    // preds.sort(function(a, b) {
+    //   return a.p < b.p ? 1 : -1;
+    // });
 
-    this.updateView(this.net, preds)
+    this.updateView(this.net, preds, label)
   }
 }
 
