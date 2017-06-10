@@ -76,7 +76,8 @@ export default {
       label: null,
       layers: [],
       isTraining: true,
-      results: []
+      results: [],
+      exampleNum: 1
     }
   },
   methods: {
@@ -101,14 +102,20 @@ export default {
         predictions: predictionData,
         max: inputLayerBlock.max,
         guessedProb: guessed.guessedProb,
-        guessedNumber: guessed.guessedNumber
+        guessedNumber: guessed.guessedNumber,
+        exampleNum: this.exampleNum
       };
 
       if (this.results.length >= 5) {
         this.results.pop();
       }
-
       this.results.unshift(result);
+
+      if (this.exampleNum === 1) {
+        this.exampleNum = 100;
+      } else {
+        this.exampleNum += 100;
+      }
     },
     // addSidebarListener() {
     //   // 'Unfixes' the sidebar when it hits the 2nd part of the page
