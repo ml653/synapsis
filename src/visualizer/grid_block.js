@@ -1,23 +1,16 @@
 import Vector from './vector';
 import CanvBlock from './canv_block';
-import {scaleLinear} from 'd3';
 
 class GridBlock extends CanvBlock {
-  constructor({min, max, neurons}, x, y) {
+  constructor(info, x, y) {
     super();
-    this.min = min;
-    this.max = max;
-    this.neurons = neurons;
     this.x = x;
     this.y = y;
-    this.cLerp = scaleLinear()
-      .domain([this.min, this.max])
-      .range(['limegreen', 'darkgreen']);
+    this.update(info);
   }
 
   update({min, max, neurons}) {
-    this.min = min;
-    this.max = max;
+    this.cLerp = this._interpolator(min, max);
     this.neurons = neurons;
   }
 

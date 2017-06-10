@@ -1,4 +1,5 @@
 import Vector from './vector';
+import {scaleLinear} from 'd3';
 
 /// ABSTRACT CLASS
 class CanvBlock {
@@ -16,8 +17,15 @@ class CanvBlock {
   }
 
   draw(ctx) {
-    // ctx.fillRect(this.pos.x, this.pos.y, this.dim.x, this.dim.y);
     ctx.strokeRect(this.pos.x, this.pos.y, this.dim.x, this.dim.y);
+  }
+
+  _interpolator(min, max) {
+    let lerp = scaleLinear()
+      .domain([min, max])
+      .range(['limegreen', 'darkgreen']);
+    lerp.clamp(true);
+    return lerp;
   }
 }
 
