@@ -40,14 +40,10 @@ export default {
         if (e.data.type === 'STATS'){
           this.updateStats(e.data.message);
         } else if (e.data.type === "NET") {
-<<<<<<< HEAD
-        } else if(e.data.type === "MESSAGE") {
-=======
           this.updateLabel(e.data.message.label);
           this.updateLayers(extractLayers(e.data.message.net))
           this.updateResults(e.data.message.predictions)
         } else if (e.data.type === "MESSAGE") {
->>>>>>> 067a589faa7b93a364413554aca8a553784f5583
           console.log(e.data.e);
         }
         if (e.data.error) {
