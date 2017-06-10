@@ -4,7 +4,6 @@
   box-shadow: 0 0 20px rgba(0,0,0,0.19), 0 0 6px rgba(0,0,0,0.23);
   height: 100vh;
   background-color: $sidebar-background;
-  overflow: auto;
 
   .top-sidebar {
     padding-bottom: 2.5%;
@@ -174,10 +173,22 @@
   }
 
   .current-status {
-    padding: 5% 0 2.5% 0;
+    margin: 5% 0 2.5% 0;
 
-    h4 {
-      font-weight: 700;
+    .training-status {
+      font-size: 1.2em;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      i {
+        padding: 0;
+        margin-left: 10px;
+        font-size: 0.5em;
+        color: $red;
+        animation: blinker 5s linear infinite;
+      }
     }
 
     i {
@@ -193,16 +204,17 @@
     margin: 5% 0;
     width: 100%;
     h4 {
-      font-weight: 700;
       margin-bottom: 5%;
     }
     div {
+      font-size: 0.9em;
       padding: 2px 0 2px 20px;
       text-align: left;
     }
   }
 
   .results {
+    position: relative;
     margin: 5% 0;
     width: 100%;
     display: flex;
@@ -210,11 +222,11 @@
     align-items: center;
 
     h4 {
-      font-weight: 700;
-      padding-bottom: 5%;
+      padding-bottom: 2.5%;
     }
 
     .predicted-result {
+      transition: all 0.5s, opacity 1s;
       margin: 2px 0;
       padding: 5px 0;
       width: 90%;
@@ -255,6 +267,7 @@
         .result-stat-bar {
           width: 4px;
           margin-bottom: 2px;
+          background-color: #ccc;
         }
       }
     }

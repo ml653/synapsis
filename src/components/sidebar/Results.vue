@@ -1,12 +1,14 @@
 <template>
-  <div class="results">
-    <h4>Predicted Results:</h4>
-    <predicted-result
-      v-for="(result, idx) in results"
-      :key="'result' + idx"
-      :result="result"
-    >
-    </predicted-result>
+  <div>
+    <h4>Predictions:</h4>
+    <transition-group name="fade" class="results">
+      <predicted-result
+        v-for="(result, idx) in results"
+        :key="result.guessedNumber + result.guessedProb"
+        :result="result"
+      >
+      </predicted-result>
+    </transition-group>
   </div>
 </template>
 
