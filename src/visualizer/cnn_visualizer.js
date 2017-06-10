@@ -5,7 +5,7 @@ import FConnBlock from './fconn_block';
 import SoftBlock from './soft_block';
 import Vector from './vector';
 
-const SPACING = new Vector(10, 50);
+const SPACING = new Vector(1, 150);
 class CnnVisualizer {
   constructor(canvasEl, cnn) {
     this.canvasEl = canvasEl;
@@ -16,8 +16,7 @@ class CnnVisualizer {
   update(cnn) {
     this.cnn = cnn;
     const ctx = this.canvasEl.getContext('2d');
-    ctx.clearRect(0, 0, this.width, this.height);
-    ctx.fillRect(25, 25, 100, 100);
+    this._draw(ctx);
   }
 
   setSize(width, height) {
@@ -69,8 +68,9 @@ class CnnVisualizer {
       const dim = new Vector(scale * layer.x, scale * layer.y);
       for (let j = 0; j < layer.z; j++, b++) {
         const block = this.blocks[b];
-        const pos = new Vector((layer.z + 1) / this.width - block.width / 2, sy);
-        block.setBound(pos, dim);
+        // console.log(this.width / (layer.z + 1) * j);
+        const pos = new Vector(this.width / (layer.z + 1) * (j + 1) - dim.x / 2, sy);
+        block.setBounds(pos, dim);
       }
       sy += dim.y + SPACING.y;
     }
@@ -80,15 +80,16 @@ class CnnVisualizer {
     let scale = Infinity;
     for (let i = 0; i < this.layerInfo.length; i++) {
       const layer = this.layerInfo[i];
-      let curr = this.width / (layer.x * layer.z + SPACING.x);
+      let curr = this.width / ((layer.x + SPACING.x) * (layer.z + 1));
       if (curr < scale)
         scale = curr;
     }
     return scale;
   }
 
-  _draw() {
-
+  _draw(ctx) {
+    for (let i = 0; i < this.blocks.length; i++)
+      this.blocks[i].draw(ctx);
   }
 }
 

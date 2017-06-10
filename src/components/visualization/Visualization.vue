@@ -23,7 +23,7 @@ export default {
     window.setInterval(el => {
       this.visualizer.update(pojo[idx]);
       idx = (idx + 1) % pojo.length;
-    }, 10000);
+    }, 300);
   },
   destroyed: function() {
     window.removeEventListener("resize", this.layoutContainers);
