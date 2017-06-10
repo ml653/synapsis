@@ -5,7 +5,7 @@ import FConnBlock from './fconn_block';
 import SoftBlock from './soft_block';
 import Vector from './vector';
 
-const SPACING = new Vector(1, 150);
+let SPACING = new Vector(1, 150);
 class CnnVisualizer {
   constructor(canvasEl, cnn) {
     this.canvasEl = canvasEl;
@@ -15,8 +15,7 @@ class CnnVisualizer {
 
   update(cnn) {
     this.cnn = cnn;
-    const ctx = this.canvasEl.getContext('2d');
-    this._draw(ctx);
+    this._draw();
   }
 
   setSize(width, height) {
@@ -40,21 +39,26 @@ class CnnVisualizer {
       }
       else {
         for (let x = 0; x < layer.blocks.length; x++) {
-          this.blocks.push(this._generateBlock(layer.type, layer.blocks[x]));
+          this.blocks.push(this._generateBlock(layer.type, layer.blocks[x], layer.x, layer.y));
         }
-        this.layerInfo.push({x: layer.x, y: layer.y, z: layer.z, type: layer.type});
+        this.layerInfo.push({
+          x: layer.type === 'softmax' ? 15 : layer.x,
+          y: layer.type === 'softmax' ? 15 : layer.y,
+          z: layer.z,
+          type: layer.type
+        });
       }
     }
     this._positionBlocks();
   }
 
-  _generateBlock(type, info) {
+  _generateBlock(type, info, x, y) {
     if (type === 'input')
-      return new InputBlock(info);
+      return new InputBlock(info, x, y);
     if (type === 'conv')
-      return new ConvBlock(info);
+      return new ConvBlock(info, x, y);
     if (type === 'pool')
-      return new PoolBlock(info);
+      return new PoolBlock(info, x, y);
     if (type === 'softmax')
       return new SoftBlock(info);
     return null;
@@ -73,6 +77,7 @@ class CnnVisualizer {
       }
       sy += dim.y + SPACING.y;
     }
+    this._draw();
   }
 
   _getScale() {
@@ -86,7 +91,8 @@ class CnnVisualizer {
     return scale;
   }
 
-  _draw(ctx) {
+  _draw() {
+    const ctx = this.canvasEl.getContext('2d');
     for (let i = 0; i < this.blocks.length; i++)
       this.blocks[i].draw(ctx);
   }
