@@ -1,4 +1,3 @@
-import extractLayers from "./extract_layers";
 const cnnutil = require("./cnnutil");
 const convnetjs = require("convnetjs");
 
@@ -45,7 +44,6 @@ class MNISTNeuralNetwork {
     });
 
     this.run = this.run.bind(this);
-    this.load = this.load.bind(this);
     this.emit = this.emit.bind(this);
     this.step = this.step.bind(this);
     this.test_predict = this.test_predict.bind(this);
@@ -54,13 +52,6 @@ class MNISTNeuralNetwork {
       this.printCallback = printCallback.bind(this);
     if (failCallback)
       this.failCallback = failCallback.bind(this);
-
-    this.load();
-  }
-
-  load() {
-    // this.importUtil.load_data_batch(0); // async load train set batch 0
-    // this.importUtil.load_data_batch(this.test_batch); // async load test set
   }
 
   run() {
@@ -77,7 +68,11 @@ class MNISTNeuralNetwork {
     } else {
       intervalCB = this.step;
     }
-    setInterval(intervalCB, 25);
+    this.interval = setInterval(intervalCB, 50);
+  }
+
+  pause() {
+    clearInterval(this.interval);
   }
 
   emit() {
@@ -91,10 +86,14 @@ class MNISTNeuralNetwork {
     });
   }
 
-  updateView(net) {
+  updateView(net, predictions, label) {
     this.post({
       type: 'NET',
-      message: extractLayers(net)
+      message: {
+        net: net,
+        predictions: predictions,
+        label
+      }
     });
   }
 
@@ -124,17 +123,8 @@ class MNISTNeuralNetwork {
     this.wLossWindow.add(lossw);
     this.trainAccWindow.add(train_acc);
 
-    // visualize activations
-    if (this.step_num % 100 === 0) {
-      console.log('this is infinite')
-      this.updateView(this.net);
-    }
-
     // run prediction on test set
-    if (
-      (this.step_num % 100 === 0 && this.step_num > 0) ||
-      this.step_num === 100
-    ) {
+    if (this.step_num % 100 === 0) {
       this.test_predict();
     }
     this.step_num++;
@@ -144,39 +134,30 @@ class MNISTNeuralNetwork {
   // evaluate current network on test set
   test_predict() {
     const num_classes = this.net.layers[this.net.layers.length - 1].out_depth;
+    const sample = this.importUtil.sample_training_instance();
+    const label = sample.label
 
-    // grab a random test image
-    for (let num = 0; num < 4; num++) {
-      const sample = this.importUtil.sample_test_instance();
-      const y = sample.label; // ground truth label
+    // // forward prop it through the network
+    let predictions = new convnetjs.Vol(1, 1, num_classes, 0.0);
 
-      // forward prop it through the network
-      const aavg = new convnetjs.Vol(1, 1, num_classes, 0.0);
-
-      // ensures we always have a list, regardless if above returns single item or list
-      const xs = [].concat(sample.x);
-      const n = xs.length;
-      for (let i = 0; i < n; i++) {
-        const a = this.net.forward(xs[i]);
-        aavg.addFrom(a);
-      }
-      const preds = [];
-      for (let k = 0; k < aavg.w.length; k++) {
-        preds.push({ k: k, p: aavg.w[k] });
-      }
-      preds.sort(function(a, b) {
-        return a.p < b.p ? 1 : -1;
-      });
-
-      const correct = preds[0].k === y;
-      if (correct) {
-        // global_total_correct++;
-      }
-      // global_total_count++;
+    // // ensures we always have a list, regardless if above returns single item or list
+    const xs = [].concat(sample.x);
+    const n = xs.length;
+    for (let i = 0; i < n; i++) {
+      const a = this.net.forward(xs[i]);
+      predictions.addFrom(a);
     }
+
+    const preds = [];
+    for (let k = 0; k < predictions.w.length; k++) {
+      preds.push({ k: k, p: predictions.w[k] });
+    }
+    // preds.sort(function(a, b) {
+    //   return a.p < b.p ? 1 : -1;
+    // });
+
+    this.updateView(this.net, preds, label)
   }
 }
 
-// const nn = new MNISTNeuralNetwork();
-// nn.run();
 export default MNISTNeuralNetwork;

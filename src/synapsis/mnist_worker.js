@@ -28,11 +28,16 @@ self.addEventListener("connect", function (e) {
   // listen in on the other thread for when messages are sent
   port.addEventListener("message", function (e) {
     try {
-    // init network
-      const importUtil = new ImportUtil(e.data);
-      const network = new MNISTNeuralNetwork(post, importUtil, printCB, failCB);
-    // Run the network's listeners in the background.
-      network.run();
+      if (e.data.type === "INITIALIZE") {
+        // init network
+        const importUtil = new ImportUtil(e.data.params);
+        this.network = new MNISTNeuralNetwork(post, importUtil, printCB, failCB);
+        this.network.run();
+      } else if (e.data.type === "RUN") {
+        this.network.run();
+      } else if (e.data.type === "PAUSE") {
+        this.network.pause();
+      }
     } catch (e) {
       port.postMessage({error: e.stack});
     }

@@ -10,7 +10,7 @@
       :toggleTraining="toggleTraining"
     ></current-status>
     <stats :stats="stats"></stats>
-    <results :layers="layers"></results>
+    <results :results="results"></results>
   </div>
 </template>
 
@@ -23,7 +23,7 @@ import Results from './Results';
 
 export default {
   name: 'sidebar',
-  props: ["fixed", "stats", "layers", "isTraining", "toggleTraining"],
+  props: ["fixed", "stats", "results", "isTraining", "toggleTraining"],
   components: {
     Brand,
     Info,

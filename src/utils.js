@@ -15,6 +15,24 @@ export const grabActivations = block => {
     arr.push(neuron.activation);
   })
 
-  console.log(arr);
   return arr;
+}
+
+export const findTopGuess = predictions => {
+  let guessedProb = null;
+  let guessedNumber = null;
+
+  predictions.forEach(prediction => {
+    if (guessedProb) {
+      if (prediction.p > guessedProb) {
+        guessedProb = prediction.p;
+        guessedNumber = prediction.k;
+      }
+    } else {
+      guessedProb = prediction.p;
+      guessedNumber = prediction.k;
+    }
+  });
+
+  return { guessedProb, guessedNumber };
 }
