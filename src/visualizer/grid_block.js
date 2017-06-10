@@ -15,13 +15,20 @@ class GridBlock extends CanvBlock {
       .range(['limegreen', 'darkgreen']);
   }
 
+  update({min, max, neurons}) {
+    this.min = min;
+    this.max = max;
+    this.neurons = neurons;
+  }
+
   draw(ctx) {
     const dx = this.dim.x / this.x;
     const dy = this.dim.y / this.y;
     for (let i = 0; i < this.neurons.length; i++) {
       const xx = i % this.x;
       const yy = Math.floor(i / this.y);
-      ctx.strokeRect(xx * dx + this.pos.x, yy * dx + this.pos.y, dx, dy);
+      ctx.fillStyle = this.cLerp(this.neurons[i].activation);
+      ctx.fillRect(xx * dx + this.pos.x, yy * dx + this.pos.y, dx, dy);
     }
     super.draw(ctx);
   }

@@ -15,6 +15,17 @@ class CnnVisualizer {
 
   update(cnn) {
     this.cnn = cnn;
+    for (let i = 0, b = 0; i < this.cnn.length; i++) {
+      let layer = this.cnn[i];
+      if (layer.type === 'fc') {
+        this.blocks[b++].update(layer);
+      }
+      else {
+        for (let x = 0; x < layer.blocks.length; x++) {
+          this.blocks[b++].update(layer.blocks[x]);
+        }
+      }
+    }
     this._draw();
   }
 
