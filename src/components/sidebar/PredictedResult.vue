@@ -1,6 +1,9 @@
 <template>
   <div class="predicted-result">
-    <div class="predicted-result-num">#{{ result.exampleNum }}</div>
+    <div class="predicted-result-num">
+      <p>#{{ result.exampleNum }}: </p>
+      <p>{{ Math.floor(result.percentAccurate * 100) }}% Accuracy</p>
+    </div>
     <i v-if="result.label === result.guessedNumber" class="fa fa-check"></i>
     <i v-else class="fa fa-times"></i>
     <result-image :result="result"></result-image>

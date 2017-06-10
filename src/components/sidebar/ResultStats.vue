@@ -1,7 +1,7 @@
 <template>
   <div class="result-stat-wrapper">
     <div class="result-stat" v-for="(prediction, idx) in result.predictions">
-<!-- If top prediction and is correct, render green bar -->
+
       <div
         v-if="prediction.p === result.guessedProb"
         class="result-stat-bar correct"
