@@ -224,6 +224,7 @@
 
       div {
         font-size: 0.9em;
+        padding: 2px 0;
         text-align: left;
       }
     }
@@ -246,8 +247,7 @@
 
       .predicted-result {
         transition: all 0.5s, opacity 1s;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-        // box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 0.5px 2px rgba(0,0,0,0.2);
         margin: 4px 0px;
         padding: 5px;
         width: 90%;
