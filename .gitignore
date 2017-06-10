@@ -10,3 +10,4 @@ selenium-debug.log
 bundle.js
 *.worker.js
 *bundle*
+static/synapsis/bundle_neural_network.js
