@@ -37,6 +37,15 @@ class GridBlock extends CanvBlock {
       ctx.fillStyle = lerp(this.neurons[i].activation);
       ctx.fillRect(xx * dx + this.pos.x, yy * dx + this.pos.y, dx, dy);
     }
+    ctx.beginPath();
+    ctx.strokeStyle = "rgba(50,50,50,0.1)";
+    ctx.lineWidth = 1;
+    for (let i = 0; i < this.neurons.length; i++) {
+      const xx = i % this.x;
+      const yy = Math.floor(i / this.y);
+      ctx.rect(xx * dx + this.pos.x, yy * dx + this.pos.y, dx, dy);
+    }
+    ctx.stroke();
   }
 }
 

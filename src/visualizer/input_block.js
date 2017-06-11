@@ -6,6 +6,11 @@ class InputBlock extends GridBlock {
     super(info, x, y);
   }
 
+  update(info) {
+    super.update(info);
+    this.cLerp = this._interpolator(info.min, info.max, "white", "darkgreen");
+  }
+
   getHighlights(pt) {
     // input block has no highlights
     return undefined;
