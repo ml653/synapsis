@@ -21,9 +21,6 @@ const extractLayers = net => {
 };
 
 const extractLayer = (currentIndex, layer, prevLayerDim, depthRatio) => {
-  // console.log(layer);
-  // debugger;
-
   const layerInfo = {
     layer: layer.layer_type,
     x: layer.out_act.sx,
@@ -31,14 +28,12 @@ const extractLayer = (currentIndex, layer, prevLayerDim, depthRatio) => {
     z: layer.out_depth
   };
 
-  if (currentIndex > 0) {
-    layerInfo.blocks = extractActivationInfo(
-      currentIndex,
-      layer,
-      prevLayerDim,
-      depthRatio
-    );
-  }
+  layerInfo.blocks = extractActivationInfo(
+    currentIndex,
+    layer,
+    prevLayerDim,
+    depthRatio
+  );
 
   return layerInfo;
 };
@@ -101,6 +96,8 @@ const extractActivationInfo = (currentIndex, layer, prevLayerDim, depthRatio) =>
 const getInputNeurons = options => {
   const inputNeurons = [];
 
+  if (options.layerInfo.index === 0) { return inputNeurons; }
+
   const realDim = options.layerInfo.prevLayerDim + options.layerInfo.pad * 2;
   const recFieldStart = getPointFromOffset(
     options.offset,
@@ -114,7 +111,7 @@ const getInputNeurons = options => {
       coords = [row, col];
       if (withinBounds(coords, realDim, options.layerInfo.pad)) {
         inputNeurons.push({
-          layer: options.layerInfo.index - 1,
+          layer: options.layerInfo.index,
           block: Math.floor(options.layerInfo.depth / options.layerInfo.depthRatio),
           neuron: getOffsetFromPoint(
             coords,
