@@ -29,6 +29,20 @@ class CnnVisualizer {
     this._draw();
   }
 
+  mousemove(x, y) {
+    const pos = new Vector(x, y);
+    this._setHighlights(pos);
+  }
+
+  _setHighlights(pos) {
+    this.highlights = undefined;
+    for (let i = 0; i < this.blocks.length && !this.highlight; i++) {
+      if (this.blocks[i].contains(pos)) {
+        this.highlights = this.blocks[i].getHighlights(pos);
+      }
+    }
+  }
+
   setSize(width, height) {
     this.width = width;
     this.height = height;
@@ -38,7 +52,6 @@ class CnnVisualizer {
   }
 
   _generateBlocks() {
-    console.log(this.cnn);
     this.blocks = [];
     this.layerInfo = [];
 

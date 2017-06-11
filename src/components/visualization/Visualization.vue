@@ -1,6 +1,6 @@
 <template>
   <div class="visualization">
-    <canvas id="cnn-viz"></canvas>
+    <canvas id="cnn-viz" @mousemove="mousemove"></canvas>
   </div>
 </template>
 
@@ -33,6 +33,9 @@ export default {
       const bbox = this.canvasEl.getBoundingClientRect();
       this.visualizer.setSize(bbox.width, bbox.height);
     },
+    mousemove: function({clientX, clientY}) {
+      this.visualizer.mousemove(clientX - 250, clientY);
+    }
   }
 };
 </script>

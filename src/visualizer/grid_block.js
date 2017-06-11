@@ -14,6 +14,16 @@ class GridBlock extends CanvBlock {
     this.neurons = neurons;
   }
 
+  getHighlights(pt) {
+    const dx = this.dim.x / this.x;
+    const dy = this.dim.y / this.y;
+    const delta = pt.subtract(this.pos);
+    const x = Math.floor(delta.x / dx);
+    const y = Math.floor(delta.y / dy);
+    const neuron = this.neurons[y * this.x + x];
+    return neuron.inputNeurons;
+  }
+
   draw(ctx) {
     super.draw(ctx);
     const dx = this.dim.x / this.x;
@@ -22,6 +32,9 @@ class GridBlock extends CanvBlock {
       const xx = i % this.x;
       const yy = Math.floor(i / this.y);
       ctx.fillStyle = this.cLerp(this.neurons[i].activation);
+      if (i === this.myIdx) {
+        ctx.fillStyle = "black";
+      }
       ctx.fillRect(xx * dx + this.pos.x, yy * dx + this.pos.y, dx, dy);
     }
   }
