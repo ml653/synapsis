@@ -11,7 +11,7 @@ class GridBlock extends CanvBlock {
 
   update({min, max, neurons}) {
     this.cLerp = this._interpolator(min, max);
-    this.hLerp = this._interpolator(min, max, "pink", "red");
+    this.hLerp = this._interpolator(min, max, "rgba(50, 205, 50, 0.1)", "rgba(0, 100, 0, 0.1)");
     this.neurons = neurons;
   }
 
@@ -33,13 +33,17 @@ class GridBlock extends CanvBlock {
     for (let i = 0; i < this.neurons.length; i++) {
       const xx = i % this.x;
       const yy = Math.floor(i / this.y);
-      const lerp = (highlightMode && input_neurons.includes(i)) ? this.hLerp : this.cLerp;
+      let lerp;
+      if (!highlightMode)
+        lerp = this.cLerp;
+      else
+        lerp = input_neurons.includes(i) ? this.cLerp : this.hLerp;
       ctx.fillStyle = lerp(this.neurons[i].activation);
       ctx.fillRect(xx * dx + this.pos.x, yy * dx + this.pos.y, dx, dy);
     }
     ctx.beginPath();
-    ctx.strokeStyle = "rgba(135, 211, 124, .1)";
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = "rgba(135, 211, 124, 1)";
+    ctx.lineWidth = 0.25;
     for (let i = 0; i < this.neurons.length; i++) {
       const xx = i % this.x;
       const yy = Math.floor(i / this.y);
