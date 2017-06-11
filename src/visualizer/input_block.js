@@ -1,5 +1,6 @@
 import Vector from './vector';
 import GridBlock from './grid_block';
+import {interpolator} from '../../src/utils';
 
 class InputBlock extends GridBlock {
   constructor(info, x, y) {
@@ -8,11 +9,10 @@ class InputBlock extends GridBlock {
 
   update(info) {
     super.update(info);
-    this.cLerp = this._interpolator(info.min, info.max, "white", "darkgreen");
+    this.cLerp = interpolator(info.min, info.max);
   }
 
   getHighlights(pt) {
-    // input block has no highlights
     return undefined;
   }
 }

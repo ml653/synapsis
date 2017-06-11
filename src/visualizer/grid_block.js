@@ -38,7 +38,7 @@ class GridBlock extends CanvBlock {
       ctx.fillRect(xx * dx + this.pos.x, yy * dx + this.pos.y, dx, dy);
     }
     ctx.beginPath();
-    ctx.strokeStyle = "rgba(50,50,50,0.1)";
+    ctx.strokeStyle = "rgba(135, 211, 124, .1)";
     ctx.lineWidth = 1;
     for (let i = 0; i < this.neurons.length; i++) {
       const xx = i % this.x;
