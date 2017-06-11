@@ -14,13 +14,12 @@ class FConnBlock extends CanvBlock {
   }
 
   draw(ctx) {
+    super.draw(ctx);
     const dx = this.dim.x / this.neurons.length;
     for (let i = 0; i < this.neurons.length; i++) {
       ctx.fillStyle = this.cLerp(this.neurons[i].activation);
       ctx.fillRect(this.pos.x + i * dx, this.pos.y, dx, this.dim.y);
     }
-
-    super.draw(ctx);
   }
 
   setBounds(pos, dim) {

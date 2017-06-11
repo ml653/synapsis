@@ -15,6 +15,7 @@ class GridBlock extends CanvBlock {
   }
 
   draw(ctx) {
+    super.draw(ctx);
     const dx = this.dim.x / this.x;
     const dy = this.dim.y / this.y;
     for (let i = 0; i < this.neurons.length; i++) {
@@ -23,7 +24,6 @@ class GridBlock extends CanvBlock {
       ctx.fillStyle = this.cLerp(this.neurons[i].activation);
       ctx.fillRect(xx * dx + this.pos.x, yy * dx + this.pos.y, dx, dy);
     }
-    super.draw(ctx);
   }
 }
 
