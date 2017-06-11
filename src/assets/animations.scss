@@ -4,14 +4,14 @@
  60% { opacity: 1.0; }
 }
 
-.fade-enter-active {
-  opacity: 1;
-}
-
 .fade-enter {
   opacity: 0;
   top: -100px;
   transform: translateY(-100px);
+}
+
+.fade-enter-active {
+  opacity: 1;
 }
 
 .fade-leave-to {

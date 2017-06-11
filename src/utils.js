@@ -1,3 +1,5 @@
+import { scaleLinear } from 'd3';
+
 export const make2DArr = (arr, dim) => {
   let newArr = [];
 
@@ -35,4 +37,13 @@ export const findTopGuess = predictions => {
   });
 
   return { guessedProb, guessedNumber };
+}
+
+export const interpolator = (min, max) => {
+  let lerp = scaleLinear()
+    .domain([min, max])
+    .range(['#f8f8f8', 'rgb(25, 97, 39)'])
+    // .range(['#f8f8f8', '#39952B']);
+  lerp.clamp(true);
+  return lerp;
 }

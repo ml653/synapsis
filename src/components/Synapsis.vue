@@ -103,6 +103,7 @@ export default {
           inputLayerDim
         ),
         predictions: predictionData,
+        min:inputLayerBlock.min,
         max: inputLayerBlock.max,
         guessedProb: guessed.guessedProb,
         guessedNumber: guessed.guessedNumber,
