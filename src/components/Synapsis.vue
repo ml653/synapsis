@@ -20,7 +20,7 @@ import Visualization from './visualization/Visualization.vue';
 import NeuralNet from './neural-net/NeuralNet';
 import ImportUtil from '../synapsis/import_util';
 import extractLayers from "../synapsis/extract_layers";
-import { make2DArr, grabActivations, findTopGuess } from '../utils';
+import * as SynapsisUtils from '../utils';
 
 export default {
   name: 'synapsis',
@@ -63,7 +63,7 @@ export default {
       });
     }
     startWebworker = startWebworker.bind(this);
-    // startWebworker();
+    startWebworker();
   },
   data() {
     return {
@@ -76,7 +76,8 @@ export default {
       label: null,
       layers: [],
       isTraining: true,
-      results: []
+      results: [],
+      exampleNum: 1
     }
   },
   methods: {
@@ -93,22 +94,38 @@ export default {
     updateResults(predictionData) {
       const inputLayerBlock = this.layers[0].blocks[0];
       const inputLayerDim = this.layers[0].x
-      const guessed = findTopGuess(predictionData);
+      const guessed = SynapsisUtils.findTopGuess(predictionData);
 
       const result = {
         label: this.label,
-        activations: make2DArr(grabActivations(inputLayerBlock), inputLayerDim),
+        activations: SynapsisUtils.make2DArr(
+          SynapsisUtils.grabActivations(inputLayerBlock),
+          inputLayerDim
+        ),
         predictions: predictionData,
+        min:inputLayerBlock.min,
         max: inputLayerBlock.max,
         guessedProb: guessed.guessedProb,
-        guessedNumber: guessed.guessedNumber
+        guessedNumber: guessed.guessedNumber,
+        percentAccurate: predictionData[this.label].p,
+        exampleNum: this.exampleNum
       };
 
+      this.updateResultsLength(result);
+      this.incrementExampleNum();
+    },
+    updateResultsLength(result) {
       if (this.results.length >= 5) {
         this.results.pop();
       }
-
       this.results.unshift(result);
+    },
+    incrementExampleNum() {
+      if (this.exampleNum === 1) {
+        this.exampleNum = 100;
+      } else {
+        this.exampleNum += 100;
+      }
     },
     // addSidebarListener() {
     //   // 'Unfixes' the sidebar when it hits the 2nd part of the page

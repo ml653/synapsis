@@ -1,20 +1,22 @@
 <template>
   <div class="result-stat-wrapper">
     <div class="result-stat" v-for="(prediction, idx) in result.predictions">
-<!-- If top prediction and is correct, render green bar -->
+
       <div
         v-if="prediction.p === result.guessedProb"
-        class="result-stat-bar"
+        class="result-stat-bar correct"
         style="height: 30px; background-color: #f39c12;">
       </div>
 
       <div
         v-else
         class="result-stat-bar"
-        v-bind:style="`height: ${ findPercentAcc(prediction) }px; background-color: #ccc;`">
+        :style="`height: ${ findPercentAcc(prediction) }px;`">
       </div>
 
-      {{ prediction.k }}
+      <p :style="prediction.p === result.guessedProb && 'color: #f39c12'">
+        {{ prediction.k }}
+      </p>
     </div>
   </div>
 </template>
@@ -27,9 +29,6 @@ export default {
     findPercentAcc(prediction) {
       return (prediction.p / this.result.guessedProb) * 30;
     },
-  },
-  mounted() {
-    console.log(this.result)
   }
 };
 </script>

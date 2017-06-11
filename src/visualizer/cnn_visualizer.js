@@ -104,6 +104,7 @@ class CnnVisualizer {
 
   _draw() {
     const ctx = this.canvasEl.getContext('2d');
+    ctx.clearRect(0, 0, this.width, this.height);
     for (let i = 0; i < this.blocks.length; i++)
       this.blocks[i].draw(ctx);
   }

@@ -17,7 +17,8 @@ class CanvBlock {
   }
 
   draw(ctx) {
-    ctx.strokeRect(this.pos.x, this.pos.y, this.dim.x, this.dim.y);
+    ctx.fillStyle = "#999";
+    ctx.fillRect(this.pos.x + 2, this.pos.y + 2, this.dim.x, this.dim.y);
   }
 
   _interpolator(min, max) {

@@ -5,11 +5,11 @@
       <brand></brand>
       <info></info>
     </div>
-    <current-status
+    <stats
+      :stats="stats"
       :isTraining="isTraining"
       :toggleTraining="toggleTraining"
-    ></current-status>
-    <stats :stats="stats"></stats>
+    ></stats>
     <results :results="results"></results>
   </div>
 </template>
@@ -17,7 +17,6 @@
 <script>
 import Brand from './Brand';
 import Info from './Info';
-import CurrentStatus from './CurrentStatus';
 import Stats from './Stats';
 import Results from './Results';
 
@@ -27,7 +26,6 @@ export default {
   components: {
     Brand,
     Info,
-    CurrentStatus,
     Stats,
     Results
   }
