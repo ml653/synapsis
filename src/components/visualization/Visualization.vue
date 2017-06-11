@@ -23,7 +23,7 @@ export default {
     window.setInterval(el => {
       this.visualizer.update(pojo[idx]);
       idx = (idx + 1) % pojo.length;
-    }, 300);
+    }, 5000);
   },
   destroyed: function() {
     window.removeEventListener("resize", this.layoutContainers);
@@ -33,8 +33,11 @@ export default {
       const bbox = this.canvasEl.getBoundingClientRect();
       this.visualizer.setSize(bbox.width, bbox.height);
     },
-    mousemove: function({clientX, clientY}) {
-      this.visualizer.mousemove(clientX - 250, clientY);
+    mousemove: function(e) {
+      this.visualizer.mousemove(
+        e.pageX - this.canvasEl.offsetLeft,
+        e.pageY - this.canvasEl.offsetTop
+      );
     }
   }
 };

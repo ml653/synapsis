@@ -39,6 +39,8 @@ class CnnVisualizer {
     for (let i = 0; i < this.blocks.length && !this.highlight; i++) {
       if (this.blocks[i].contains(pos)) {
         this.highlights = this.blocks[i].getHighlights(pos);
+        this._draw();
+        break;
       }
     }
   }

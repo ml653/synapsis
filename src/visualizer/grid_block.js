@@ -20,6 +20,7 @@ class GridBlock extends CanvBlock {
     const delta = pt.subtract(this.pos);
     const x = Math.floor(delta.x / dx);
     const y = Math.floor(delta.y / dy);
+    this.myIdx = y * this.x + x;
     const neuron = this.neurons[y * this.x + x];
     return neuron.inputNeurons;
   }
