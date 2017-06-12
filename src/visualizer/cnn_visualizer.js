@@ -8,7 +8,6 @@ import Vector from './vector';
 let SPACING = new Vector(1, 150);
 class CnnVisualizer {
   constructor(canvasEl, cnn) {
-    debugger;
     this.canvasEl = canvasEl;
     this.cnn = cnn;
     this._generateBlocks();
@@ -20,6 +19,7 @@ class CnnVisualizer {
 
   update(cnn) {
     this.cnn = cnn;
+    console.log(cnn);
     for (let i = 0, b = 0; i < this.cnn.length; i++) {
       let layer = this.cnn[i];
       if (layer.type === 'fc') {
@@ -155,8 +155,8 @@ class CnnVisualizer {
     const h = this.highlights;
     if (h.block === blockI)
       answer.push(this.highlights.neuron);
-    for (let i = 0; i < this.highlights.inputNeurons.length; i++) {
-      const address = this.highlights.inputNeurons[i];
+    for (let i = 0; i < this.highlights.input_neurons.length; i++) {
+      const address = this.highlights.input_neurons[i];
       if (address.layer === myAddress.layer && address.block === myAddress.block)
         answer.push(address.neuron);
     }
