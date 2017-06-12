@@ -35,14 +35,29 @@ class CnnVisualizer {
   }
 
   _setHighlights(pos) {
-    this.highlights = undefined;
-    for (let i = 0; i < this.blocks.length && !this.highlight; i++) {
-      if (this.blocks[i].contains(pos)) {
-        this.highlights = this.blocks[i].getHighlights(pos);
-        this._draw();
-        break;
+    let foundHighlight = false;
+
+    for (let i = 0, b = 0; i < this.layerInfo.length && !foundHighlight; i++) {
+      const layer = this.layerInfo[i];
+      for (let j = 0; j < layer.z && !foundHighlight; j++, b++) {
+        const block = this.blocks[b];
+        if (block.contains(pos)) {
+          // get the highlights of that block (should return a neuron)
+          const highlights = block.getHighlights(pos);
+          // check old and current highlights to save draw frames
+          if (this.highlights && i !== this.highlights.layer &&
+            j !== this.highlights.block && this.highlights.neuron !== highlights.neuron) {
+              this.highlights = highlights;
+              this.highlights.layer = i;
+              this.highlights.block = j;
+              this._draw();
+              foundHighlight = true;
+          }
+        }
       }
     }
+    if (!foundHighlight)
+      this.highlights = undefined;
   }
 
   setSize(width, height) {
@@ -121,7 +136,36 @@ class CnnVisualizer {
     const ctx = this.canvasEl.getContext('2d');
     ctx.clearRect(0, 0, this.width, this.height);
     for (let i = 0; i < this.blocks.length; i++)
-      this.blocks[i].draw(ctx);
+      this.blocks[i].draw(ctx, this.highlights);
+    
+    for (let i = 0, b = 0; i < this.layerInfo.length; i++) {
+      const layer = this.layerInfo[i];
+      for (let j = 0; j < layer.z; j++, b++) {
+        const block = this.blocks[b];
+        console.log(i, j);
+        // block.draw(ctx, this._getHighlights(layer, i, j, b));
+      }
+    }
+  }
+
+  _getHighlights(layerI, blockI) {
+    const answer = [];
+    const h = this.highlights;
+    if(h.)
+    for (let i = 0; i < this.highlights.n.length; i++) {
+      answer.push(this.blocks[i]);
+    }
+    return answer;
+  }
+
+  _forEach(callback) {
+    for (let i = 0, b = 0; i < this.layerInfo.length; i++) {
+      const layer = this.layerInfo[i];
+      for (let j = 0; j < layer.z; j++, b++) {
+        const block = this.blocks[b];
+        callback(i, b, layer, block);
+      }
+    }
   }
 }
 
