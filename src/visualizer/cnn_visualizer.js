@@ -152,7 +152,7 @@ class CnnVisualizer {
     const myAddress = this.blocks[blockI].address;
     const answer = [];
     const h = this.highlights;
-    if (h.blockI === blockI)
+    if (h.block === blockI)
       answer.push(this.highlights.neuron);
     for (let i = 0; i < this.highlights.inputNeurons.length; i++) {
       const address = this.highlights.inputNeurons[i];
