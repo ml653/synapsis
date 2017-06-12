@@ -1,123 +1,51 @@
 # Synapsis
 
-## Background and Overview
+[Link to Synapsis](https://synapsis-app.herokuapp.com/#/)
 
-Machine learning and neural networks are topics that seem daunting from a layman's point of view. We aim to demystify these topics by showing what machine learning & neural networks are capable of followed by a walkthrough of what is going on behind the scenes.
+### Background
+Machine learning and neural networks are topics that seem daunting from a layman's point of view. Synapsis aims to demystify these topics by showing what machine learning & neural networks are capable of followed by a walkthrough of what is going on behind the scenes.
 
-In Synapsis, a convoluted neural network will be trained live to recognize handwritten digits from 0-9. The training process will be visualized with interesting, interactive, and informative visual animations.
+### Overview of the App
+In Synapsis, a convoluted neural network will be trained live to recognize handwritten digits from 0-9. The neural network starts off with low prediction accuracy rates. As training continues, the neural network becomes more accurate and is able to achieve a 99% accuracy rate within a few minutes.
 
-## Functionality and MVP
-##### MVPs:
+## Features
 
-CNN = Convoluted Neural Network
+### Neural Network Layers
+The visualization shows a summarized layout of the convolutional neural network. The visualization shows the input layer, 2 convolutional layers, 2 pool layers, a softmax layer, and a fully connected layer. Each neuron in the layers are represented by a pixel block. Each neuron’s connections (aka synapses) are shown when a neuron is hovered over.
 
-- Train CNN live in browser
-- Display every layer of the CNN
-- Display connections between each layer of the CNN
-- CNN is able to predict handwritten numbers with at least 90% accuracy within the first 2 minutes
+### Training Stats
+Live training stats are displayed on the sidebar. These stats are emitted from the neural network after each prediction. The data is posted to the visualization components by making use of the web worker `postMessage()` method.
+```js
+// /src/synapsis/mnist_neural_network.js
 
-##### Bonus:
-ANN = Artificial Neural Network
-- Functioning ANN built from scratch
-- Train ANN live in browser
-- Each step of ANN training is explained
-	- Initializing random weights
-	- Forward propagation
-	- Back propagation / Gradient descent
+emit() {
+   this.post({
+     type: 'STATS',
+     message: {
+       valAcc: this.valAccWindow.get_average(),
+       trainAcc: this.trainAccWindow.get_average(),
+       examples: this.step_num
+     }
+   });
+ }
+```
 
-## Technologies and Technical Challenges
-- ConvNetJS
-- Vue.js
-- D3.js
-- JavaScript
-- HTML
-- CSS
+### Predictions
+Every 100th prediction is displayed. An indicator shows if the neural network’s top guess is correct or incorrect. A histogram also shows the distribution of each number’s prediction relative to the top prediction.
 
-#### Primary technical challenges:
+## Implementation
 
-- Setting up the CNN using ConvNetJS and extracting useful data for visualization
-- Parsing data coming in from the CNN and visualizing all of the connections using D3.js
-
-## Things Accomplished Over the Weekend
-
-- Learned how neural networks work, specifically convoluted neural networks
-- Researched libraries for machine learning/learn basics of ConvNetJS
-- Learned basic Vue.js and D3.js
-- Understood how to pull neural net information from ConvNetJS
-
-## Group Members and Work Breakdown
-
-- Ahmed: Phase A Animation
-- Trevor: ‘Backend’ magic for Phase A MNIST Set Recognition
-- Jin: Frontend layout & Phase B ANN Walkthrough
-- Steven: ‘Backend’ logic for Phase B ANN Walkthrough
-
-## Logic
-
-- Utilize ConvNet to train on and learn MNIST dataset
-- Build Convolutional Neural Network
-- Layers:
-  - Input Layer
-  - Convolutional Layer 1
-  - ReLU Layer 1
-  - Pooling Layer 1
-  - Convolutional Layer 2
-  - ReLU Layer 2
-  - Pooling Layer 2
-  - Fully Connected Layer
-  - SoftMax Layer
-- Reach 90% accuracy in <5 min
-
-## Visual
-- App
-- Sidebar
-  - PredictionSet
-  - NetworkStats
-- ConvVisualizer
-  - InputLayer
-  - ConvLayer1
-  - PoolLayer1 (Pooling)
-  - ConvLayer2
-  - PoolLayer2 (Pooling)
-  - ConnectLayer1
-  - ConnectLayer2
-  - Softmax / OutputLayer
-
-### Timeline
-
-###### Day 1
-- **Jin** - Make the basic user interface / layout of the app.
-- **Ahmed** - Make D3 components basic layout w/i the app. Component spacing and layout
-setup.
-- **Steven** - Work on building simple version of a convoluted neural network; help w/ handling MNIST data inputs;
-- **Trevor** - Set up simple version of the ConvNet architecture.
-
-###### Day 2
-- **Jin** - Work on architecting the data store and hierarchy of Vue components.
-- **Ahmed** - Render Input field box in D3. Ensure Input component is bound to data (aka store) as the single-source-of-truth.
-- **Steven** -  Start training neural network; look into data structure and how it can fit into frontend.
-- **Trevor** - Set up handling of MNIST data (pre-training).
-
-###### Day 3
-- **Jin** - Style the sticky sidebar and make basic visual representations of training stats and results.
-- **Ahmed** - Render Convolution field box in D3. Ensure convolution boxes are bound to data (aka store) as the single-source-of-truth.
-- **Steven** - From data structures of neural network, help w/ front end integration.
-- **Trevor** - Configure network to specifically learn on MNIST data. Part I
-
-###### Day 4
-- **Jin** - Connect the sticky sidebar to use the stats data and results data coming in from the 'backend' logic.
-- **Ahmed** - Render pooling field boxes. Ensure Pooling boxes are bound to data (aka store) as the single-source-of-truth.
-- **Steven** - Assist w/ frontend integration.
-- **Trevor** - Configure network to specifically learn on MNIST data. Part II
-
-###### Day 5
-- **Jin** - Style up the sidebar and step of the ANN, make breakpoints for each step of the walkthrough
-- **Ahmed** - Connection diagrams, mouse-over neuron connections, and color gradients.
-- **Steven** - Look into feasibility of part II. 
-- **Trevor** - Set up periodic calls to send network snapshot to the frontend.
-
-###### Day 6
-- **Jin** - Finish up styling and smooth out the user experience of the walkthrough
-- **Ahmed** - saved for polish, critique, and last-minute changes.
-- **Steven** - Help w/ project polishing.
-- **Trevor** - Troubleshoot issues with connecting with the frontend.
+##### ConvNetJS
+- ConvNetJS is a powerful JavaScript library that removes a lot of the legwork required to set up a convolutional neural network.
+##### Web Worker
+- A SharedWorker is used to run the convolutional neural network. This moves the computational load of training the neural network into a background thread. Moving the computations to a background thread is essential to have a responsive visualization. The SharedWorker ports data to the Vue app every 100 examples.
+##### Vue.js
+- Vue is used for data binding and inexpensive virtual DOM re-rendering. Data coming from the background thread is stored in the top level component. The visualization data then flows unidirectionally to the child components.
+##### HTML5 Canvas
+- HTML5 canvas is used in multiple ways for this app. Canvas is used to convert raw image data into a format (Uint8ClampedArray) that is parseable by the neural network built in JavaScript. Canvas is also used to draw out each image in the visualization.
+## Additional Features
+Features that will be added to this visualization includes:
+##### User Handwriting Recognition
+- At one point during the live training, a blank canvas can be pulled up. The user can draw their own number on the canvas and feed it into the neural network. The neural network will then process the input from the user and output its prediction.
+##### Simple Artificial Neural Network
+- On a separate page, a much more simple neural network will be trained live.. This visualization will show forward propagation, back propagation, gradient descent, and all of the other fine details of what is going on behind the scenes.
