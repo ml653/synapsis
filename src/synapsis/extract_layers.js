@@ -71,7 +71,7 @@ const extractActivationInfo = (currentIndex, layer, prevLayerDim, depthRatio) =>
           index: currentIndex - 1,
           depth,
           depthRatio,
-          pad: (currentIndex === 1 ? 0 : layer.pad),
+          pad: layer.pad,
           prevLayerDim,
           dim: layer.out_act.sx
         },
@@ -79,7 +79,7 @@ const extractActivationInfo = (currentIndex, layer, prevLayerDim, depthRatio) =>
         recField: recFieldOptions
       };
 
-      if (currentIndex === 1) { console.log(inputNeuronsOptions); }
+      if (currentIndex === 1 && neuronIndex === 24) { console.log(inputNeuronsOptions); }
 
       block.neurons.push({
         activation,
@@ -144,7 +144,7 @@ const getInputNeurons = options => {
 
   if (options.layerInfo.index < 0) { return inputNeurons; }
 
-  const realDim = options.layerInfo.prevLayerDim + options.layerInfo.pad * 2;
+  const realDim = options.layerInfo.prevLayerDim; //+ options.layerInfo.pad * 2;
   const recFieldStart = getPointFromOffset(
     options.offset,
     options.layerInfo.prevLayerDim,
@@ -152,21 +152,22 @@ const getInputNeurons = options => {
   );
 
   let coords;
-  const rowLimit = options.recField.dimension + recFieldStart[0];
-  const colLimit = options.recField.dimension + recFieldStart[1];
-  for (let row = recFieldStart[0]; row < rowLimit; row++) {
-    for (let col = recFieldStart[1]; col < colLimit; col++) {
+  const rowRecLimit = options.recField.dimension + recFieldStart[0];
+  const colRecLimit = options.recField.dimension + recFieldStart[1];
+  const rowLimit = realDim - options.recField.dimension;
+  const colLimit = realDim - options.recField.dimension;
+  for (let row = recFieldStart[0]; row < rowRecLimit; row++) {
+    for (let col = recFieldStart[1]; col < colRecLimit; col++) {
       coords = [row, col];
-      if (withinBounds(coords, realDim, options.layerInfo.pad)) {
-        inputNeurons.push({
-          layer: options.layerInfo.index,
-          block: Math.floor(options.layerInfo.depth / options.layerInfo.depthRatio),
-          neuron: getOffsetFromPoint(
-            coords,
-            options.layerInfo.prevLayerDim,
-            options.layerInfo.pad)
-        });
-      }
+      inputNeurons.push({
+        layer: options.layerInfo.index,
+        block: Math.floor(options.layerInfo.depth / options.layerInfo.depthRatio),
+        neuron: getOffsetFromPoint(
+          coords,
+          options.layerInfo.prevLayerDim,
+          options.layerInfo.pad)
+      });
+      // if (withinBounds(coords, realDim, options.layerInfo.pad)) {}
     }
   }
 
@@ -175,14 +176,19 @@ const getInputNeurons = options => {
 
 // Get the nth receptive field starting point
 const getPointFromOffset = (offset, dim, stride) => {
-  const strodeOffset = offset * stride;
-  return [Math.floor(strodeOffset / dim), strodeOffset % dim];
+  let strodeOffset = offset * stride;
+
+  if (stride === 1) {
+    strodeOffset += Math.floor(strodeOffset / 24) * 4;
+  }
+
+  return [Math.floor(strodeOffset / dim) * stride, strodeOffset % dim];
 };
 
 // Get the offset of the point within the bounds of the input from the previous
 // layer
 const getOffsetFromPoint = (coords, prevDim, pad) => {
-  return (coords[0] - pad) * prevDim + coords[1];
+  return coords[0] * prevDim + coords[1];
 };
 
 // Check if the given point is within the bounds of the original input i.e. not
