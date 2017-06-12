@@ -33,9 +33,9 @@ class CanvBlock {
     return undefined;
   }
 
-  draw(ctx) {
+  draw(ctx, highlightMode) {
     ctx.beginPath();
-    ctx.strokeStyle = "#999";
+    ctx.strokeStyle = highlightMode ? "rgba(153, 153, 153, .2)" : "#999";
     ctx.lineWidth = 4;
     ctx.moveTo(this.pos.x, this.pos.y + this.dim.y);
     ctx.lineTo(this.pos.x + this.dim.x, this.pos.y + this.dim.y);

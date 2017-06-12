@@ -35,7 +35,7 @@ class GridBlock extends CanvBlock {
   }
 
   draw(ctx, highlightMode, input_neurons) {
-    super.draw(ctx);
+    super.draw(ctx, highlightMode);
     const dx = this.dim.x / this.x;
     const dy = this.dim.y / this.y;
     for (let i = 0; i < this.neurons.length; i++) {
