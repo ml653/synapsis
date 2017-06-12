@@ -8,16 +8,21 @@
 import CnnVisualizer from '../../visualizer/cnn_visualizer.js';
 export default {
   name: 'visualization',
+  props: ['layers'],
   watch: {
     layers: function(newLayers) {
+      console.log("NIGHTS WATCHER");
+      if(!this.visualizer) {
+        this.visualizer = new CnnVisualizer(this.canvasEl, newLayers);
+        window.addEventListener("resize", this.layoutContainers);
+        this.layoutContainers();
+      }
       this.visualizer.update(newLayers);
     }
   },
   mounted: function() {
     this.canvasEl = document.getElementById("cnn-viz");
-    this.visualizer = new CnnVisualizer(this.canvasEl, this.layers);
-    window.addEventListener("resize", this.layoutContainers);
-    this.layoutContainers();
+    console.log(this.layers);
   },
   destroyed: function() {
     window.removeEventListener("resize", this.layoutContainers);
@@ -28,10 +33,12 @@ export default {
       this.visualizer.setSize(bbox.width, bbox.height);
     },
     mousemove: function(e) {
-      this.visualizer.mousemove(
-        e.pageX - this.canvasEl.offsetLeft,
-        e.pageY - this.canvasEl.offsetTop
-      );
+      if(this.visualizer) {
+        this.visualizer.mousemove(
+          e.pageX - this.canvasEl.offsetLeft,
+          e.pageY - this.canvasEl.offsetTop
+        );
+      }
     }
   }
 };

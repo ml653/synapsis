@@ -8,6 +8,7 @@ import Vector from './vector';
 let SPACING = new Vector(1, 150);
 class CnnVisualizer {
   constructor(canvasEl, cnn) {
+    debugger;
     this.canvasEl = canvasEl;
     this.cnn = cnn;
     this._generateBlocks();

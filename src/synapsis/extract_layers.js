@@ -22,7 +22,7 @@ const extractLayers = net => {
 
 const extractLayer = (currentIndex, layer, prevLayerDim, depthRatio) => {
   const layerInfo = {
-    layer: layer.layer_type,
+    type: layer.layer_type,
     x: layer.out_act.sx,
     y: layer.out_act.sy,
     z: layer.out_depth
