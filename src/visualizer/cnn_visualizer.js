@@ -11,9 +11,12 @@ class CnnVisualizer {
     this.canvasEl = canvasEl;
     this.cnn = cnn;
     this._generateBlocks();
+
+    this.addressHash = {};
     
     this._forEach((layerI, colI, blockI) => {
       this.blocks[blockI].address = { layer: layerI, block: colI };
+      this.addressHash[`${layerI},${colI}`] = blockI;
     });
   }
 
@@ -141,6 +144,9 @@ class CnnVisualizer {
   _draw() {
     const ctx = this.canvasEl.getContext('2d');
     ctx.clearRect(0, 0, this.width, this.height);
+    
+    if (this.highlights)
+      this._drawHighlights(ctx);
     for (let i = 0; i < this.blocks.length; i++) {
       if(this.highlights)
         this.blocks[i].draw(ctx, true, this._getHighlights(i));
@@ -149,11 +155,26 @@ class CnnVisualizer {
     }
   }
 
+  _drawHighlights(ctx) {
+    ctx.beginPath();
+    ctx.strokeStyle = "darkgreen";
+    ctx.lineWidth = 1;
+    const start = this.blocks[this.highlights.block];
+    const startPt = start.getNeuronPosition(this.highlights.neuron);
+    for (let i = 0; i < this.highlights.input_neurons.length; i++) {
+      const {block, layer, neuron} = this.highlights.input_neurons[i];
+      const idx = this.addressHash[`${layer},${block}`];
+      const pt = this.blocks[idx].getNeuronPosition(neuron);
+      ctx.moveTo(startPt.x, startPt.y);
+      ctx.lineTo(pt.x, pt.y);
+    }
+    ctx.stroke();
+  }
+
   _getHighlights(blockI) {
     const myAddress = this.blocks[blockI].address;
     const answer = [];
-    const h = this.highlights;
-    if (h.block === blockI)
+    if (this.highlights.block === blockI)
       answer.push(this.highlights.neuron);
     for (let i = 0; i < this.highlights.input_neurons.length; i++) {
       const address = this.highlights.input_neurons[i];

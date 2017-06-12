@@ -29,6 +29,10 @@ class CanvBlock {
 
   }
 
+  getNeuronPosition(idx) {
+    return undefined;
+  }
+
   draw(ctx) {
     ctx.beginPath();
     ctx.strokeStyle = "#999";

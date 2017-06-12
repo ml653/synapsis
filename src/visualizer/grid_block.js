@@ -15,6 +15,14 @@ class GridBlock extends CanvBlock {
     this.neurons = neurons;
   }
 
+  getNeuronPosition(i) {
+    const dx = this.dim.x / this.x;
+    const dy = this.dim.y / this.y;
+    const xx = i % this.x;
+    const yy = Math.floor(i / this.y);
+    return new Vector(xx * dx + dx / 2, yy * dy + dy / 2).add(this.pos);
+  }
+
   getHighlights(pt) {
     const dx = this.dim.x / this.x;
     const dy = this.dim.y / this.y;
@@ -39,7 +47,7 @@ class GridBlock extends CanvBlock {
       else
         lerp = input_neurons.includes(i) ? this.cLerp : this.hLerp;
       ctx.fillStyle = lerp(this.neurons[i].activation);
-      ctx.fillRect(xx * dx + this.pos.x, yy * dx + this.pos.y, dx, dy);
+      ctx.fillRect(xx * dx + this.pos.x, yy * dy + this.pos.y, dx, dy);
     }
     ctx.beginPath();
     ctx.strokeStyle = "rgba(135, 211, 124, 1)";
@@ -47,7 +55,7 @@ class GridBlock extends CanvBlock {
     for (let i = 0; i < this.neurons.length; i++) {
       const xx = i % this.x;
       const yy = Math.floor(i / this.y);
-      ctx.rect(xx * dx + this.pos.x, yy * dx + this.pos.y, dx, dy);
+      ctx.rect(xx * dx + this.pos.x, yy * dy + this.pos.y, dx, dy);
     }
     ctx.stroke();
   }
