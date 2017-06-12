@@ -11,7 +11,6 @@ export default {
   props: ['layers'],
   watch: {
     layers: function(newLayers) {
-      console.log("NIGHTS WATCHER");
       if(!this.visualizer) {
         this.visualizer = new CnnVisualizer(this.canvasEl, newLayers);
         window.addEventListener("resize", this.layoutContainers);
