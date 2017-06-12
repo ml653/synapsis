@@ -11,6 +11,7 @@ class FConnBlock extends CanvBlock {
   update({blocks}) {
     this.neurons = blocks.map(blk => blk.neurons[0]);
     this.cLerp = this._interpolator(blocks[0].min, blocks[0].max);
+    this.hLerp = this._interpolator(blocks[0].min, blocks[0].max, "rgba(50, 205, 50, 0.1)", "rgba(0, 100, 0, 0.1)");
   }
 
   getNeuronPosition(i) {
@@ -25,22 +26,28 @@ class FConnBlock extends CanvBlock {
     const neuron = this.neurons[x];
     return { neuron: x, input_neurons: neuron.input_neurons };
   }
-
-  draw(ctx, highlightMode, inputNeurons) {
-    super.draw(ctx, highlightMode);
-    const dx = this.dim.x / this.neurons.length;
-    for (let i = 0; i < this.neurons.length; i++) {
-      ctx.fillStyle = this.cLerp(this.neurons[i].activation);
-      ctx.fillRect(this.pos.x + i * dx, this.pos.y, dx, this.dim.y);
-    }
-  }
-
+  
   setBounds(pos, dim) {
     const sx = 50;
     const centerX = pos.x + dim.x;
     dim.x = (centerX - sx) * 2;
 
     super.setBounds(new Vector(sx, pos.y), dim);
+  }
+
+  draw(ctx, highlightMode, inputNeurons) {
+    super.draw(ctx, highlightMode);
+    const dx = this.dim.x / this.neurons.length;
+    for (let i = 0; i < this.neurons.length; i++) {
+      let lerp;
+      if (!highlightMode) {
+        lerp = this.cLerp;
+      } else {
+        lerp = inputNeurons.includes(i) ? this.cLerp : this.hLerp;
+      }
+      ctx.fillStyle = lerp(this.neurons[i].activation);
+      ctx.fillRect(this.pos.x + i * dx, this.pos.y, dx, this.dim.y);
+    }
   }
 }
 
