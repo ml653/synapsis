@@ -5,25 +5,19 @@
 </template>
 
 <script>
-import pojo from '../../../data_structure.js';
 import CnnVisualizer from '../../visualizer/cnn_visualizer.js';
 export default {
   name: 'visualization',
-  data() {
-    return {
-      convnet: pojo[0]
-    };
+  watch: {
+    layers: function(newLayers) {
+      this.visualizer.update(newLayers);
+    }
   },
   mounted: function() {
     this.canvasEl = document.getElementById("cnn-viz");
-    this.visualizer = new CnnVisualizer(this.canvasEl, this.convnet);
+    this.visualizer = new CnnVisualizer(this.canvasEl, this.layers);
     window.addEventListener("resize", this.layoutContainers);
     this.layoutContainers();
-    let idx = 1;
-    window.setInterval(el => {
-      this.visualizer.update(pojo[idx]);
-      idx = (idx + 1) % pojo.length;
-    }, 5000);
   },
   destroyed: function() {
     window.removeEventListener("resize", this.layoutContainers);

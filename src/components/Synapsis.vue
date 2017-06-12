@@ -8,7 +8,7 @@
         :toggleTraining="toggleTraining"
         :results="results"
       ></sidebar>
-      <visualization></visualization>
+      <visualization :layers="layers"></visualization>
     </div>
     <!--<neural-net></neural-net>-->
   </div>
