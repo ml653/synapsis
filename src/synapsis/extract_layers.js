@@ -79,7 +79,7 @@ const extractActivationInfo = (currentIndex, layer, prevLayerDim, depthRatio) =>
         recField: recFieldOptions
       };
 
-      if (currentIndex === 1 && neuronIndex === 24) { console.log(inputNeuronsOptions); }
+      // if (currentIndex === 1 && neuronIndex === 24) { console.log(inputNeuronsOptions); }
 
       block.neurons.push({
         activation,
@@ -94,49 +94,9 @@ const extractActivationInfo = (currentIndex, layer, prevLayerDim, depthRatio) =>
     }
 
     blocks.push(block);
-    // copyNeurons = copyNeurons.concat(buildActivationArr(block.neurons));
-    // console.log(copyNeurons);
-    // debugger;
   }
-  // console.log(equalArrays(layer.out_act.w, copyNeurons));
-  // logDiffs(layer.out_act.w, copyNeurons);
-  // console.log(`Layer length: ${layer.out_act.w.length}`);
-  // console.log(`My length: ${copyNeurons.length}`);
+
   return blocks;
-};
-
-// Debugging function
-const buildActivationArr = neuronList => {
-  const copyW = [];
-  neuronList.forEach(el => {
-    copyW.push(el.activation);
-    // console.log(el.activation);
-  });
-  // console.log(`list size: ${neuronList.length}`);
-  // console.log(copyW);
-  return copyW;
-};
-
-// Debugging function
-const equalArrays = (array1, array2) => {
-  if (array1.length !== array2.length) { return false; }
-
-  for (let i = 0; i < array1.length; i++) {
-    if (array1[i] !== array2[i]) { return false; }
-  }
-
-  return true;
-}
-
-// Debugging function
-const logDiffs = (array1, array2) => {
-  if (array1.length !== array2.length) {
-    console.log('DIFFERENT LENGTHS');
-  } else {
-    for (let i = 0; i < array1.length; i++) {
-      console.log(array1[i] - array2[i]);
-    }
-  }
 };
 
 const getInputNeurons = options => {
@@ -190,17 +150,5 @@ const getPointFromOffset = (offset, dim, stride) => {
 const getOffsetFromPoint = (coords, prevDim, pad) => {
   return coords[0] * prevDim + coords[1];
 };
-
-// Check if the given point is within the bounds of the original input i.e. not
-// from padding
-const withinBounds = (coords, paddedDim, pad) => {
-  return withinBound(coords[0], paddedDim, pad) &&
-         withinBound(coords[1], paddedDim, pad);
-};
-
-// Check that a single coordinate is within the bounds of the original input
-const withinBound = (coord, paddedDim, pad) => {
-  return (coord - pad) >= 0 && (coord + pad) < paddedDim;
-}
 
 export default extractLayers;
