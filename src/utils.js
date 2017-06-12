@@ -39,11 +39,16 @@ export const findTopGuess = predictions => {
   return { guessedProb, guessedNumber };
 }
 
-export const interpolator = (min, max) => {
+export const interpolatorSpec = (min, max, colorA, colorB) => {
   let lerp = scaleLinear()
     .domain([min, max])
-    .range(['#f8f8f8', 'rgb(25, 97, 39)'])
-    // .range(['#f8f8f8', '#39952B']);
+    .range([colorA, colorB]);
   lerp.clamp(true);
   return lerp;
 }
+
+export const interpolator = (min, max) => {
+  // .range(['#f8f8f8', '#39952B']);
+  return interpolatorSpec(min, max, '#f8f8f8', 'rgb(25, 97, 39)');
+}
+
