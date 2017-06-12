@@ -28,13 +28,12 @@ class GridBlock extends CanvBlock {
 
   draw(ctx, highlightMode, inputNeurons) {
     super.draw(ctx);
-    console.log(highlightMode);
     const dx = this.dim.x / this.x;
     const dy = this.dim.y / this.y;
-    const lerp = (highlightMode) ? this.hLerp : this.cLerp;
     for (let i = 0; i < this.neurons.length; i++) {
       const xx = i % this.x;
       const yy = Math.floor(i / this.y);
+      const lerp = (highlightMode && inputNeurons.includes(i)) ? this.hLerp : this.cLerp;
       ctx.fillStyle = lerp(this.neurons[i].activation);
       ctx.fillRect(xx * dx + this.pos.x, yy * dx + this.pos.y, dx, dy);
     }
