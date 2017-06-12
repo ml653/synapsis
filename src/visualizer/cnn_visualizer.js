@@ -11,6 +11,10 @@ class CnnVisualizer {
     this.canvasEl = canvasEl;
     this.cnn = cnn;
     this._generateBlocks();
+    
+    this._forEach((layerI, colI, blockI) => {
+      this.blocks[blockI].address = { layer: layerI, block: colI };
+    });
   }
 
   update(cnn) {
@@ -36,24 +40,20 @@ class CnnVisualizer {
 
   _setHighlights(pos) {
     let foundHighlight = false;
-
-    for (let i = 0, b = 0; i < this.layerInfo.length && !foundHighlight; i++) {
-      const layer = this.layerInfo[i];
-      for (let j = 0; j < layer.z && !foundHighlight; j++, b++) {
-        const block = this.blocks[b];
-        if (block.contains(pos)) {
-          // get the highlights of that block (should return a neuron)
-          const highlights = block.getHighlights(pos);
-          // check old and current highlights to save draw frames
-          if (this.highlights && i !== this.highlights.layer &&
-            j !== this.highlights.block && this.highlights.neuron !== highlights.neuron) {
-              this.highlights = highlights;
-              this.highlights.layer = i;
-              this.highlights.block = j;
-              this._draw();
-              foundHighlight = true;
-          }
+    
+    for (let i = 0; i < this.blocks.length && !this.highlight; i++) {
+      // check if mouse contains a position
+      if (this.blocks[i].contains(pos)) {
+        // get the highlights of that block (should return a neuron)
+        const highlights = this.blocks[i].getHighlights(pos);
+        // check old and current highlights to save draw frames
+        if (this.highlights && i !== this.highlights.block && this.highlights.neuron !== highlights.neuron) {
+          this.highlights = highlights;
+          this.highlights.block = i;
+          this._draw();
+          foundHighlight = true;
         }
+        break;
       }
     }
     if (!foundHighlight)
@@ -135,25 +135,26 @@ class CnnVisualizer {
   _draw() {
     const ctx = this.canvasEl.getContext('2d');
     ctx.clearRect(0, 0, this.width, this.height);
-    for (let i = 0; i < this.blocks.length; i++)
-      this.blocks[i].draw(ctx, this.highlights);
-    
-    for (let i = 0, b = 0; i < this.layerInfo.length; i++) {
-      const layer = this.layerInfo[i];
-      for (let j = 0; j < layer.z; j++, b++) {
-        const block = this.blocks[b];
-        console.log(i, j);
-        // block.draw(ctx, this._getHighlights(layer, i, j, b));
-      }
+    for (let i = 0; i < this.blocks.length; i++) {
+      if(this.highlights)
+        this.blocks[i].draw(ctx, true, this._getHighlights(i));
+      else
+        this.blocks[i].draw(ctx, false);
     }
   }
 
-  _getHighlights(layerI, blockI) {
+  _getHighlights(blockI) {
+    if(!this.highlights)
+      return undefined;
+    const myAddress = this.blocks[blockI].address;
     const answer = [];
     const h = this.highlights;
-    if(h.)
-    for (let i = 0; i < this.highlights.n.length; i++) {
-      answer.push(this.blocks[i]);
+    if (h.blockI === blockI)
+      answer.push(this.highlights.neuron);
+    for (let i = 0; i < this.highlights.inputNeurons.length; i++) {
+      const address = this.highlights.inputNeurons[i];
+      if (address.layer === myAddress.layer && address.block === myAddress.block)
+        answer.push(address.neuron);
     }
     return answer;
   }
@@ -163,7 +164,7 @@ class CnnVisualizer {
       const layer = this.layerInfo[i];
       for (let j = 0; j < layer.z; j++, b++) {
         const block = this.blocks[b];
-        callback(i, b, layer, block);
+        callback(i, j, b, layer, block);
       }
     }
   }
