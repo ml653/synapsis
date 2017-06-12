@@ -13,7 +13,7 @@ class FConnBlock extends CanvBlock {
     this.cLerp = this._interpolator(blocks[0].min, blocks[0].max);
   }
 
-  draw(ctx) {
+  draw(ctx, highlightMode, inputNeurons) {
     super.draw(ctx);
     const dx = this.dim.x / this.neurons.length;
     for (let i = 0; i < this.neurons.length; i++) {

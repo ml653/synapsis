@@ -33,10 +33,10 @@ class CanvBlock {
     ctx.fillRect(this.pos.x + 2, this.pos.y + 2, this.dim.x, this.dim.y);
   }
 
-  _interpolator(min, max) {
+  _interpolator(min, max, colorA = 'limegreen', colorB = 'darkgreen') {
     let lerp = scaleLinear()
       .domain([min, max])
-      .range(['limegreen', 'darkgreen']);
+      .range([colorA, colorB]);
     lerp.clamp(true);
     return lerp;
   }

@@ -41,23 +41,28 @@ class CnnVisualizer {
   _setHighlights(pos) {
     let foundHighlight = false;
     
-    for (let i = 0; i < this.blocks.length && !this.highlight; i++) {
+    for (let i = 0; i < this.blocks.length; i++) {
       // check if mouse contains a position
       if (this.blocks[i].contains(pos)) {
+        foundHighlight = true;
         // get the highlights of that block (should return a neuron)
         const highlights = this.blocks[i].getHighlights(pos);
         // check old and current highlights to save draw frames
-        if (this.highlights && i !== this.highlights.block && this.highlights.neuron !== highlights.neuron) {
+        if (highlights && 
+         (!this.highlights ||
+         !(i === this.highlights.block && this.highlights.neuron === highlights.neuron))) {
           this.highlights = highlights;
           this.highlights.block = i;
           this._draw();
-          foundHighlight = true;
         }
         break;
       }
     }
-    if (!foundHighlight)
+
+    if (!foundHighlight && this.highlights) {
       this.highlights = undefined;
+      this._draw();
+    }
   }
 
   setSize(width, height) {
@@ -144,8 +149,6 @@ class CnnVisualizer {
   }
 
   _getHighlights(blockI) {
-    if(!this.highlights)
-      return undefined;
     const myAddress = this.blocks[blockI].address;
     const answer = [];
     const h = this.highlights;
