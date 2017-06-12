@@ -34,6 +34,9 @@ class CanvBlock {
   }
 
   draw(ctx, highlightMode) {
+    ctx.textAlign = 'left';
+    ctx.font = 'bold 12px Roboto';
+    ctx.fillStyle = '#000000';
     ctx.beginPath();
     ctx.strokeStyle = highlightMode ? "rgba(153, 153, 153, .2)" : "#999";
     ctx.lineWidth = 4;
