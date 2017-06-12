@@ -46,13 +46,16 @@ const extractActivationInfo = (currentIndex, layer, prevLayerDim, depthRatio) =>
     stride: layer.stride
   };
 
+  // Debugging
+  // let copyNeurons = [];
+
   let block;
   let activationOffset = 0; // Keep track of where we are in the activation array
   for (let depth = 0; depth < layer.out_depth; depth++) {
     // Create a new block
     block = {
-      min: 99999,
-      max: -99999,
+      min: layer.out_act.w[0],
+      max: layer.out_act.w[0],
       neurons: []
     };
 
@@ -62,18 +65,21 @@ const extractActivationInfo = (currentIndex, layer, prevLayerDim, depthRatio) =>
     // disrupting the offset for the whole layer
     for (let neuronIndex = 0; neuronIndex < blockSize; neuronIndex++) {
       activation = layer.out_act.w[activationOffset];
+
       inputNeuronsOptions = {
         layerInfo: {
           index: currentIndex - 1,
           depth,
           depthRatio,
-          pad: layer.pad,
+          pad: (currentIndex === 1 ? 0 : layer.pad),
           prevLayerDim,
           dim: layer.out_act.sx
         },
         offset: neuronIndex, // The offset here will refer to the offset of the neuron w/in its block
         recField: recFieldOptions
       };
+
+      if (currentIndex === 1) { console.log(inputNeuronsOptions); }
 
       block.neurons.push({
         activation,
@@ -88,15 +94,55 @@ const extractActivationInfo = (currentIndex, layer, prevLayerDim, depthRatio) =>
     }
 
     blocks.push(block);
+    // copyNeurons = copyNeurons.concat(buildActivationArr(block.neurons));
+    // console.log(copyNeurons);
+    // debugger;
+  }
+  // console.log(equalArrays(layer.out_act.w, copyNeurons));
+  // logDiffs(layer.out_act.w, copyNeurons);
+  // console.log(`Layer length: ${layer.out_act.w.length}`);
+  // console.log(`My length: ${copyNeurons.length}`);
+  return blocks;
+};
+
+// Debugging function
+const buildActivationArr = neuronList => {
+  const copyW = [];
+  neuronList.forEach(el => {
+    copyW.push(el.activation);
+    // console.log(el.activation);
+  });
+  // console.log(`list size: ${neuronList.length}`);
+  // console.log(copyW);
+  return copyW;
+};
+
+// Debugging function
+const equalArrays = (array1, array2) => {
+  if (array1.length !== array2.length) { return false; }
+
+  for (let i = 0; i < array1.length; i++) {
+    if (array1[i] !== array2[i]) { return false; }
   }
 
-  return blocks;
+  return true;
+}
+
+// Debugging function
+const logDiffs = (array1, array2) => {
+  if (array1.length !== array2.length) {
+    console.log('DIFFERENT LENGTHS');
+  } else {
+    for (let i = 0; i < array1.length; i++) {
+      console.log(array1[i] - array2[i]);
+    }
+  }
 };
 
 const getInputNeurons = options => {
   const inputNeurons = [];
 
-  if (options.layerInfo.index === 0) { return inputNeurons; }
+  if (options.layerInfo.index < 0) { return inputNeurons; }
 
   const realDim = options.layerInfo.prevLayerDim + options.layerInfo.pad * 2;
   const recFieldStart = getPointFromOffset(
@@ -106,8 +152,10 @@ const getInputNeurons = options => {
   );
 
   let coords;
-  for (let row = recFieldStart[0]; row < options.recField.dimension; row++) {
-    for (let col = recFieldStart[1]; col < options.recField.dimension; col++) {
+  const rowLimit = options.recField.dimension + recFieldStart[0];
+  const colLimit = options.recField.dimension + recFieldStart[1];
+  for (let row = recFieldStart[0]; row < rowLimit; row++) {
+    for (let col = recFieldStart[1]; col < colLimit; col++) {
       coords = [row, col];
       if (withinBounds(coords, realDim, options.layerInfo.pad)) {
         inputNeurons.push({
