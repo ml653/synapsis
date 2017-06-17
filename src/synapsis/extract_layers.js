@@ -1,8 +1,12 @@
-const extractLayers = net => {
+const extractLayers = function(net) {
+  console.log("ayy");
+  debugger;
   // Extract the layers, slicing around Relu layers
-  const layers = net.layers.slice(0, 2)
-                  .concat(net.layers.slice(3, 5))
-                  .concat(net.layers.slice(6));
+  // const layers = net.layers.slice(0, 2)
+  //                 .concat(net.layers.slice(3, 5))
+  //                 .concat(net.layers.slice(6));
+
+  const layers = net.layers.filter(el => el.layer_type !== "relu");
 
   const extractedLayers = [];
   let prevLayerDim;
@@ -45,10 +49,7 @@ const extractActivationInfo = (currentIndex, layer, prevLayerDim, depthRatio) =>
     dimension: layer.sx,
     stride: layer.stride
   };
-
-  // Debugging
-  // let copyNeurons = [];
-
+  
   let block;
   let activationOffset = 0; // Keep track of where we are in the activation array
   for (let depth = 0; depth < layer.out_depth; depth++) {
