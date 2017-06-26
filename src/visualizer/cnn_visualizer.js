@@ -13,7 +13,7 @@ class CnnVisualizer {
     this._generateBlocks();
 
     this.addressHash = {};
-    
+
     this._forEach((layerI, colI, blockI) => {
       this.blocks[blockI].address = { layer: layerI, block: colI };
       this.addressHash[`${layerI},${colI}`] = blockI;
@@ -22,7 +22,7 @@ class CnnVisualizer {
 
   update(cnn) {
     this.cnn = cnn;
-    console.log(cnn);
+    // console.log(cnn);
     for (let i = 0, b = 0; i < this.cnn.length; i++) {
       let layer = this.cnn[i];
       if (layer.type === 'fc') {
@@ -44,7 +44,7 @@ class CnnVisualizer {
 
   _setHighlights(pos) {
     let foundHighlight = false;
-    
+
     for (let i = 0; i < this.blocks.length; i++) {
       // check if mouse contains a position
       if (this.blocks[i].contains(pos)) {
@@ -52,7 +52,7 @@ class CnnVisualizer {
         // get the highlights of that block (should return a neuron)
         const highlights = this.blocks[i].getHighlights(pos);
         // check old and current highlights to save draw frames
-        if (highlights && 
+        if (highlights &&
          (!this.highlights ||
          !(i === this.highlights.block && this.highlights.neuron === highlights.neuron))) {
           this.highlights = highlights;
@@ -144,7 +144,7 @@ class CnnVisualizer {
   _draw() {
     const ctx = this.canvasEl.getContext('2d');
     ctx.clearRect(0, 0, this.width, this.height);
-    
+
     if (this.highlights)
       this._drawHighlights(ctx);
     for (let i = 0; i < this.blocks.length; i++) {

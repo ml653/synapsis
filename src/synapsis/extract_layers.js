@@ -1,4 +1,4 @@
-const extractLayers = net => {
+const extractLayers = (net, willExtract) => {
   // Extract the layers, slicing around Relu layers
   const layers = net.layers.slice(0, 2)
                   .concat(net.layers.slice(3, 5))
@@ -11,16 +11,16 @@ const extractLayers = net => {
     if (i > 0) {
       prevLayerDim = layers[i - 1].out_act.sx;
       depthRatio = layers[i].out_depth / layers[i - 1].out_depth;
-      extractedLayers.push(extractLayer(i, layers[i], prevLayerDim, depthRatio));
+      extractedLayers.push(extractLayer(willExtract, i, layers[i], prevLayerDim, depthRatio));
     } else {
-      extractedLayers.push(extractLayer(i, layers[i]));
+      extractedLayers.push(extractLayer(willExtract, i, layers[i]));
     }
   }
 
   return extractedLayers;
 };
 
-const extractLayer = (currentIndex, layer, prevLayerDim, depthRatio) => {
+const extractLayer = (willExtract, currentIndex, layer, prevLayerDim, depthRatio) => {
   const layerInfo = {
     type: layer.layer_type,
     x: layer.out_act.sx,
@@ -32,13 +32,14 @@ const extractLayer = (currentIndex, layer, prevLayerDim, depthRatio) => {
     currentIndex,
     layer,
     prevLayerDim,
-    depthRatio
+    depthRatio,
+    willExtract
   );
 
   return layerInfo;
 };
 
-const extractActivationInfo = (currentIndex, layer, prevLayerDim, depthRatio) => {
+const extractActivationInfo = (currentIndex, layer, prevLayerDim, depthRatio, willExtract=false) => {
   const blocks = [];
   const blockSize = layer.out_act.sx * layer.out_act.sy;
   const recFieldOptions = {
@@ -79,12 +80,16 @@ const extractActivationInfo = (currentIndex, layer, prevLayerDim, depthRatio) =>
         recField: recFieldOptions
       };
 
-      // if (currentIndex === 1 && neuronIndex === 24) { console.log(inputNeuronsOptions); }
-
       block.neurons.push({
         activation,
-        input_neurons: getInputNeurons(inputNeuronsOptions)
+        input_neurons: willExtract ? getInputNeurons(inputNeuronsOptions) : []
       });
+
+      // if (x < 5) {
+      //   console.log('hi', getInputNeurons(inputNeuronsOptions))
+      //   x++
+      // }
+      // console.log('run')
 
       // Check if max/min has changed
       if (activation < block.min) { block.min = activation; }

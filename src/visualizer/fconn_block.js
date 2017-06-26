@@ -26,7 +26,7 @@ class FConnBlock extends CanvBlock {
     const neuron = this.neurons[x];
     return { neuron: x, input_neurons: neuron.input_neurons };
   }
-  
+
   setBounds(pos, dim) {
     const sx = 50;
     const centerX = pos.x + dim.x;
