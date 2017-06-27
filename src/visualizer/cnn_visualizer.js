@@ -77,12 +77,16 @@ class CnnVisualizer {
   _generateBlocks() {
     this.blocks = [];
     this.layerInfo = [];
+    this.labels = [];
 
     for (let i = 0; i < this.cnn.length; i++) {
       let layer = this.cnn[i];
       if (layer.type === 'fc') {
         this.blocks.push(new FConnBlock(layer));
         this.layerInfo.push({x: layer.x, y: layer.y, z: 1, type: layer.type});
+        this.labels.push({
+          text: this._layerTypeToText(layer.type)
+        });
       }
       else {
         for (let x = 0; x < layer.blocks.length; x++) {
@@ -94,9 +98,28 @@ class CnnVisualizer {
           z: layer.z,
           type: layer.type
         });
+        this.labels.push({
+          text: this._layerTypeToText(layer.type)
+        });
       }
     }
     this._positionBlocks();
+  }
+
+  _layerTypeToText(type) {
+    switch (type) {
+      case "fc":
+        return "Fully-Connected Layer";
+      case "conv":
+        return "Convolutional Layer";
+      case "pool":
+        return "Pooling Layer";
+      case "softmax":
+        return "Softmax Layer";
+      case "input":
+        return "Input Layer";
+    }
+    return "[Unknown Layer]"
   }
 
   _generateBlock(type, info, x, y) {
@@ -117,6 +140,7 @@ class CnnVisualizer {
     for (let i = 0, b = 0; i < this.layerInfo.length; i++) {
       const layer = this.layerInfo[i];
       const dim = new Vector(scale * layer.x, scale * layer.y);
+      this.labels[i].pos = new Vector(this.width / 2 - this.labels[i].text.length * 6, sy - 3);
       for (let j = 0; j < layer.z; j++, b++) {
         const block = this.blocks[b];
         const pos = new Vector(this.width / (layer.z + 1) * (j + 1) - dim.x / 2, sy);
@@ -142,9 +166,15 @@ class CnnVisualizer {
     const ctx = this.canvasEl.getContext('2d');
     ctx.clearRect(0, 0, this.width, this.height);
     
-    ctx.font = "30px Roboto";
+    ctx.font = "1.6em Roboto";
+    // Draw each layer
+    for (let i = 0; i < this.labels.length; i++) {
+      const label = this.labels[i];
+      ctx.fillText(label.text, label.pos.x, label.pos.y);
+    }
+    // Draw each block
     for (let i = 0; i < this.blocks.length; i++) {
-      if(this.highlights)
+      if (this.highlights)
         this.blocks[i].draw(ctx, true, this._getHighlights(i));
       else
         this.blocks[i].draw(ctx, false);
