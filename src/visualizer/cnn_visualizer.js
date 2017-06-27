@@ -141,6 +141,8 @@ class CnnVisualizer {
   _draw() {
     const ctx = this.canvasEl.getContext('2d');
     ctx.clearRect(0, 0, this.width, this.height);
+    
+    ctx.font = "30px Roboto";
     for (let i = 0; i < this.blocks.length; i++) {
       if(this.highlights)
         this.blocks[i].draw(ctx, true, this._getHighlights(i));
