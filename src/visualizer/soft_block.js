@@ -12,8 +12,8 @@ class SoftBlock extends CanvBlock {
     let {min, max} = info;
     let activation = info.neurons[0].activation;
     console.log(activation);
-    this.cColor = this._interpolator(min, max)(activation);
-    this.hColor = this._interpolator(min, max, "rgba(50, 205, 50, 0.1)", "rgba(0, 100, 0, 0.1)")(activation);
+    this.cColor = this._interpolator(0, 1)(activation);
+    this.hColor = this._interpolator(0, 1, "rgba(50, 205, 50, 0.1)", "rgba(0, 100, 0, 0.1)")(activation);
   }
   
   draw(ctx, highlightMode) {

@@ -46,7 +46,7 @@ class FConnBlock extends CanvBlock {
         lerp = inputNeurons.includes(i) ? this.cLerp : this.hLerp;
       }
       ctx.fillStyle = lerp(this.neurons[i].activation);
-      ctx.fillRect(this.pos.x + i * dx, this.pos.y, dx, this.dim.y);
+      ctx.fillRect(this.pos.x + i * dx + 10, this.pos.y, dx - 10, this.dim.y);
     }
   }
 }

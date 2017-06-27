@@ -22,7 +22,6 @@ class CnnVisualizer {
 
   update(cnn) {
     this.cnn = cnn;
-    // console.log(cnn);
     for (let i = 0, b = 0; i < this.cnn.length; i++) {
       let layer = this.cnn[i];
       if (layer.type === 'fc') {

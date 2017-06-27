@@ -1,12 +1,12 @@
 const extracted = require('../extracted')
 
 export default function merge(layers) {
-  extracted.forEach((layer, i) => {
+  layers.forEach((layer, i) => {
     layer.blocks.forEach((block, j) => {
       block.neurons.forEach((neuron, k) => {
-        neuron.activation = layers[i].blocks[j].neurons[k].activation
+        neuron.input_neurons = extracted[i].blocks[j].neurons[k].input_neurons
       })
     })
   })
-  return extracted
+  return layers
 }
