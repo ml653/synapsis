@@ -13,6 +13,7 @@ class GridBlock extends CanvBlock {
     this.cLerp = this._interpolator(min, max);
     this.hLerp = this._interpolator(min, max, "rgba(50, 205, 50, 0.1)", "rgba(0, 100, 0, 0.1)");
     this.neurons = neurons;
+    console.log("UPDATE");
   }
 
   getNeuronPosition(i) {
