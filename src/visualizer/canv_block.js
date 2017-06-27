@@ -1,5 +1,6 @@
 import Vector from './vector';
 import {scaleLinear} from 'd3';
+import {interpolatorSpec} from '../../src/utils';
 
 /// ABSTRACT CLASS
 class CanvBlock {
@@ -28,18 +29,23 @@ class CanvBlock {
 
   }
 
-  draw(ctx) {
-    ctx.fillStyle = "#999";
-    ctx.fillRect(this.pos.x + 2, this.pos.y + 2, this.dim.x, this.dim.y);
+  getNeuronPosition(idx) {
+    return undefined;
   }
 
-  _interpolator(min, max, colorA = 'limegreen', colorB = 'darkgreen') {
-    let lerp = scaleLinear()
-      .domain([min, max])
-      .range([colorA, colorB]);
-    lerp.clamp(true);
-    return lerp;
+  draw(ctx, highlightMode) {
+    ctx.beginPath();
+    ctx.strokeStyle = highlightMode ? "rgba(153, 153, 153, .2)" : "#999";
+    ctx.lineWidth = 4;
+    ctx.moveTo(this.pos.x, this.pos.y + this.dim.y);
+    ctx.lineTo(this.pos.x + this.dim.x, this.pos.y + this.dim.y);
+    ctx.lineTo(this.pos.x + this.dim.x, this.pos.y);
+    ctx.stroke();
   }
 }
+
+CanvBlock.prototype._interpolator = (min, max, colorA = 'limegreen', colorB = '#145B19') => (
+  interpolatorSpec(min, max, colorA, colorB)
+);
 
 export default CanvBlock;

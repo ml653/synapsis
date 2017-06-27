@@ -11,15 +11,17 @@ class CnnVisualizer {
     this.canvasEl = canvasEl;
     this.cnn = cnn;
     this._generateBlocks();
-    
+
+    this.addressHash = {};
+
     this._forEach((layerI, colI, blockI) => {
       this.blocks[blockI].address = { layer: layerI, block: colI };
+      this.addressHash[`${layerI},${colI}`] = blockI;
     });
   }
 
   update(cnn) {
     this.cnn = cnn;
-    console.log(cnn);
     for (let i = 0, b = 0; i < this.cnn.length; i++) {
       let layer = this.cnn[i];
       if (layer.type === 'fc') {
@@ -41,7 +43,7 @@ class CnnVisualizer {
 
   _setHighlights(pos) {
     let foundHighlight = false;
-    
+
     for (let i = 0; i < this.blocks.length; i++) {
       // check if mouse contains a position
       if (this.blocks[i].contains(pos)) {
@@ -49,7 +51,7 @@ class CnnVisualizer {
         // get the highlights of that block (should return a neuron)
         const highlights = this.blocks[i].getHighlights(pos);
         // check old and current highlights to save draw frames
-        if (highlights && 
+        if (highlights &&
          (!this.highlights ||
          !(i === this.highlights.block && this.highlights.neuron === highlights.neuron))) {
           this.highlights = highlights;
@@ -77,12 +79,16 @@ class CnnVisualizer {
   _generateBlocks() {
     this.blocks = [];
     this.layerInfo = [];
+    this.labels = [];
 
     for (let i = 0; i < this.cnn.length; i++) {
       let layer = this.cnn[i];
       if (layer.type === 'fc') {
         this.blocks.push(new FConnBlock(layer));
         this.layerInfo.push({x: layer.x, y: layer.y, z: 1, type: layer.type});
+        this.labels.push({
+          text: this._layerTypeToText(layer.type)
+        });
       }
       else {
         for (let x = 0; x < layer.blocks.length; x++) {
@@ -94,9 +100,28 @@ class CnnVisualizer {
           z: layer.z,
           type: layer.type
         });
+        this.labels.push({
+          text: this._layerTypeToText(layer.type)
+        });
       }
     }
     this._positionBlocks();
+  }
+
+  _layerTypeToText(type) {
+    switch (type) {
+      case "fc":
+        return "Fully-Connected Layer";
+      case "conv":
+        return "Convolutional Layer";
+      case "pool":
+        return "Pooling Layer";
+      case "softmax":
+        return "Softmax Layer";
+      case "input":
+        return "Input Layer";
+    }
+    return "[Unknown Layer]"
   }
 
   _generateBlock(type, info, x, y) {
@@ -117,6 +142,7 @@ class CnnVisualizer {
     for (let i = 0, b = 0; i < this.layerInfo.length; i++) {
       const layer = this.layerInfo[i];
       const dim = new Vector(scale * layer.x, scale * layer.y);
+      this.labels[i].pos = new Vector(this.width / 2 - this.labels[i].text.length * 6, sy - 3);
       for (let j = 0; j < layer.z; j++, b++) {
         const block = this.blocks[b];
         const pos = new Vector(this.width / (layer.z + 1) * (j + 1) - dim.x / 2, sy);
@@ -141,19 +167,46 @@ class CnnVisualizer {
   _draw() {
     const ctx = this.canvasEl.getContext('2d');
     ctx.clearRect(0, 0, this.width, this.height);
+
+    if (this.highlights)
+      this._drawHighlights(ctx);
+    
+    // Draw each label
+    ctx.font = "1.6em Roboto";
+    ctx.fillStyle = "darkgreen";
+    for (let i = 0; i < this.labels.length; i++) {
+      const label = this.labels[i];
+      ctx.fillText(label.text, label.pos.x, label.pos.y);
+    }
+    // Draw each block
     for (let i = 0; i < this.blocks.length; i++) {
-      if(this.highlights)
+      if (this.highlights)
         this.blocks[i].draw(ctx, true, this._getHighlights(i));
       else
         this.blocks[i].draw(ctx, false);
     }
   }
 
+  _drawHighlights(ctx) {
+    ctx.beginPath();
+    ctx.strokeStyle = "darkgreen";
+    ctx.lineWidth = 1;
+    const start = this.blocks[this.highlights.block];
+    const startPt = start.getNeuronPosition(this.highlights.neuron);
+    for (let i = 0; i < this.highlights.input_neurons.length; i++) {
+      const {block, layer, neuron} = this.highlights.input_neurons[i];
+      const idx = this.addressHash[`${layer},${block}`];
+      const pt = this.blocks[idx].getNeuronPosition(neuron);
+      ctx.moveTo(startPt.x, startPt.y);
+      ctx.lineTo(pt.x, pt.y);
+    }
+    ctx.stroke();
+  }
+
   _getHighlights(blockI) {
     const myAddress = this.blocks[blockI].address;
     const answer = [];
-    const h = this.highlights;
-    if (h.block === blockI)
+    if (this.highlights.block === blockI)
       answer.push(this.highlights.neuron);
     for (let i = 0; i < this.highlights.input_neurons.length; i++) {
       const address = this.highlights.input_neurons[i];
