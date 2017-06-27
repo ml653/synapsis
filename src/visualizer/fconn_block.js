@@ -16,7 +16,7 @@ class FConnBlock extends CanvBlock {
 
   getNeuronPosition(i) {
     const dx = this.dim.x / this.neurons.length;
-    return new Vector(i * dx + dx / 2, this.height / 2).add(this.pos);
+    return new Vector(i * dx + dx / 2, this.dim.y / 2).add(this.pos);
   }
 
   getHighlights(pt) {
