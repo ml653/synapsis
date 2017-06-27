@@ -1,7 +1,7 @@
 <template>
   <div v-bind:class="fixed ? 'sidebar fixed' : 'sidebar unfixed'">
     <div class="top-sidebar">
-      <div id='test'/>
+      <div id='test'></div>
       <brand></brand>
       <info></info>
     </div>

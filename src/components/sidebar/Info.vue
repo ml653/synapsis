@@ -1,12 +1,12 @@
 <template>
   <div class="info">
     <a href="https://github.com/ml653/synapsis" target="_blank">
-      <i class="fa fa-github" />
+      <i class="fa fa-github"></i>
     </a>
-    <i class="fa fa-question-circle-o" v-on:click="handleInfoClick" />
+    <i class="fa fa-question-circle-o" v-on:click="handleInfoClick"></i>
 
     <div v-if="showTooltip" class="info-tooltip" v-on:click="stopPropagation">
-      <i class="fa fa-times" v-on:click="handleInfoClick" />
+      <i class="fa fa-times" v-on:click="handleInfoClick"></i>
 
       <progress-bar :currentMsg="currentMsg" :messages="messages"></progress-bar>
 
@@ -20,8 +20,6 @@
         :prevMsg="prevMsg">
       </tooltip-buttons>
     </div>
-
-  </div>
   </div>
 </template>
 

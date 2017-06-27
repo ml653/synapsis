@@ -1,5 +1,6 @@
 <template>
   <div class="app-wrapper">
+    <splash-modal v-if="showModal" :handleModalClick="handleModalClick"></splash-modal>
     <div class="visualization-wrapper">
       <sidebar
         :stats="stats"
@@ -10,11 +11,11 @@
       ></sidebar>
       <visualization></visualization>
     </div>
-    <!--<neural-net></neural-net>-->
   </div>
 </template>
 
 <script>
+import SplashModal from './misc/SplashModal';
 import Sidebar from './sidebar/Sidebar';
 import Visualization from './visualization/Visualization.vue';
 import NeuralNet from './neural-net/NeuralNet';
@@ -25,6 +26,7 @@ import * as SynapsisUtils from '../utils';
 export default {
   name: 'synapsis',
   components: {
+    SplashModal,
     Sidebar,
     Visualization,
     NeuralNet
@@ -63,10 +65,11 @@ export default {
       });
     }
     startWebworker = startWebworker.bind(this);
-    startWebworker();
+    // startWebworker();
   },
   data() {
     return {
+      showModal: true,
       fixedSidebar: true,
       stats: {
         trainAcc: 0,
@@ -127,20 +130,10 @@ export default {
         this.exampleNum += 100;
       }
     },
-    // addSidebarListener() {
-    //   // 'Unfixes' the sidebar when it hits the 2nd part of the page
-    //   document.addEventListener('scroll', () => {
-    //     if (window.scrollY > window.innerHeight) {
-    //       if (this.fixedSidebar) {
-    //         this.fixedSidebar = false;
-    //       }
-    //     } else {
-    //       if (!this.fixedSidebar) {
-    //         this.fixedSidebar = true;
-    //       }
-    //     }
-    //   })
-    // },
+    handleModalClick(e) {
+      e.preventDefault();
+      this.showModal = false;
+    },
     toggleTraining() {
       // Passed down to > sidebar > current-status
       this.isTraining = !this.isTraining;

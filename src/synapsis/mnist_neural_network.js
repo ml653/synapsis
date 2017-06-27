@@ -87,6 +87,7 @@ class MNISTNeuralNetwork {
   }
 
   updateView(net, predictions, label) {
+    self.logCB('update')
     this.post({
       type: 'NET',
       message: {
@@ -155,7 +156,7 @@ class MNISTNeuralNetwork {
     // preds.sort(function(a, b) {
     //   return a.p < b.p ? 1 : -1;
     // });
-
+    self.logCB('test predict')
     this.updateView(this.net, preds, label)
   }
 }
