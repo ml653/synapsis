@@ -91,7 +91,6 @@ export default {
       this.stats = stats;
     },
     updateLayers(layers) {
-      console.log("UPDATE LAYERS");
       this.layers = layers;
     },
     updateLabel(label) {

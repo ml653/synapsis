@@ -1,6 +1,6 @@
 import Vector from './vector';
 import GridBlock from './grid_block';
-import {interpolator} from '../../src/utils';
+import {interpolator} from '../utils';
 
 class InputBlock extends GridBlock {
   constructor(info, x, y) {
