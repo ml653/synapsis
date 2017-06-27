@@ -21,7 +21,6 @@ export default {
   },
   mounted: function() {
     this.canvasEl = document.getElementById("cnn-viz");
-    console.log(this.layers);
   },
   destroyed: function() {
     window.removeEventListener("resize", this.layoutContainers);

@@ -1,6 +1,7 @@
 import Vector from './vector';
 import {scaleLinear} from 'd3';
 import {interpolatorSpec} from '../../src/utils';
+import * as COLORS from '../util_colors';
 
 /// ABSTRACT CLASS
 class CanvBlock {
@@ -35,7 +36,7 @@ class CanvBlock {
 
   draw(ctx, highlightMode) {
     ctx.beginPath();
-    ctx.strokeStyle = highlightMode ? "rgba(153, 153, 153, .2)" : "#999";
+    ctx.strokeStyle = highlightMode ? COLORS.SHADOW : COLORS.TRANS_SHADOW;
     ctx.lineWidth = 4;
     ctx.moveTo(this.pos.x, this.pos.y + this.dim.y);
     ctx.lineTo(this.pos.x + this.dim.x, this.pos.y + this.dim.y);
@@ -44,7 +45,7 @@ class CanvBlock {
   }
 }
 
-CanvBlock.prototype._interpolator = (min, max, colorA = 'limegreen', colorB = '#145B19') => (
+CanvBlock.prototype._interpolator = (min, max, colorA = COLORS.LIGHT_NEURON, colorB = COLORS.DARK_NEURON) => (
   interpolatorSpec(min, max, colorA, colorB)
 );
 
