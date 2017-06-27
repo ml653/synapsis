@@ -48,9 +48,8 @@ export default {
     }
   },
   data() {
-    // temporary for my sake
     return {
-      showTooltip: false,
+      showTooltip: true,
       currentMsg: 0,
       messages: [
         `

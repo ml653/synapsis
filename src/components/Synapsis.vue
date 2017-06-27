@@ -65,7 +65,7 @@ export default {
       });
     }
     startWebworker = startWebworker.bind(this);
-    // startWebworker();
+    startWebworker();
   },
   data() {
     return {

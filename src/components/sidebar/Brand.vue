@@ -1,6 +1,6 @@
 <template>
   <div class="brand">
-    <img src="/static/logo.svg" alt="Synapsis logo" />
+    <img src="/static/brain.svg" alt="Synapsis logo"></img>
     <h1>Synapsis</h1>
   </div>
 </template>
