@@ -44,8 +44,10 @@ export default {
         } else if (e.data.type === "NET") {
           this.updateLabel(e.data.message.label);
           const layers = extractLayers(e.data.message.net)
-          this.updateLayers(merge(layers))
+          const merged = merge(layers)
+          this.updateLayers(merged)
           this.updateResults(e.data.message.predictions)
+          console.log('merged', merged)
         } else if (e.data.type === "MESSAGE") {
           console.log(e.data.e);
         }

@@ -1,4 +1,4 @@
-const extracted = require('../extracted')
+const extracted = require('../extracted_fc')
 
 export default function merge(layers) {
   layers.forEach((layer, i) => {
