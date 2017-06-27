@@ -13,14 +13,15 @@
         <div class="machine-layer layer-5"></div>
       </div>
 
-      <h2>
-        Machine learning in your browser!
+      <h4>
+        Sit back and relax.
         <br>
+        Watch your machine <strong>learn handwriting!</strong>
+        <br><br>
+        No external setup required.
         <br>
-        Sit back and relax,
-        <br>
-        watch your machine learn handwriting!
-      </h2>
+        It's all in the <strong>browser!</strong>
+      </h4>
 
       <div class="button-wrapper">
         <div class="exit-modal-button" @click="handleModalClick">

@@ -3,6 +3,8 @@
     <splash-modal v-if="showModal" :handleModalClick="handleModalClick"></splash-modal>
     <div class="visualization-wrapper">
       <sidebar
+        :handleInfoClick="handleInfoClick"
+        :showTooltip="showTooltip"
         :stats="stats"
         :fixed="fixedSidebar"
         :isTraining="isTraining"
@@ -70,6 +72,7 @@ export default {
   data() {
     return {
       showModal: true,
+      showTooltip: false,
       fixedSidebar: true,
       stats: {
         trainAcc: 0,
@@ -131,8 +134,15 @@ export default {
       }
     },
     handleModalClick(e) {
-      e.preventDefault();
-      this.showModal = false;
+      if (this.showModal) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.showModal = false;
+        this.handleInfoClick();
+      }
+    },
+    handleInfoClick() {
+      this.showTooltip = !this.showTooltip;
     },
     toggleTraining() {
       // Passed down to > sidebar > current-status

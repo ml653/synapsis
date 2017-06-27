@@ -42,10 +42,8 @@ export default {
     ProgressBar,
     TooltipButtons
   },
+  props: ["showTooltip", "handleInfoClick"],
   methods: {
-    handleInfoClick() {
-      this.showTooltip = !this.showTooltip;
-    },
     nextMsg() {
       this.currentMsg += 1;
       this.direction = "NEXT"
@@ -60,7 +58,6 @@ export default {
   },
   data() {
     return {
-      showTooltip: true,
       currentMsg: 0,
       direction: "NEXT",
       messages: [

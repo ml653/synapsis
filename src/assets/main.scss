@@ -57,6 +57,11 @@ a {
     position: relative;
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
 
+    strong {
+      color: $base-darkest;
+      font-weight: 600;
+    }
+
     h1 {
       font-size: 3em;
       text-align: center;
@@ -68,12 +73,12 @@ a {
       z-index: 1;
     }
 
-    h2 {
+    h4 {
       color: black;
       width: 100%;
       text-align: center;
       position: absolute;
-      bottom: 140px;
+      bottom: 150px;
       z-index: 1;
       line-height: 1.1em;
     }
@@ -142,6 +147,7 @@ a {
         background: rgba(255, 255, 255, 0.5);
       }
     }
+
     .button-wrapper {
       width: 100%;
       display: flex;
@@ -151,7 +157,7 @@ a {
         padding: 15px;
         font-size: 1.5em;
         position: absolute;
-        bottom: 50px;
+        bottom: 55px;
         width: 100px;
         background: $base-darker;
         color: white;

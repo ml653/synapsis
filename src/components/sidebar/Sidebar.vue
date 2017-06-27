@@ -3,7 +3,10 @@
     <div class="top-sidebar">
       <div id='test'></div>
       <brand></brand>
-      <info></info>
+      <info
+        :showTooltip="showTooltip"
+        :handleInfoClick="handleInfoClick">
+      </info>
     </div>
     <stats
       :stats="stats"
@@ -22,7 +25,7 @@ import Results from './Results';
 
 export default {
   name: 'sidebar',
-  props: ["fixed", "stats", "results", "isTraining", "toggleTraining"],
+  props: ["showTooltip","handleInfoClick", "fixed", "stats", "results", "isTraining", "toggleTraining"],
   components: {
     Brand,
     Info,
