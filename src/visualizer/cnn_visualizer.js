@@ -166,8 +166,9 @@ class CnnVisualizer {
     const ctx = this.canvasEl.getContext('2d');
     ctx.clearRect(0, 0, this.width, this.height);
     
+    // Draw each label
     ctx.font = "1.6em Roboto";
-    // Draw each layer
+    ctx.fillStyle = "darkgreen";
     for (let i = 0; i < this.labels.length; i++) {
       const label = this.labels[i];
       ctx.fillText(label.text, label.pos.x, label.pos.y);
