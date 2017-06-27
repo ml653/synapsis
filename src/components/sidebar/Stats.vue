@@ -19,8 +19,8 @@
       </div>
 
       <div>
-        <div>Training accuracy: {{ stats.trainAcc > 0 ? Math.round(stats.trainAcc * 100) / 100 : 0 }}</div>
-        <div>Validation accuracy: {{ stats.valAcc > 0 ? Math.round(stats.valAcc * 100) / 100 : 0 }}</div>
+        <div>Training accuracy: {{ stats.trainAcc > 0 ? Math.round(stats.trainAcc * 100)  : 0 }}%</div>
+        <div>Validation accuracy: {{ stats.valAcc > 0 ? Math.round(stats.valAcc * 100) : 0 }}%</div>
         <div>Examples seen: {{ stats.examples }}</div>
       </div>
     </div>

@@ -17,3 +17,33 @@
 .fade-leave-to {
   opacity: 0;
 }
+
+.slide-left-enter {
+  opacity: 0;
+  transform: translateX(50px);
+}
+
+.slide-left-enter-active {
+  opacity: 0;
+  transform: translateX(50px);
+}
+
+.slide-left-leave-to {
+  opacity: 0;
+  transform: translateX(-25px);
+}
+
+.slide-right-enter {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+
+.slide-right-enter-active {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+
+.slide-right-leave-to {
+  opacity: 0;
+  transform: translateX(25px);
+}

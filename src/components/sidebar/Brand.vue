@@ -1,7 +1,7 @@
 <template>
   <div class="brand">
-    <img src="/static/brain.svg" alt="Synapsis logo"></img>
-    <h1>Synapsis</h1>
+    <h1><img src="/static/brain.svg" alt="Synapsis logo"></img>Synapsis</h1>
+    <p>Machine Learning Visualizer</p>
   </div>
 </template>
 

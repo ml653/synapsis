@@ -8,17 +8,26 @@
     <div v-if="showTooltip" class="info-tooltip" v-on:click="stopPropagation">
       <i class="fa fa-times" v-on:click="handleInfoClick"></i>
 
-      <progress-bar :currentMsg="currentMsg" :messages="messages"></progress-bar>
+        <progress-bar :currentMsg="currentMsg" :messages="messages"></progress-bar>
 
-      <div v-html="messages[currentMsg]"></div>
-      <div class="tooltip-arrow"></div>
+        <transition-group :name=" direction === 'NEXT' ? 'slide-left' : 'slide-right'">
+          <div
+            class="tooltip-message"
+            :key="idx"
+            v-for="(message, idx) in messages"
+            v-if="idx === currentMsg"
+            v-html="message">
+          </div>
+        </transition-group>
 
-      <tooltip-buttons
-        :currentMsg="currentMsg"
-        :length="messages.length"
-        :nextMsg="nextMsg"
-        :prevMsg="prevMsg">
-      </tooltip-buttons>
+        <div class="tooltip-arrow"></div>
+
+        <tooltip-buttons
+          :currentMsg="currentMsg"
+          :length="messages.length"
+          :nextMsg="nextMsg"
+          :prevMsg="prevMsg">
+        </tooltip-buttons>
     </div>
   </div>
 </template>
@@ -39,9 +48,11 @@ export default {
     },
     nextMsg() {
       this.currentMsg += 1;
+      this.direction = "NEXT"
     },
     prevMsg() {
       this.currentMsg -= 1;
+      this.direction = "PREV"
     },
     stopPropagation(e) {
       e.stopPropagation();
@@ -51,24 +62,44 @@ export default {
     return {
       showTooltip: true,
       currentMsg: 0,
+      direction: "NEXT",
       messages: [
         `
-          <h3>Welcome to Synapsis</h3>
-          Watch a Convoluted Neural Network train itself live to recognize
+          <h3>Welcome to Synapsis!</h3>
+          <br>
+          Watch a
+          <a target="_blank" href="https://en.wikipedia.org/wiki/Convolutional_neural_network">
+            Convolutional Neural Network
+          </a>
+          train itself live to recognize
           handwritten numbers!
+          <br><br>
+          Click next to find out more about what is
+          going on behind the scenes.
         `,
         `
-          This demo trains a Convolutional Neural Network on the MNIST digits
-          dataset in your browser, with nothing but Javascript. The dataset is
-          fairly easy and one should expect to get somewhere around 99% accuracy
-          within few minutes. I used this python script to parse the original files
-          into batches of images that can be easily loaded into page DOM with img tags.
+          The handwritten numbers on the left were fed into the neural network.
+          <br><br>
+          This is the dataset that the neural network is using to train itself
+          to recognize handwriting.
+          <br><br>
         `,
         `
-          This network takes a 28x28 MNIST image and crops a random 24x24 window before
-          training on it (this technique is called data augmentation and improves generalization).
-          Similarly to do prediction, 4 random crops are sampled and the probabilities
-          across all crops are averaged to produce final predictions.
+          For each number, 0-9, the neural network outputs a probability.
+          The probability is how confident it thinks that this is the correct number.
+          <br><br>
+          The <strong>histogram</strong> represents these probabilities.
+          <br><br>
+          The <strong style="color: #f39c12">orange</strong> number represents the neural network's top guess.
+        `,
+        `
+          For each guess, the neural network will strengthen or weaken its neurons.
+          <br><br>
+          Each neuron that contributed to the
+          <strong style="color: #e74c3c">wrong</strong> answer will get weaker.
+          <br><br>
+          Each neuron that contributed to the
+          <strong style="color: #5CB34E">right</strong> answer will get stronger.
         `
       ]
     };
