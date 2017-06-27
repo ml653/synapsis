@@ -4,6 +4,7 @@ import PoolBlock from './pool_block';
 import FConnBlock from './fconn_block';
 import SoftBlock from './soft_block';
 import Vector from './vector';
+import * as COLORS from '../util_colors';
 
 let SPACING = new Vector(1, 150);
 class CnnVisualizer {
@@ -92,7 +93,7 @@ class CnnVisualizer {
       }
       else {
         for (let x = 0; x < layer.blocks.length; x++) {
-          this.blocks.push(this._generateBlock(layer.type, layer.blocks[x], layer.x, layer.y));
+          this.blocks.push(this._generateBlock(layer.type, layer.blocks[x], layer.x, layer.y, x));
         }
         this.layerInfo.push({
           x: layer.type === 'softmax' ? 15 : layer.x,
@@ -124,15 +125,16 @@ class CnnVisualizer {
     return "[Unknown Layer]"
   }
 
-  _generateBlock(type, info, x, y) {
+  _generateBlock(type, info, x, y, i) {
     if (type === 'input')
       return new InputBlock(info, x, y);
     if (type === 'conv')
       return new ConvBlock(info, x, y);
     if (type === 'pool')
       return new PoolBlock(info, x, y);
-    if (type === 'softmax')
-      return new SoftBlock(info);
+    if (type === 'softmax') {
+      return new SoftBlock(info, i);
+    }
     return null;
   }
 
@@ -173,7 +175,7 @@ class CnnVisualizer {
     
     // Draw each label
     ctx.font = "1.6em Roboto";
-    ctx.fillStyle = "darkgreen";
+    ctx.fillStyle = COLORS.LAYER_TEXT;
     for (let i = 0; i < this.labels.length; i++) {
       const label = this.labels[i];
       ctx.fillText(label.text, label.pos.x, label.pos.y);
@@ -189,7 +191,7 @@ class CnnVisualizer {
 
   _drawHighlights(ctx) {
     ctx.beginPath();
-    ctx.strokeStyle = "darkgreen";
+    ctx.strokeStyle = COLORS.CONNECTIONS;
     ctx.lineWidth = 1;
     const start = this.blocks[this.highlights.block];
     const startPt = start.getNeuronPosition(this.highlights.neuron);

@@ -1,4 +1,5 @@
 import { scaleLinear } from 'd3';
+import * as COLORS from './util_colors';
 
 export const make2DArr = (arr, dim) => {
   let newArr = [];
@@ -49,6 +50,6 @@ export const interpolatorSpec = (min, max, colorA, colorB) => {
 
 export const interpolator = (min, max) => {
   // .range(['#f8f8f8', '#39952B']);
-  return interpolatorSpec(min, max, '#f8f8f8', 'rgb(25, 97, 39)');
+  return interpolatorSpec(min, max, COLORS.LIGHT_INPUT, COLORS.DARK_INPUT);
 }
 
