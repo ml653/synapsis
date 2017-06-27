@@ -11,7 +11,7 @@
         :toggleTraining="toggleTraining"
         :results="results"
       ></sidebar>
-      <visualization></visualization>
+      <visualization :layers="layers"></visualization>
     </div>
   </div>
 </template>
@@ -24,6 +24,7 @@ import NeuralNet from './neural-net/NeuralNet';
 import ImportUtil from '../synapsis/import_util';
 import extractLayers from "../synapsis/extract_layers";
 import * as SynapsisUtils from '../utils';
+import merge from '../synapsis/merge'
 
 export default {
   name: 'synapsis',
@@ -34,6 +35,7 @@ export default {
     NeuralNet
   },
   mounted() {
+    let x = 0
     // this.addSidebarListener();
     this.worker = new SharedWorker('/static/synapsis/bundle_neural_network.js');
     async function startWebworker(){
@@ -45,7 +47,8 @@ export default {
           this.updateStats(e.data.message);
         } else if (e.data.type === "NET") {
           this.updateLabel(e.data.message.label);
-          this.updateLayers(extractLayers(e.data.message.net))
+          const layers = extractLayers(e.data.message.net)
+          this.updateLayers(merge(layers))
           this.updateResults(e.data.message.predictions)
         } else if (e.data.type === "MESSAGE") {
           console.log(e.data.e);
@@ -92,6 +95,7 @@ export default {
       this.stats = stats;
     },
     updateLayers(layers) {
+      console.log("UPDATE LAYERS");
       this.layers = layers;
     },
     updateLabel(label) {
