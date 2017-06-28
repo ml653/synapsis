@@ -22,7 +22,7 @@ import Sidebar from './sidebar/Sidebar';
 import Visualization from './visualization/Visualization.vue';
 import NeuralNet from './neural-net/NeuralNet';
 import ImportUtil from '../synapsis/import_util';
-import extractLayers from "../synapsis/extract_layers";
+import extractActivations from "../synapsis/extract_activations";
 import * as SynapsisUtils from '../utils';
 import merge from '../synapsis/merge'
 
@@ -47,11 +47,9 @@ export default {
           this.updateStats(e.data.message);
         } else if (e.data.type === "NET") {
           this.updateLabel(e.data.message.label);
-          const layers = extractLayers(e.data.message.net)
-          const merged = merge(layers)
-          this.updateLayers(merged)
+          const layers = extractActivations(e.data.message.net)
+          this.updateLayers(merge(layers))
           this.updateResults(e.data.message.predictions)
-          console.log('merged', merged)
         } else if (e.data.type === "MESSAGE") {
           console.log(e.data.e);
         }
