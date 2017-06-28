@@ -169,3 +169,11 @@ a {
     }
   }
 }
+
+.neuron-dropdown {
+  position: fixed;
+  width: 200px;
+  height: 100px;
+  background: white;
+  z-index: 10;
+}

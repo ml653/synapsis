@@ -9,9 +9,10 @@ import * as COLORS from '../util_colors';
 let SPACING = new Vector(1, 150);
 const LABEL_PADDING = 10;
 class CnnVisualizer {
-  constructor(canvasEl, cnn) {
+  constructor(canvasEl, cnn, updateNeuronData) {
     this.canvasEl = canvasEl;
     this.cnn = cnn;
+    this.updateNeuronData = updateNeuronData;
     this._generateBlocks();
 
     this.addressHash = {};
@@ -45,7 +46,6 @@ class CnnVisualizer {
 
   _setHighlights(pos) {
     let foundHighlight = false;
-
     for (let i = 0; i < this.blocks.length; i++) {
       // check if mouse contains a position
       if (this.blocks[i].contains(pos)) {
@@ -59,12 +59,17 @@ class CnnVisualizer {
           this.highlights = highlights;
           this.highlights.block = i;
           this._draw();
+          const currBlockNeurons = this.blocks[i].neurons;
+          const neuronPos = this.highlights.neuron;
+          const neuronData = currBlockNeurons[neuronPos];
+          this.updateNeuronData(true, Object.assign({}, neuronData, { pos }));
         }
         break;
       }
     }
 
     if (!foundHighlight && this.highlights) {
+      this.updateNeuronData(false);
       this.highlights = undefined;
       this._draw();
     }
@@ -173,7 +178,7 @@ class CnnVisualizer {
 
     if (this.highlights)
       this._drawHighlights(ctx);
-    
+
     // Draw each label
     ctx.font = "1.6em Roboto";
     ctx.fillStyle = COLORS.LAYER_TEXT;

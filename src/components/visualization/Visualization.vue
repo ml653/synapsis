@@ -13,11 +13,11 @@
 import CnnVisualizer from '../../visualizer/cnn_visualizer.js';
 export default {
   name: 'visualization',
-  props: ['layers'],
+  props: ['layers', 'updateNeuronData'],
   watch: {
     layers: function(newLayers) {
       if(!this.visualizer) {
-        this.visualizer = new CnnVisualizer(this.canvasEl, newLayers);
+        this.visualizer = new CnnVisualizer(this.canvasEl, newLayers, this.updateNeuronData);
         window.addEventListener("resize", this.layoutContainers);
         this.layoutContainers();
       }
