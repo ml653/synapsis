@@ -27,7 +27,6 @@ class SoftBlock extends CanvBlock {
   
   draw(ctx, highlightMode, inputNeurons) {
     super.draw(ctx, highlightMode);
-    console.log(inputNeurons);
     const isSolid = (!highlightMode) ? true : (inputNeurons && inputNeurons.length !== 0);
     ctx.fillStyle = isSolid ? this.cColor : this.hColor;
     ctx.fillRect(this.pos.x, this.pos.y, this.dim.x, this.dim.y);
