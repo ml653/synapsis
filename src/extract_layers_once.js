@@ -186,9 +186,15 @@ extracted[5].blocks.forEach(block => {
     neuron.input_neurons = input_neurons
   })
 })
-
-extracted[6].blocks.forEach((block) => {
-  block.neuro
+ 
+extracted[6].blocks.forEach((block, i) => {
+  block.neurons.forEach(neuron => {
+    neuron.input_neurons = [{
+      layer: 5,
+      block: 0,
+      neuron: i
+    }]
+  })
 })
 
 let fs = require('fs');
