@@ -1,6 +1,9 @@
 <template>
   <div class="visualization">
     <canvas id="cnn-viz" @mousemove="mousemove"></canvas>
+    <div id="compatibility-message" v-if="{workerNotSupported}">
+      <h3>This browser is not web-worker compatible</h3>
+    </div>
   </div>
 </template>
 
@@ -24,6 +27,11 @@ export default {
   },
   destroyed: function() {
     window.removeEventListener("resize", this.layoutContainers);
+  },
+  computed: {
+    workerNotSupported: function() {
+      return typeof(Worker);
+    },
   },
   methods: {
     layoutContainers: function(e) {
