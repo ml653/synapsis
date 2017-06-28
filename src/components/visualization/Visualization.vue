@@ -1,9 +1,9 @@
 <template>
   <div class="visualization">
     <canvas id="cnn-viz" @mousemove="mousemove"></canvas>
-    <div id="compatibility-message" v-if="{workerNotSupported}">
+    <div id="compatibility-message" v-if="workerType === undefined">
       <h3>Sorry, but this experiment requires a modern browser</h3>
-      <p>Please download chrome, oprah, safari, or firefox</p>
+      <p>Please download a more recent version of your browser</p>
       <p>Thank you for your time</p>
     </div>
   </div>
@@ -30,11 +30,6 @@ export default {
   destroyed: function() {
     window.removeEventListener("resize", this.layoutContainers);
   },
-  computed: {
-    workerNotSupported: function() {
-      return typeof(Worker);
-    },
-  },
   methods: {
     layoutContainers: function(e) {
       const bbox = this.canvasEl.getBoundingClientRect();
@@ -47,7 +42,10 @@ export default {
           e.pageY - this.canvasEl.offsetTop
         );
       }
-    }
+    },
+    workerType: function() {
+      return typeof(Worker);
+    },
   }
 };
 </script>
