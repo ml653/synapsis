@@ -37,12 +37,12 @@ export default {
   mounted() {
     let x = 0
     // this.addSidebarListener();
-    this.worker = new SharedWorker('/static/synapsis/bundle_neural_network.js');
+    this.worker = new Worker('/static/synapsis/bundle_neural_network.js');
     async function startWebworker(){
       const importUtil = new ImportUtil();
       await importUtil.loadAll();
 
-      this.worker.port.addEventListener("message", (e) => {
+      this.worker.addEventListener("message", (e) => {
         if (e.data.type === 'STATS'){
           this.updateStats(e.data.message);
         } else if (e.data.type === "NET") {
@@ -57,14 +57,8 @@ export default {
           console.error(e.data);
         }
       }, false);
-
-
-      console.log(importUtil.getParams());
-
-      this.worker.port.start();
-
       // post a message to the shared web this.worker
-      this.worker.port.postMessage({
+      this.worker.postMessage({
         type: "INITIALIZE",
         params: importUtil.getParams()
       });
@@ -151,9 +145,9 @@ export default {
       // Passed down to > sidebar > current-status
       this.isTraining = !this.isTraining;
       if (this.isTraining) {
-        this.worker.port.postMessage({ type: "RUN" });
+        this.worker.postMessage({ type: "RUN" });
       } else {
-        this.worker.port.postMessage({ type: "PAUSE" });
+        this.worker.postMessage({ type: "PAUSE" });
       }
     }
   }
