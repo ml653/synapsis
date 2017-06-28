@@ -1,7 +1,10 @@
 <template>
   <div class="app-wrapper">
+    <splash-modal v-if="showModal" :handleModalClick="handleModalClick"></splash-modal>
     <div class="visualization-wrapper">
       <sidebar
+        :handleInfoClick="handleInfoClick"
+        :showTooltip="showTooltip"
         :stats="stats"
         :fixed="fixedSidebar"
         :isTraining="isTraining"
@@ -10,11 +13,11 @@
       ></sidebar>
       <visualization :layers="layers"></visualization>
     </div>
-    <!--<neural-net></neural-net>-->
   </div>
 </template>
 
 <script>
+import SplashModal from './misc/SplashModal';
 import Sidebar from './sidebar/Sidebar';
 import Visualization from './visualization/Visualization.vue';
 import NeuralNet from './neural-net/NeuralNet';
@@ -26,6 +29,7 @@ import merge from '../synapsis/merge'
 export default {
   name: 'synapsis',
   components: {
+    SplashModal,
     Sidebar,
     Visualization,
     NeuralNet
@@ -72,6 +76,8 @@ export default {
   },
   data() {
     return {
+      showModal: true,
+      showTooltip: false,
       fixedSidebar: true,
       stats: {
         trainAcc: 0,
@@ -132,20 +138,17 @@ export default {
         this.exampleNum += 100;
       }
     },
-    // addSidebarListener() {
-    //   // 'Unfixes' the sidebar when it hits the 2nd part of the page
-    //   document.addEventListener('scroll', () => {
-    //     if (window.scrollY > window.innerHeight) {
-    //       if (this.fixedSidebar) {
-    //         this.fixedSidebar = false;
-    //       }
-    //     } else {
-    //       if (!this.fixedSidebar) {
-    //         this.fixedSidebar = true;
-    //       }
-    //     }
-    //   })
-    // },
+    handleModalClick(e) {
+      if (this.showModal) {
+        e.preventDefault();
+        e.stopPropagation();
+        this.showModal = false;
+        this.handleInfoClick();
+      }
+    },
+    handleInfoClick() {
+      this.showTooltip = !this.showTooltip;
+    },
     toggleTraining() {
       // Passed down to > sidebar > current-status
       this.isTraining = !this.isTraining;
