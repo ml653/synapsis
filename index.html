@@ -9,11 +9,15 @@
       background-color: #87D37C;
       color: white;
     }
-    #loader {
+    .loader {
       position: absolute;
       top: 45%;
       left: 47%;
       font-size: 50px;
+      text-align: center;
+    }
+    .loader img {
+      padding-left: 8px;
     }
   </style>
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -23,10 +27,13 @@
 </head>
 
 <body>
-  <div id="app">
-    <div id="loader">
+  <div id="">
+    <div class="loader">
       <i class="fa fa-spin fa-6 fa-circle-o-notch"></i> <br/>
-    </div>  
+    </div>
+    <div class="loader">
+      <img src="static/favicon-32x32.png"></img>
+    </div>
   </div>
   <!-- built files will be auto injected -->
 </body>
