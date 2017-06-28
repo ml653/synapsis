@@ -2,7 +2,9 @@
   <div class="visualization">
     <canvas id="cnn-viz" @mousemove="mousemove"></canvas>
     <div id="compatibility-message" v-if="{workerNotSupported}">
-      <h3>This browser is not web-worker compatible</h3>
+      <h3>Sorry, but this experiment requires a modern browser</h3>
+      <p>Please download chrome, oprah, safari, or firefox</p>
+      <p>Thank you for your time</p>
     </div>
   </div>
 </template>
