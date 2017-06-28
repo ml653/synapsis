@@ -7,6 +7,7 @@ import Vector from './vector';
 import * as COLORS from '../util_colors';
 
 let SPACING = new Vector(1, 150);
+const LABEL_PADDING = 10;
 class CnnVisualizer {
   constructor(canvasEl, cnn) {
     this.canvasEl = canvasEl;
@@ -144,7 +145,7 @@ class CnnVisualizer {
     for (let i = 0, b = 0; i < this.layerInfo.length; i++) {
       const layer = this.layerInfo[i];
       const dim = new Vector(scale * layer.x, scale * layer.y);
-      this.labels[i].pos = new Vector(this.width / 2 - this.labels[i].text.length * 6, sy - 3);
+      this.labels[i].pos = new Vector(this.width / 2 - this.labels[i].text.length * 6, sy - LABEL_PADDING);
       for (let j = 0; j < layer.z; j++, b++) {
         const block = this.blocks[b];
         const pos = new Vector(this.width / (layer.z + 1) * (j + 1) - dim.x / 2, sy);
