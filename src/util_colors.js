@@ -12,4 +12,4 @@ export const TRANS_SHADOW = "#999";
 export const CONNECTIONS = "darkgreen";
 export const LAYER_TEXT = "darkgreen";
 export const SOFT_BLOCK_TEXT = FADED_WHITE;
-export const TRANS_SOFT_BLOCK_TEXT = "rgba(240, 250,  240, 0.5)";
+export const TRANS_SOFT_BLOCK_TEXT = "rgba(240, 250,  240, 0.3)";
