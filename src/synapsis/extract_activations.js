@@ -18,7 +18,6 @@ const extractLayer = (currentIndex, layer) => {
     y: layer.out_act.sy,
     z: layer.out_depth
   }
-  console.log(layer)
 
   layerInfo.blocks = currentIndex === 0
     ? extractActivationInfoOfInput(layer)

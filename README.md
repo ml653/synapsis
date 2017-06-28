@@ -8,6 +8,8 @@ Machine learning and neural networks are topics that seem daunting from a layman
 ### Overview of the App
 In Synapsis, a convoluted neural network will be trained live to recognize handwritten digits from 0-9. The neural network starts off with low prediction accuracy rates. As training continues, the neural network becomes more accurate and is able to achieve a 99% accuracy rate within a few minutes.
 
+![Neural Network Activations](./static/screenshot_synapsis.png)
+
 ## Features
 
 ### Neural Network Layers
