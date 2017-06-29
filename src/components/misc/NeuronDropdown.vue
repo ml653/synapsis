@@ -11,9 +11,8 @@ export default {
   props: ["neuronData"],
   watch: {
     neuronData() {
-      console.log('hey')
-      this.$el.style.left = `${this.neuronData.x + 30}px`;
-      this.$el.style.top = `${this.neuronData.y - 7}px`;
+      this.$el.style.left = `${this.neuronData.x + 25}px`;
+      this.$el.style.top = `${this.neuronData.y - 10}px`;
     }
   }
 }
