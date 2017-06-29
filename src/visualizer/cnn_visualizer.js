@@ -45,27 +45,29 @@ class CnnVisualizer {
 
   _setHighlights(pos) {
     let foundHighlight = false;
+    let hAddress = null;
     for (let i = 0; i < this.blocks.length; i++) {
       // check if mouse contains a position
       if (this.blocks[i].contains(pos)) {
         foundHighlight = true;
         // get the highlights of that block (should return a neuron)
         const highlights = this.blocks[i].getHighlights(pos);
-        // check old and current highlights to save draw frames
-        if (highlights &&
-         (!this.highlights ||
-         !(i === this.highlights.block && this.highlights.neuron === highlights.neuron))) {
-          this.highlights = highlights;
-          this.highlights.block = i;
-          this._draw();
+        // if a neuron was highlighted
+        if (highlights) {
           const foundBlock = this.blocks[i];
-          return {
+          hAddress = {
             layer: foundBlock.address.layer,
             block: foundBlock.address.block,
             neuron: highlights.neuron
           };
+          // if neuron was highlighted and that neuron wasn't previously highlighted
+          if (!this.highlights || !(i === this.highlights.block && this.highlights.neuron === highlights.neuron)) {
+            this.highlights = highlights;
+            this.highlights.block = i;
+            this._draw();
+          }
+          break;
         }
-        break;
       }
     }
 
@@ -73,7 +75,7 @@ class CnnVisualizer {
       this.highlights = undefined;
       this._draw();
     }
-    return null;
+    return hAddress;
   }
 
   setSize(width, height) {
