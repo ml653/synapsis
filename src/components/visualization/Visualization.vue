@@ -37,11 +37,16 @@ export default {
     },
     mousemove: function(e) {
       if(this.visualizer) {
-        this.updateNeuronData({x: e.pageX - window.scrollX, y: e.pageY - window.scrollY})
-        this.visualizer.mousemove(
+        const data = this.visualizer.mousemove(
           e.pageX - this.canvasEl.offsetLeft,
           e.pageY - this.canvasEl.offsetTop
         );
+        if (data) {
+          data.x = e.pageX - window.scrollX;
+          data.y = e.pageY - window.scrollY;
+        }
+        console.log(data);
+        this.updateNeuronData(data);
       }
     },
     workerType: function() {

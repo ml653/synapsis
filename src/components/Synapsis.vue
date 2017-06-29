@@ -76,7 +76,7 @@ export default {
       showModal: true,
       showTooltip: false,
       fixedSidebar: true,
-      neuronDropdown: true,
+      neuronDropdown: false,
       neuronData: {},
       stats: {
         trainAcc: 0,
@@ -131,7 +131,13 @@ export default {
       this.results.unshift(result);
     },
     updateNeuronData(data) {
-      this.neuronData = data;
+      if (data) {
+        this.neuronDropdown = true;
+        this.neuronData = data;
+      } else {
+        this.neuronData = {};
+        this.neuronDropdown = false;
+      }
     },
     incrementExampleNum() {
       if (this.exampleNum === 1) {
