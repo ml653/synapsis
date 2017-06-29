@@ -40,7 +40,7 @@ class CnnVisualizer {
 
   mousemove(x, y) {
     const pos = new Vector(x, y);
-    this._setHighlights(pos);
+    return this._setHighlights(pos);
   }
 
   _setHighlights(pos) {
@@ -58,6 +58,12 @@ class CnnVisualizer {
           this.highlights = highlights;
           this.highlights.block = i;
           this._draw();
+          const foundBlock = this.blocks[i];
+          return {
+            layer: foundBlock.address.layer,
+            block: foundBlock.address.block,
+            neuron: highlights.neuron
+          };
         }
         break;
       }
@@ -67,6 +73,7 @@ class CnnVisualizer {
       this.highlights = undefined;
       this._draw();
     }
+    return null;
   }
 
   setSize(width, height) {
