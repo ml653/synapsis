@@ -37,6 +37,7 @@ export default {
     },
     mousemove: function(e) {
       if(this.visualizer) {
+        this.updateNeuronData({x: e.pageX - this.canvasEl.offsetLeft, y: e.pageY - this.canvasEl.offsetTop})
         this.visualizer.mousemove(
           e.pageX - this.canvasEl.offsetLeft,
           e.pageY - this.canvasEl.offsetTop

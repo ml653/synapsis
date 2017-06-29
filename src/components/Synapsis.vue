@@ -76,7 +76,7 @@ export default {
       showModal: true,
       showTooltip: false,
       fixedSidebar: true,
-      neuronDropdown: false,
+      neuronDropdown: true,
       neuronData: {},
       stats: {
         trainAcc: 0,
@@ -130,18 +130,8 @@ export default {
       }
       this.results.unshift(result);
     },
-    updateNeuronData(isNeuron, data) {
-      if (isNeuron) {
-        this.neuronDropdown = true;
-        this.neuronData = data;
-      } else {
-        if (this.neuronDropdown) {
-          this.neuronDropdown = false;
-        }
-        if (Object.keys(this.neuronData).length > 0) {
-          this.neuronData = {};
-        }
-      }
+    updateNeuronData(data) {
+      this.neuronData = data;
     },
     incrementExampleNum() {
       if (this.exampleNum === 1) {

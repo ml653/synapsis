@@ -1,6 +1,7 @@
 <template>
   <div class="neuron-dropdown">
     {{ neuronData.activation }}
+    <div class="arrow"></div>
   </div>
 </template>
 
@@ -10,8 +11,9 @@ export default {
   props: ["neuronData"],
   watch: {
     neuronData() {
-      this.$el.style.left = `${this.neuronData.pos.x + 100}px`;
-      this.$el.style.top = `${this.neuronData.pos.y + 20}px`;
+      console.log('hey')
+      this.$el.style.left = `${this.neuronData.x + 30}px`;
+      this.$el.style.top = `${this.neuronData.y - 7}px`;
     }
   }
 }

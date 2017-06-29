@@ -9,10 +9,9 @@ import * as COLORS from '../util_colors';
 let SPACING = new Vector(1, 150);
 const LABEL_PADDING = 10;
 class CnnVisualizer {
-  constructor(canvasEl, cnn, updateNeuronData) {
+  constructor(canvasEl, cnn) {
     this.canvasEl = canvasEl;
     this.cnn = cnn;
-    this.updateNeuronData = updateNeuronData;
     this._generateBlocks();
 
     this.addressHash = {};
@@ -59,17 +58,12 @@ class CnnVisualizer {
           this.highlights = highlights;
           this.highlights.block = i;
           this._draw();
-          const currBlockNeurons = this.blocks[i].neurons;
-          const neuronPos = this.highlights.neuron;
-          const neuronData = currBlockNeurons[neuronPos];
-          this.updateNeuronData(true, Object.assign({}, neuronData, { pos }));
         }
         break;
       }
     }
 
     if (!foundHighlight && this.highlights) {
-      this.updateNeuronData(false);
       this.highlights = undefined;
       this._draw();
     }
