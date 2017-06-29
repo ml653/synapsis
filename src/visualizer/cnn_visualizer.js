@@ -60,7 +60,11 @@ class CnnVisualizer {
           this.highlights.block = i;
           this._draw();
           const foundBlock = this.blocks[i];
-          return foundBlock.getNeuronPosition(this.highlights.neuron);
+          return {
+            layer: foundBlock.address.layer,
+            block: foundBlock.address.block,
+            neuron: highlights.neuron
+          };
         }
         break;
       }
@@ -70,6 +74,7 @@ class CnnVisualizer {
       this.highlights = undefined;
       this._draw();
     }
+    return null;
   }
 
   setSize(width, height) {
