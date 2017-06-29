@@ -37,6 +37,7 @@ export default {
     },
     mousemove: function(e) {
       if(this.visualizer) {
+<<<<<<< HEAD
         const data = this.visualizer.mousemove(
           e.pageX - this.canvasEl.offsetLeft,
           e.pageY - this.canvasEl.offsetTop
@@ -47,6 +48,14 @@ export default {
         }
         console.log(data);
         this.updateNeuronData(data);
+=======
+        this.updateNeuronData({x: e.pageX - this.canvasEl.offsetLeft, y: e.pageY - this.canvasEl.offsetTop})
+        let data = this.visualizer.mousemove(
+          e.pageX - this.canvasEl.offsetLeft,
+          e.pageY - this.canvasEl.offsetTop
+        );
+        console.log(data);
+>>>>>>> 232014f25b9b346deecf789d63fa61abeaaee7c0
       }
     },
     workerType: function() {
