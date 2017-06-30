@@ -1,6 +1,8 @@
 <template>
   <div class="app-wrapper">
     <splash-modal v-if="showModal" :handleModalClick="handleModalClick"></splash-modal>
+    <neuron-dropdown :neuronDropdown="neuronDropdown" :neuronData="neuronData" :layers="layers">
+    </neuron-dropdown>
     <div class="visualization-wrapper">
       <sidebar
         :handleInfoClick="handleInfoClick"
@@ -11,7 +13,8 @@
         :toggleTraining="toggleTraining"
         :results="results"
       ></sidebar>
-      <visualization :layers="layers"></visualization>
+      <visualization :layers="layers" :updateNeuronData="updateNeuronData">
+      </visualization>
     </div>
   </div>
 </template>
@@ -22,6 +25,7 @@ import Sidebar from './sidebar/Sidebar';
 import Visualization from './visualization/Visualization.vue';
 import NeuralNet from './neural-net/NeuralNet';
 import ImportUtil from '../synapsis/import_util';
+import NeuronDropdown from './misc/NeuronDropdown';
 import extractActivations from "../synapsis/extract_activations";
 import * as SynapsisUtils from '../utils';
 import merge from '../synapsis/merge'
@@ -30,6 +34,7 @@ export default {
   name: 'synapsis',
   components: {
     SplashModal,
+    NeuronDropdown,
     Sidebar,
     Visualization,
     NeuralNet
@@ -71,6 +76,8 @@ export default {
       showModal: true,
       showTooltip: false,
       fixedSidebar: true,
+      neuronDropdown: false,
+      neuronData: {},
       stats: {
         trainAcc: 0,
         valAcc: 0,
@@ -122,6 +129,15 @@ export default {
         this.results.pop();
       }
       this.results.unshift(result);
+    },
+    updateNeuronData(data) {
+      if (data) {
+        this.neuronDropdown = true;
+        this.neuronData = data;
+      } else {
+        this.neuronData = {};
+        this.neuronDropdown = false;
+      }
     },
     incrementExampleNum() {
       if (this.exampleNum === 1) {

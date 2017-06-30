@@ -151,7 +151,6 @@ class ImportUtil {
       this.loaded[batch_num] = true;
       if (batch_num < this.test_batch) this.loaded_train_batches.push(batch_num);
       if (this.finishedLoading()) {
-        console.log('finished loading img data', this.img_data);
         resolve('finished');
       }
     }.bind(this);

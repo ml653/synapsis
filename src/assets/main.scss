@@ -48,7 +48,7 @@ a {
   .splash-content {
     overflow: hidden;
     background: white;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
     height: 75%;
     width: 50%;
     min-height: 600px;
@@ -166,6 +166,55 @@ a {
           background: $base-darkest;
         }
       }
+    }
+  }
+}
+
+.visible {
+  visibility: auto;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.neuron-dropdown {
+  position: fixed;
+  // width: 200px;
+  // height: 200px;
+  background: white;
+  z-index: 10;
+  border-radius: 5px;
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.4);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  .neuron-stats {
+    text-align: left;
+  }
+
+  .arrow {
+    width: 25px;
+    height: 12.5px;
+    position: absolute;
+    top: 3px;
+    left: -18px;
+    transform: rotate(90deg);
+    overflow: hidden;
+
+    &:after {
+      content: "";
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #fefefe;
+      transform: translateX(-50%) translateY(-50%) rotate(45deg);
+      top: 0;
+      left: 50%;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
     }
   }
 }

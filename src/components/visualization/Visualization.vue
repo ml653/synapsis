@@ -13,11 +13,11 @@
 import CnnVisualizer from '../../visualizer/cnn_visualizer.js';
 export default {
   name: 'visualization',
-  props: ['layers'],
+  props: ['layers', 'updateNeuronData'],
   watch: {
     layers: function(newLayers) {
       if(!this.visualizer) {
-        this.visualizer = new CnnVisualizer(this.canvasEl, newLayers);
+        this.visualizer = new CnnVisualizer(this.canvasEl, newLayers, this.updateNeuronData);
         window.addEventListener("resize", this.layoutContainers);
         this.layoutContainers();
       }
@@ -37,10 +37,36 @@ export default {
     },
     mousemove: function(e) {
       if(this.visualizer) {
-        this.visualizer.mousemove(
+        const data = this.visualizer.mousemove(
           e.pageX - this.canvasEl.offsetLeft,
           e.pageY - this.canvasEl.offsetTop
         );
+        if (data) {
+          data.x = e.pageX - window.scrollX;
+          data.y = e.pageY - window.scrollY;
+          switch (data.layer) {
+            case 1:
+              data.layerType = "Convolutional Layer 1";
+              break;
+            case 2:
+              data.layerType = "Pooling Layer 1";
+              break;
+            case 3:
+              data.layerType = "Convolutional Layer 2";
+              break;
+            case 4:
+              data.layerType = "Pooling Layer 2";
+              break;
+            case 5:
+              data.layerType = "Fully Connected Layer";
+              break;
+            case 6:
+              data.layerType = "Softmax Layer";
+              break;
+          }
+        };
+
+        this.updateNeuronData(data);
       }
     },
     workerType: function() {
