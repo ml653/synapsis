@@ -37,7 +37,6 @@ export default {
     },
     mousemove: function(e) {
       if(this.visualizer) {
-<<<<<<< HEAD
         const data = this.visualizer.mousemove(
           e.pageX - this.canvasEl.offsetLeft,
           e.pageY - this.canvasEl.offsetTop
@@ -45,17 +44,29 @@ export default {
         if (data) {
           data.x = e.pageX - window.scrollX;
           data.y = e.pageY - window.scrollY;
-        }
-        console.log(data);
+          switch (data.layer) {
+            case 1:
+              data.layerType = "Convolutional Layer 1";
+              break;
+            case 2:
+              data.layerType = "Pooling Layer 1";
+              break;
+            case 3:
+              data.layerType = "Convolutional Layer 2";
+              break;
+            case 4:
+              data.layerType = "Pooling Layer 2";
+              break;
+            case 5:
+              data.layerType = "Fully Connected Layer";
+              break;
+            case 6:
+              data.layerType = "Softmax Layer";
+              break;
+          }
+        };
+
         this.updateNeuronData(data);
-=======
-        this.updateNeuronData({x: e.pageX - this.canvasEl.offsetLeft, y: e.pageY - this.canvasEl.offsetTop})
-        let data = this.visualizer.mousemove(
-          e.pageX - this.canvasEl.offsetLeft,
-          e.pageY - this.canvasEl.offsetTop
-        );
-        console.log(data);
->>>>>>> 232014f25b9b346deecf789d63fa61abeaaee7c0
       }
     },
     workerType: function() {

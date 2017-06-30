@@ -1,7 +1,7 @@
 <template>
   <div class="app-wrapper">
-    <!--<splash-modal v-if="showModal" :handleModalClick="handleModalClick"></splash-modal>-->
-    <neuron-dropdown v-if="neuronDropdown" :neuronData="neuronData">
+    <splash-modal v-if="showModal" :handleModalClick="handleModalClick"></splash-modal>
+    <neuron-dropdown :neuronDropdown="neuronDropdown" :neuronData="neuronData" :layers="layers">
     </neuron-dropdown>
     <div class="visualization-wrapper">
       <sidebar

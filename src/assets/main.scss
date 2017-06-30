@@ -170,14 +170,31 @@ a {
   }
 }
 
+.visible {
+  visibility: auto;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
 .neuron-dropdown {
   position: fixed;
-  width: 200px;
-  height: 100px;
+  // width: 200px;
+  // height: 200px;
   background: white;
   z-index: 10;
   border-radius: 5px;
   box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.4);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  .neuron-stats {
+    text-align: left;
+  }
 
   .arrow {
     width: 25px;
