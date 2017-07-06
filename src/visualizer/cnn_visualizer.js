@@ -58,7 +58,8 @@ class CnnVisualizer {
           hAddress = {
             layer: foundBlock.address.layer,
             block: foundBlock.address.block,
-            neuron: highlights.neuron
+            neuron: highlights.neuron,
+            layerType: this.labels[foundBlock.address.layer].text
           };
           // if neuron was highlighted and that neuron wasn't previously highlighted
           if (!this.highlights || !(i === this.highlights.block && this.highlights.neuron === highlights.neuron)) {
