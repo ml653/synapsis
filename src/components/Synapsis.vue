@@ -28,7 +28,6 @@ import ImportUtil from '../synapsis/import_util';
 import NeuronDropdown from './misc/NeuronDropdown';
 import extractActivations from "../synapsis/extract_activations";
 import * as SynapsisUtils from '../utils';
-import merge from '../synapsis/merge'
 
 export default {
   name: 'synapsis',
@@ -53,7 +52,8 @@ export default {
         } else if (e.data.type === "NET") {
           this.updateLabel(e.data.message.label);
           const layers = extractActivations(e.data.message.net)
-          this.updateLayers(merge(layers))
+          this.updateLayers(layers)
+          console.log(layers)
           this.updateResults(e.data.message.predictions)
         } else if (e.data.type === "MESSAGE") {
           console.log(e.data.e);

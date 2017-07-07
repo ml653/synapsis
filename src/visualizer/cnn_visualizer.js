@@ -5,6 +5,7 @@ import FConnBlock from './fconn_block';
 import SoftBlock from './soft_block';
 import Vector from './vector';
 import * as COLORS from '../util_colors';
+import getInputNeurons from '../synapsis/get_input_neurons'
 
 let SPACING = new Vector(1, 150);
 const LABEL_PADDING = 10;
@@ -47,6 +48,7 @@ class CnnVisualizer {
     let foundHighlight = false;
     let hAddress = null;
     for (let i = 0; i < this.blocks.length; i++) {
+
       // check if mouse contains a position
       if (this.blocks[i].contains(pos)) {
         foundHighlight = true;
@@ -60,6 +62,24 @@ class CnnVisualizer {
             block: foundBlock.address.block,
             neuron: highlights.neuron
           };
+
+          if (hAddress.layer === 5) {
+            const temp = hAddress.block
+            hAddress.block = hAddress.neuron
+            hAddress.neuron = temp
+          }
+
+          const neuron = this.cnn[hAddress.layer]
+            .blocks[hAddress.block]
+            .neurons[hAddress.neuron]
+
+          if (neuron.input_neurons.length === 0) {
+            neuron.input_neurons = getInputNeurons(
+              hAddress.layer,
+              hAddress.block,
+              hAddress.neuron)
+          }
+
           // if neuron was highlighted and that neuron wasn't previously highlighted
           if (!this.highlights || !(i === this.highlights.block && this.highlights.neuron === highlights.neuron)) {
             this.highlights = highlights;

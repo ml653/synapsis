@@ -82,7 +82,7 @@ const extractActivationInfo = (currentIndex, layer, prevLayerDim, depthRatio, wi
 
       block.neurons.push({
         activation,
-        input_neurons: willExtract ? getInputNeurons(inputNeuronsOptions) : []
+        input_neurons: []
       });
 
       // if (x < 5) {
